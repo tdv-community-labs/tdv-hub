@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TDV Community Labs — Rəqəmsal Kampus Portalı</title>
-  <meta name="description" content="TDV Community Labs — Məktəb icmasının vahid rəqəmsal ekosistemi: tədris portalı, idman turniri, canlı zəng cədvəli və KSQ/BSQ bal kalkulyatoru.">
+  <meta name="description" content="TDV Community Labs — Məktəb icmasının vahid rəqəmsal ekosistemi: tədris portalı, idman turniri, zəng cədvəli, KSQ/BSQ bal kalkulyatoru və düstur bankı.">
+  <meta name="theme-color" content="#080C16" id="metaThemeColor">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233B82F6'/%3E%3Cstop offset='100%25' stop-color='%2322C55E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23080C16'/%3E%3Cpath d='M32 14 L48 24 L48 40 L32 50 L16 40 L16 24 Z' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%233B82F6'/%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -36,7 +40,16 @@
     }
   </script>
   <style>
+    :root {
+      color-scheme: dark;
+    }
+    html.light {
+      color-scheme: light;
+    }
     body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    html.dark body {
       background-color: #080C16;
       color: #F8FAFC;
       background-image: 
@@ -46,6 +59,16 @@
         radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 40%);
       background-attachment: fixed;
     }
+    html.light body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(34, 197, 94, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 60%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
     .glass-card {
       background: rgba(14, 20, 36, 0.75);
       backdrop-filter: blur(20px);
@@ -53,18 +76,32 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    html.light .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+
     .glass-card:hover {
       border-color: rgba(59, 130, 246, 0.4);
-      transform: translateY(-5px);
-      box-shadow: 0 25px 35px -10px rgba(0, 0, 0, 0.6), 0 0 30px 0 rgba(59, 130, 246, 0.15);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4), 0 0 25px 0 rgba(59, 130, 246, 0.12);
     }
+    html.light .glass-card:hover {
+      box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.15);
+    }
+
     .glass-card-green:hover {
       border-color: rgba(34, 197, 94, 0.45);
-      box-shadow: 0 25px 35px -10px rgba(0, 0, 0, 0.6), 0 0 30px 0 rgba(34, 197, 94, 0.18);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4), 0 0 25px 0 rgba(34, 197, 94, 0.15);
     }
     .glass-card-disabled {
       border: 1px dashed rgba(255, 255, 255, 0.12);
       background: rgba(14, 20, 36, 0.45);
+    }
+    html.light .glass-card-disabled {
+      border: 1px dashed rgba(15, 23, 42, 0.15);
+      background: rgba(241, 245, 249, 0.6);
     }
     .glass-card-disabled:hover {
       border-color: rgba(168, 85, 247, 0.35);
@@ -88,135 +125,193 @@
       transition: max-height 0.3s ease-out;
     }
     .accordion-content.open {
-      max-height: 300px;
+      max-height: 350px;
       transition: max-height 0.4s ease-in;
+    }
+    /* Custom clean scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.4);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white antialiased">
 
-  <!-- Top Campus Ticker -->
-  <aside aria-label="Campus announcements" class="bg-gradient-to-r from-blue-950/70 via-slate-900/80 to-emerald-950/70 border-b border-slate-800/80 py-2 px-4 text-xs sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
-      <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-[10px] tracking-wide uppercase shrink-0">
-          <i data-lucide="bell" class="w-3 h-3"></i>
-          Elan
-        </span>
-        <span id="tickerText" class="text-slate-200 text-xs truncate transition-opacity duration-300">
-          ⚽ TDV Minifutbol turnirində növbəti tur oyunlarının canlı nəticələri yeniləndi!
-        </span>
+  <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
+  <aside aria-label="Organization Ecosystem Bar" class="bg-slate-950 dark:bg-[#060912] border-b border-slate-800/90 py-1.5 px-4 text-[11px] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Left: Org Brand & Live Ticker -->
+      <div class="flex items-center gap-3 overflow-hidden">
+        <div class="flex items-center gap-1.5 shrink-0 font-bold text-slate-200">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          <span class="hidden sm:inline text-slate-400 font-normal">Təşkilat:</span>
+          <span class="tracking-tight">TDV Community Labs</span>
+        </div>
+        <span class="text-slate-700 hidden sm:inline">•</span>
+        <div class="flex items-center gap-2 truncate">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-[9px] uppercase shrink-0">
+            <i data-lucide="bell" class="w-2.5 h-2.5"></i>
+            Xəbər
+          </span>
+          <span id="tickerText" class="text-slate-300 text-[11px] truncate transition-opacity duration-300">
+            ⚽ TDV Minifutbol turnirində növbəti turun canlı nəticələri yeniləndi!
+          </span>
+        </div>
       </div>
-      <div class="hidden sm:flex items-center gap-4 text-slate-400 shrink-0 text-[11px]">
-        <!-- Live Current Period Status Indicator -->
-        <span id="liveBellBadge" class="flex items-center gap-1.5 text-emerald-400 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
-          <span id="liveBellText">Dərs rejimi yoxlanılır...</span>
+
+      <!-- Right: Live Bell Status & Theme Toggle -->
+      <div class="flex items-center gap-3 shrink-0">
+        <!-- Live Bell Indicator -->
+        <span id="liveBellBadge" class="hidden sm:flex items-center gap-1.5 text-emerald-400 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span>
+          <span id="liveBellText">Yoxlanılır...</span>
         </span>
-        <span>•</span>
-        <button onclick="openSearchModal()" class="hover:text-white flex items-center gap-1 transition">
-          <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px]">Ctrl + K</kbd>
-          Axtarış
+
+        <!-- Theme Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" aria-label="Mövzunu dəyiş" class="p-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition flex items-center justify-center">
+          <i id="themeIcon" data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
         </button>
       </div>
+
     </div>
   </aside>
 
-  <!-- Main Navigation Header -->
-  <header class="w-full border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md z-40">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
+  <!-- ================= MAIN NAVIGATION HEADER ================= -->
+  <header class="w-full border-b border-slate-800/80 bg-slate-950/70 dark:bg-[#080C16]/80 backdrop-blur-md z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 shrink-0">
         <a href="#" class="flex items-center gap-3 group">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
             <i data-lucide="layers" class="w-5 h-5 text-white"></i>
           </div>
           <div>
-            <span class="font-extrabold text-lg tracking-tight text-white flex items-center gap-1.5">
-              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Community Labs</span>
+            <span class="font-extrabold text-lg tracking-tight text-white dark:text-white flex items-center gap-1.5">
+              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Hub</span>
             </span>
             <span class="block text-[10px] text-slate-400 -mt-1 font-medium">Məktəb Rəqəmsal Kampusu</span>
           </div>
         </a>
       </div>
 
-      <!-- Navigation & Tools Menu -->
-      <div class="flex items-center gap-2.5">
-        <!-- Quick Grade Calculator Trigger -->
-        <button onclick="openCalcModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-2 rounded-xl border border-amber-500/30 transition shadow-sm">
+      <!-- Ecosystem Switcher Links -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 p-1 rounded-2xl text-xs font-medium">
+        <a href="#" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
+          <i data-lucide="home" class="w-3.5 h-3.5"></i>
+          Mərkəz
+        </a>
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-400"></i>
+          E-School
+        </a>
+        <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-blue-400"></i>
+          Sports
+        </a>
+        <button onclick="openIdeaModal()" class="px-3 py-1.5 rounded-xl text-slate-400 hover:text-purple-300 hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="gamepad-2" class="w-3.5 h-3.5 text-purple-400"></i>
+          Games
+          <span class="text-[9px] px-1 rounded bg-purple-500/20 text-purple-300">Tezliklə</span>
+        </button>
+      </nav>
+
+      <!-- Tools & Actions Menu -->
+      <div class="flex items-center gap-2">
+        <!-- Formulas Button -->
+        <button onclick="openFormulaModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-2 rounded-xl border border-emerald-500/30 transition shadow-sm" title="Düsturlar Bankı">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Düsturlar</span>
+        </button>
+
+        <!-- Grade Calculator Trigger -->
+        <button onclick="openCalcModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-2 rounded-xl border border-amber-500/30 transition shadow-sm" title="KSQ/BSQ Hesabla">
           <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">Bal Kalkulyatoru</span>
         </button>
 
         <!-- Bell Schedule Modal Trigger -->
-        <button onclick="openScheduleModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-2 rounded-xl border border-blue-500/30 transition shadow-sm">
+        <button onclick="openScheduleModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-2 rounded-xl border border-blue-500/30 transition shadow-sm" title="Zəng və Dərs Cədvəli">
           <i data-lucide="clock" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">Zəng Cədvəli</span>
         </button>
 
-        <button onclick="openSearchModal()" class="hidden md:inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white bg-slate-900/80 hover:bg-slate-800 px-3 py-2 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+        <!-- Command Palette Trigger -->
+        <button onclick="openSearchModal()" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-800 px-3 py-2 rounded-xl border border-slate-800 hover:border-slate-700 transition">
           <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400"></i>
-          <span>Cəld axtarış...</span>
-          <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400">Ctrl K</kbd>
+          <kbd class="hidden lg:inline px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400">Ctrl K</kbd>
         </button>
 
-        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-700/60 transition shadow-sm">
+        <!-- GitHub Org Link -->
+        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 px-3 py-2 rounded-xl border border-slate-700/60 transition shadow-sm">
           <i data-lucide="github" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">GitHub</span>
         </a>
       </div>
+
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 w-full">
+  <!-- ================= HERO SECTION ================= -->
+  <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
     
-    <div class="text-center max-w-3xl mx-auto mb-12">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-5">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
         <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
-        Vahid Rəqəmsal Ekosistem
+        Vahid Rəqəmsal Kampus
       </div>
-      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-5">
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white dark:text-white tracking-tight leading-tight mb-4">
         Məktəb İcması üçün <br>
         <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">İnnovativ Rəqəmsal Mərkəz</span>
       </h1>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-8 font-normal">
-        TDV Community Labs — tədris materialları, minifutbol çempionatı, bal hesablama və gələcək layihələri tək bir müasir platformada təqdim edir.
+      <p class="text-slate-300 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 font-normal">
+        TDV Community Labs — tədris və imtahan materialları, minifutbol çempionatı, bal hesablayıcı, zəng rejimi və şagird layihələrini tək bir müasir platformada birləşdirir.
       </p>
 
-      <!-- Interactive Search Trigger -->
-      <div class="max-w-md mx-auto">
-        <div onclick="openSearchModal()" class="flex items-center gap-3 bg-slate-900/90 border border-slate-700/80 hover:border-blue-500/60 rounded-2xl px-4 py-3 cursor-pointer shadow-lg shadow-black/40 transition group">
+      <!-- Quick Interactive Search Bar Trigger -->
+      <div class="max-w-lg mx-auto">
+        <div onclick="openSearchModal()" class="flex items-center gap-3 bg-slate-900/90 dark:bg-slate-900/90 border border-slate-700/80 hover:border-blue-500/60 rounded-2xl px-4 py-3 cursor-pointer shadow-lg shadow-black/40 transition group">
           <i data-lucide="search" class="w-4 h-4 text-blue-400 group-hover:scale-110 transition"></i>
-          <span class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition text-left flex-grow">Fənn, sınaq və ya futbol matçı axtarın...</span>
-          <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-[11px] font-mono text-slate-400 border border-slate-700">Axtar</span>
+          <span class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition text-left flex-grow">Fənn, sınaq, düstur və ya turnir matçı axtarın...</span>
+          <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-[11px] font-mono text-slate-400 border border-slate-700">Ctrl + K</span>
         </div>
       </div>
     </div>
 
-    <!-- Live Metric Counters Bar -->
+    <!-- Live Metrics Counter Bar -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
-        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-1">100+</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-0.5">100+</div>
         <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Elektron Dərs & Resurs</div>
       </div>
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
-        <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 mb-1">16+</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 mb-0.5">16+</div>
         <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Turnir Komandası</div>
       </div>
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
-        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mb-1">10+</div>
-        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">BSQ / KSQ İmtahanı</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mb-0.5">10+</div>
+        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">BSQ / KSQ Sınağı</div>
       </div>
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
-        <div class="text-2xl sm:text-3xl font-extrabold text-teal-400 mb-1">99.9%</div>
-        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Bulud Sürəti (Vercel)</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-teal-400 mb-0.5">99.9%</div>
+        <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Bulud Əlçatanlığı</div>
       </div>
     </div>
 
-    <!-- 3 Core Project Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-14">
+    <!-- ================= 3 CORE ECOSYSTEM CARDS ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12">
       
-      <!-- 1. TDV E-School Card (Green Theme) -->
+      <!-- Card 1: TDV E-School -->
       <div class="glass-card glass-card-green rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/15 rounded-full blur-3xl group-hover:bg-emerald-500/25 transition duration-500"></div>
         
@@ -254,7 +349,7 @@
         </div>
       </div>
 
-      <!-- 2. TDV Sports Card (Blue Theme) -->
+      <!-- Card 2: TDV Sports -->
       <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/15 rounded-full blur-3xl group-hover:bg-blue-500/25 transition duration-500"></div>
         
@@ -291,7 +386,7 @@
         </div>
       </div>
 
-      <!-- 3. TDV Games Card (NO HYPERLINK - COMING SOON + IDEA SUGGESTION) -->
+      <!-- Card 3: TDV Games (NO HYPERLINK - COMING SOON + IDEA MODAL) -->
       <div class="glass-card glass-card-disabled rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
         
@@ -334,8 +429,172 @@
 
     </div>
 
-    <!-- Quick Tools Interactive Grid: Bell Schedule & Grade Calculator -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+    <!-- ================= TWO WIDGET PANELS: SPORTS STANDINGS & ACADEMIC CALENDAR ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+      
+      <!-- Widget 1: Tournament Live Snapshot -->
+      <div class="glass-card rounded-3xl p-6 border-slate-800/90 relative overflow-hidden flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                <i data-lucide="trophy" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">TDV Sports — Turnir Paneli</h3>
+                <p class="text-[11px] text-slate-400">Qrup mərhələsinin cari liderləri</p>
+              </div>
+            </div>
+            <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1.5 rounded-xl border border-blue-500/20 transition flex items-center gap-1">
+              <span>Bütün Cədvəl</span>
+              <i data-lucide="arrow-right" class="w-3 h-3"></i>
+            </a>
+          </div>
+
+          <!-- Mini Standings Table -->
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                  <th class="pb-2">Sıra</th>
+                  <th class="pb-2">Komanda</th>
+                  <th class="pb-2 text-center">Oyun</th>
+                  <th class="pb-2 text-center">Top Fərqi</th>
+                  <th class="pb-2 text-right">Xal</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 font-medium">
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="py-2.5 text-emerald-400 font-bold">1</td>
+                  <td class="py-2.5 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[10px] font-bold">10A</span>
+                    <span class="text-slate-200">10-A Sinfi</span>
+                  </td>
+                  <td class="py-2.5 text-center text-slate-400 font-mono">3</td>
+                  <td class="py-2.5 text-center text-emerald-400 font-mono">+7</td>
+                  <td class="py-2.5 text-right font-mono font-bold text-white">9</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="py-2.5 text-blue-400 font-bold">2</td>
+                  <td class="py-2.5 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-[10px] font-bold">11H</span>
+                    <span class="text-slate-200">11-H Sinfi</span>
+                  </td>
+                  <td class="py-2.5 text-center text-slate-400 font-mono">3</td>
+                  <td class="py-2.5 text-center text-blue-400 font-mono">+4</td>
+                  <td class="py-2.5 text-right font-mono font-bold text-white">7</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="py-2.5 text-slate-400">3</td>
+                  <td class="py-2.5 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold">9C</span>
+                    <span class="text-slate-300">9-C Sinfi</span>
+                  </td>
+                  <td class="py-2.5 text-center text-slate-400 font-mono">3</td>
+                  <td class="py-2.5 text-center text-slate-400 font-mono">0</td>
+                  <td class="py-2.5 text-right font-mono font-bold text-slate-300">4</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="py-2.5 text-slate-400">4</td>
+                  <td class="py-2.5 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold">10B</span>
+                    <span class="text-slate-300">10-B Sinfi</span>
+                  </td>
+                  <td class="py-2.5 text-center text-slate-400 font-mono">3</td>
+                  <td class="py-2.5 text-center text-rose-400 font-mono">-2</td>
+                  <td class="py-2.5 text-right font-mono font-bold text-slate-300">3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Upcoming Match Banner -->
+        <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="text-base">🔥</span>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Növbəti Tur Derbisi</div>
+              <div class="text-xs font-bold text-white">10-A vs 11-H • Məktəb Stadionu</div>
+            </div>
+          </div>
+          <span class="text-[11px] font-mono text-amber-400 font-bold px-2 py-1 rounded bg-amber-500/10 border border-amber-500/20">Cümə 15:15</span>
+        </div>
+      </div>
+
+      <!-- Widget 2: Academic Calendar & Important Dates -->
+      <div class="glass-card rounded-3xl p-6 border-slate-800/90 relative overflow-hidden flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base">Akademik Təqvim & Mühüm Hadisələr</h3>
+                <p class="text-[11px] text-slate-400">İmtahanlar, yarışlar və tətillər</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">2026 Tədris İli</span>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="file-check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-white">KSQ-2 Qiymətləndirmə Həftəsi</div>
+                  <div class="text-[11px] text-slate-400">Bütün fənlər üzrə kiçik summativ qiymətləndirmə</div>
+                </div>
+              </div>
+              <span class="text-[11px] font-mono font-bold text-blue-400 shrink-0">Növbəti həftə</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="award" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-white">Respublika Fənn Olimpiadası (RFO)</div>
+                  <div class="text-[11px] text-slate-400">Riyaziyyat, Fizika, İnformatika fənləri</div>
+                </div>
+              </div>
+              <span class="text-[11px] font-mono font-bold text-purple-400 shrink-0">Rayon mərhələsi</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="flower-2" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-white">Novruz & Bahar Tətili</div>
+                  <div class="text-[11px] text-slate-400">Məktəb istirahət günləri</div>
+                </div>
+              </div>
+              <span class="text-[11px] font-mono font-bold text-emerald-400 shrink-0">20 — 28 Mart</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-blue-400"></i>
+            BSQ tarixləri yaxınlaşdıqda cədvəl yenilənir.
+          </span>
+          <button onclick="openCalcModal()" class="text-blue-400 hover:underline font-semibold">Balını hesabla →</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= TOOLS INTERACTIVE ROW: BELL SCHEDULE & GRADE CALCULATOR ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
       
       <!-- Tool 1: Live Bell Schedule Card -->
       <div class="glass-card rounded-3xl p-6 sm:p-7 border-slate-800/90 relative overflow-hidden">
@@ -400,7 +659,7 @@
 
         <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
           <div class="flex items-center justify-between text-xs">
-            <span class="text-slate-400">Hesablama Formulu:</span>
+            <span class="text-slate-400">Rəsmi Formul:</span>
             <span class="font-mono text-slate-300 bg-slate-800 px-2 py-0.5 rounded">KSQ × 40% + BSQ × 60%</span>
           </div>
           <div class="grid grid-cols-4 gap-2 text-center text-xs">
@@ -426,10 +685,10 @@
 
     </div>
 
-    <!-- Interactive FAQ Section -->
-    <div class="max-w-3xl mx-auto mb-14">
-      <div class="text-center mb-8">
-        <h3 class="text-2xl font-bold text-white mb-2">Tez-tez Verilən Suallar</h3>
+    <!-- ================= FREQUENTLY ASKED QUESTIONS ================= -->
+    <div class="max-w-3xl mx-auto mb-12">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold text-white mb-1.5">Tez-tez Verilən Suallar</h3>
         <p class="text-xs sm:text-sm text-slate-400">Portallar və sistemdən istifadə haqqında əsas məlumatlar</p>
       </div>
 
@@ -459,11 +718,11 @@
         <!-- FAQ 3 -->
         <div class="glass-card rounded-2xl border-slate-800/80 overflow-hidden">
           <button onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-white hover:text-blue-400 transition">
-            <span>TDV Games bölməsində şagirdlərin hazırladığı oyunlar yerləşdirilə bilərmi?</span>
+            <span>TDV Games bölməsində şagirdlərin hazırladığı oyunlar necə yoxlanılır?</span>
             <i id="faqIcon-3" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
           </button>
           <div id="faqContent-3" class="accordion-content px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Bəli! Bu bölmə məhz şagirdlərin proqramlaşdırdığı veb oyunlar, intellektual viktorinalar və məntiq yarışları üçün nəzərdə tutulub. "Oyun ideyanı təklif et" düyməsi ilə öz layihənizi komandaya təqdim edə bilərsiniz.
+            Şagirdlər tərəfindən göndərilən oyun ideyaları və ya kodlaşdırılmış veb oyunlar laboratoriya komandası tərəfindən nəzərdən keçirilir və təhsil tələblərinə uyğun olanlar TDV Games bölməsində yayımlanır.
           </div>
         </div>
       </div>
@@ -471,7 +730,7 @@
 
   </main>
 
-  <!-- Footer -->
+  <!-- ================= FOOTER ================= -->
   <footer class="w-full border-t border-slate-800/60 py-8 bg-slate-950/80">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
       <div class="flex items-center gap-2">
@@ -479,12 +738,14 @@
         <span>•</span>
         <span>© 2026 Məktəb İcması Portalı</span>
       </div>
-      <div class="flex items-center gap-5">
+      <div class="flex items-center gap-4 flex-wrap justify-center">
         <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub Təşkilatı</a>
         <span>•</span>
         <button onclick="openCalcModal()" class="hover:text-white transition">Bal Kalkulyatoru</button>
         <span>•</span>
         <button onclick="openScheduleModal()" class="hover:text-white transition">Zəng Cədvəli</button>
+        <span>•</span>
+        <button onclick="openFormulaModal()" class="hover:text-white transition">Düstur Bankı</button>
         <span>•</span>
         <a href="mailto:orxannamazovld@gmail.com" class="hover:text-white transition">Əks-əlaqə</a>
       </div>
@@ -495,11 +756,11 @@
   <dialog id="searchModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-0 shadow-2xl max-w-lg w-full m-auto overflow-hidden">
     <div class="p-4 border-b border-slate-800 flex items-center gap-3">
       <i data-lucide="search" class="w-5 h-5 text-blue-400 shrink-0"></i>
-      <input id="searchInput" type="text" placeholder="Layihə, fənn, sınaq və ya alət axtarın..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-medium">
+      <input id="searchInput" type="text" placeholder="Fənn, sınaq, düstur, matç və ya alət axtarın..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-medium">
       <button onclick="closeSearchModal()" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded-lg bg-slate-800 border border-slate-700">ESC</button>
     </div>
     
-    <div id="searchResults" class="p-3 max-h-80 overflow-y-auto space-y-1.5 text-xs"></div>
+    <div id="searchResults" class="p-3 max-h-80 overflow-y-auto space-y-1 text-xs"></div>
   </dialog>
 
   <!-- ================= DIALOG 2: GRADE CALCULATOR (KSQ & BSQ) ================= -->
@@ -548,7 +809,7 @@
     </form>
   </dialog>
 
-  <!-- ================= DIALOG 3: FULL BELL SCHEDULE MODAL ================= -->
+  <!-- ================= DIALOG 3: BELL SCHEDULE & CLASS TIMETABLE MODAL ================= -->
   <dialog id="scheduleModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-lg w-full m-auto">
     <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
       <div class="flex items-center gap-2.5">
@@ -556,8 +817,8 @@
           <i data-lucide="clock" class="w-5 h-5"></i>
         </div>
         <div>
-          <h3 class="font-bold text-white text-base">Məktəb Zəng Cədvəli</h3>
-          <p class="text-[11px] text-slate-400">Həftəiçi standart dərs və tənəffüs saatları</p>
+          <h3 class="font-bold text-white text-base">Zəng və Dərs Cədvəli</h3>
+          <p class="text-[11px] text-slate-400">Standart saatlar və sinif cədvəli</p>
         </div>
       </div>
       <button onclick="closeScheduleModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
@@ -565,65 +826,120 @@
       </button>
     </div>
 
-    <div class="space-y-2 text-xs font-mono">
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+    <!-- Tabs: Bells vs Classes -->
+    <div class="flex gap-2 mb-4 p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs">
+      <button id="tabBellBtn" onclick="switchScheduleTab('bell')" class="flex-1 py-1.5 rounded-lg font-semibold bg-blue-600 text-white transition">Zəng Saatları</button>
+      <button id="tabClassBtn" onclick="switchScheduleTab('class')" class="flex-1 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition">Sinif Cədvəli</button>
+    </div>
+
+    <!-- Tab 1: Bell Schedule -->
+    <div id="bellTabContent" class="space-y-1.5 text-xs font-mono max-h-80 overflow-y-auto pr-1">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">1-ci Dərs</span>
         <span class="text-blue-400 font-bold">08:30 — 09:15</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/40 text-[11px] text-slate-500">
         <span>Tənəffüs</span>
         <span>09:15 — 09:25 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">2-ci Dərs</span>
         <span class="text-blue-400 font-bold">09:25 — 10:10</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/40 text-[11px] text-slate-500">
         <span>Tənəffüs</span>
         <span>10:10 — 10:20 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">3-cü Dərs</span>
         <span class="text-blue-400 font-bold">10:20 — 11:05</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px]">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px]">
         <span class="font-sans font-bold">🍽️ Böyük Tənəffüs (Nahar)</span>
         <span>11:05 — 11:20 (15 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">4-cü Dərs</span>
         <span class="text-blue-400 font-bold">11:20 — 12:05</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/40 text-[11px] text-slate-500">
         <span>Tənəffüs</span>
         <span>12:05 — 12:15 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">5-ci Dərs</span>
         <span class="text-blue-400 font-bold">12:15 — 13:00</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/40 text-[11px] text-slate-500">
         <span>Tənəffüs</span>
         <span>13:00 — 13:10 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">6-cı Dərs</span>
         <span class="text-blue-400 font-bold">13:10 — 13:55</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/40 text-[11px] text-slate-500">
         <span>Tənəffüs</span>
         <span>13:55 — 14:05 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
         <span class="text-slate-300 font-sans font-semibold">7-ci Dərs (Dərslərin Sonu)</span>
         <span class="text-emerald-400 font-bold">14:05 — 14:50</span>
       </div>
     </div>
+
+    <!-- Tab 2: Class Timetable -->
+    <div id="classTabContent" class="hidden space-y-3 text-xs">
+      <div class="flex gap-2">
+        <select id="classSelector" onchange="renderClassTimetable()" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-semibold focus:outline-none">
+          <option value="10A">10-A Sinfi (Dəqiq Fənlər)</option>
+          <option value="11H">11-H Sinfi (Buraxılış & Blok)</option>
+          <option value="9C">9-C Sinfi (Əsas Təhsil)</option>
+        </select>
+        <select id="daySelector" onchange="renderClassTimetable()" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs font-semibold focus:outline-none">
+          <option value="1">Bazar ertəsi</option>
+          <option value="2">Çərşənbə axşamı</option>
+          <option value="3">Çərşənbə</option>
+          <option value="4">Cümə axşamı</option>
+          <option value="5">Cümə</option>
+        </select>
+      </div>
+
+      <div id="classTimetableList" class="space-y-1.5 font-mono"></div>
+    </div>
   </dialog>
 
-  <!-- ================= DIALOG 4: GAME IDEA MODAL ================= -->
+  <!-- ================= DIALOG 4: FORMULA CHEAT SHEET MODAL ================= -->
+  <dialog id="formulaModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-xl w-full m-auto">
+    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-white text-base">Məktəb Düstur Bankı</h3>
+          <p class="text-[11px] text-slate-400">Riyaziyyat, Fizika və Kimya əsas formulları</p>
+        </div>
+      </div>
+      <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="flex gap-2 mb-3 overflow-x-auto pb-1 text-xs">
+      <button onclick="filterFormulas('all')" class="formula-tab px-3 py-1.5 rounded-xl font-semibold bg-emerald-600 text-white shrink-0">Bütün</button>
+      <button onclick="filterFormulas('math')" class="formula-tab px-3 py-1.5 rounded-xl font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0">📐 Riyaziyyat</button>
+      <button onclick="filterFormulas('phys')" class="formula-tab px-3 py-1.5 rounded-xl font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0">⚡ Fizika</button>
+      <button onclick="filterFormulas('chem')" class="formula-tab px-3 py-1.5 rounded-xl font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0">🧪 Kimya</button>
+    </div>
+
+    <div id="formulaContainer" class="space-y-2 max-h-80 overflow-y-auto pr-1 text-xs"></div>
+  </dialog>
+
+  <!-- ================= DIALOG 5: GAME IDEA SUGGESTION MODAL ================= -->
   <dialog id="ideaModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-md w-full m-auto">
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">💡</div>
         <div>
@@ -643,7 +959,7 @@
       </div>
       <div>
         <label class="block text-slate-300 font-semibold mb-1">Oyunun İdeyası / Qaydaları:</label>
-        <textarea id="ideaText" rows="4" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa viktorina?" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"></textarea>
+        <textarea id="ideaText" rows="4" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"></textarea>
       </div>
 
       <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-center font-medium">
@@ -656,25 +972,66 @@
     </form>
   </dialog>
 
+  <!-- ================= CLIENT JAVASCRIPT ================= -->
   <script>
+    // Initialize Lucide Icons
     lucide.createIcons();
 
-    // Campus Ticker Rotator
+    // Register Service Worker for PWA Offline Support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+
+    // Theme Management (Dark / Light)
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const metaTheme = document.getElementById('metaThemeColor');
+
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        if (icon) icon.setAttribute('data-lucide', 'moon');
+        if (metaTheme) metaTheme.setAttribute('content', '#F8FAFC');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        if (icon) icon.setAttribute('data-lucide', 'sun');
+        if (metaTheme) metaTheme.setAttribute('content', '#080C16');
+      }
+      lucide.createIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      localStorage.setItem('tdv_theme', newTheme);
+      applyTheme(newTheme);
+    }
+
+    // Load initial theme preference
+    const savedTheme = localStorage.getItem('tdv_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Campus Announcements Ticker
     const announcements = [
       "⚽ TDV Minifutbol turnirində növbəti tur oyunlarının canlı nəticələri yeniləndi!",
-      "📚 TDV E-School: 10-cu sinif Riyaziyyat və Fizika BSQ imtahan sınaqları yükləndi.",
+      "📚 TDV E-School: 10-cu sinif Riyaziyyat və Fizika BSQ sınaqları yükləndi.",
       "⚔️ E-School PvP Arenasında 1v1 bilik döyüşləri davam edir!",
-      "🧮 KSQ və BSQ Bal Kalkulyatoru indi portala əlavə olundu — yekun qiymətinizi hesablayın!",
+      "🧮 KSQ və BSQ Bal Kalkulyatoru ilə yarımillik qiymətinizi cəld hesablayın.",
+      "📖 Yeni: Məktəb Düstur Bankı — Riyaziyyat, Fizika və Kimya formulları əlavə edildi!",
       "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün təkliflər qəbul olunur."
     ];
-    let tickerIndex = 0;
+    let tickerIdx = 0;
     setInterval(() => {
-      tickerIndex = (tickerIndex + 1) % announcements.length;
+      tickerIdx = (tickerIdx + 1) % announcements.length;
       const el = document.getElementById('tickerText');
       if (el) {
         el.style.opacity = '0';
         setTimeout(() => {
-          el.textContent = announcements[tickerIndex];
+          el.textContent = announcements[tickerIdx];
           el.style.opacity = '1';
         }, 300);
       }
@@ -682,32 +1039,31 @@
 
     // Live Bell Schedule Tracker
     const bellSchedule = [
-      { name: '1-ci Dərs', start: '08:30', end: '09:15', isClass: true },
-      { name: '1-ci Tənəffüs', start: '09:15', end: '09:25', isClass: false },
-      { name: '2-ci Dərs', start: '09:25', end: '10:10', isClass: true },
-      { name: '2-ci Tənəffüs', start: '10:10', end: '10:20', isClass: false },
-      { name: '3-cü Dərs', start: '10:20', end: '11:05', isClass: true },
-      { name: 'Böyük Tənəffüs (Nahar)', start: '11:05', end: '11:20', isClass: false },
-      { name: '4-cü Dərs', start: '11:20', end: '12:05', isClass: true },
-      { name: '4-cü Tənəffüs', start: '12:05', end: '12:15', isClass: false },
-      { name: '5-ci Dərs', start: '12:15', end: '13:00', isClass: true },
-      { name: '5-ci Tənəffüs', start: '13:00', end: '13:10', isClass: false },
-      { name: '6-cı Dərs', start: '13:10', end: '13:55', isClass: true },
-      { name: '6-cı Tənəffüs', start: '13:55', end: '14:05', isClass: false },
-      { name: '7-ci Dərs', start: '14:05', end: '14:50', isClass: true }
+      { name: '1-ci Dərs', start: '08:30', end: '09:15' },
+      { name: '1-ci Tənəffüs', start: '09:15', end: '09:25' },
+      { name: '2-ci Dərs', start: '09:25', end: '10:10' },
+      { name: '2-ci Tənəffüs', start: '10:10', end: '10:20' },
+      { name: '3-cü Dərs', start: '10:20', end: '11:05' },
+      { name: 'Böyük Tənəffüs (Nahar)', start: '11:05', end: '11:20' },
+      { name: '4-cü Dərs', start: '11:20', end: '12:05' },
+      { name: '4-cü Tənəffüs', start: '12:05', end: '12:15' },
+      { name: '5-ci Dərs', start: '12:15', end: '13:00' },
+      { name: '5-ci Tənəffüs', start: '13:00', end: '13:10' },
+      { name: '6-cı Dərs', start: '13:10', end: '13:55' },
+      { name: '6-cı Tənəffüs', start: '13:55', end: '14:05' },
+      { name: '7-ci Dərs', start: '14:05', end: '14:50' }
     ];
 
-    function toMinutes(timeStr) {
-      const [h, m] = timeStr.split(':').map(Number);
+    function toMinutes(str) {
+      const [h, m] = str.split(':').map(Number);
       return h * 60 + m;
     }
 
     function updateLiveBell() {
       const now = new Date();
       const currentMin = now.getHours() * 60 + now.getMinutes();
-      const day = now.getDay(); // 0 = Sunday, 6 = Saturday
+      const day = now.getDay();
 
-      const badge = document.getElementById('liveBellBadge');
       const text = document.getElementById('liveBellText');
       const currentNameEl = document.getElementById('bellCurrentName');
       const remainingEl = document.getElementById('bellRemainingTime');
@@ -730,8 +1086,7 @@
       }
 
       if (activePeriod) {
-        const desc = `${activePeriod.name} (${activePeriod.remaining} dəq qalıb)`;
-        if (text) text.textContent = desc;
+        if (text) text.textContent = `${activePeriod.name} (${activePeriod.remaining} dəq qalıb)`;
         if (currentNameEl) currentNameEl.textContent = activePeriod.name;
         if (remainingEl) remainingEl.textContent = `${activePeriod.remaining} dəqiqə`;
       } else if (currentMin < toMinutes('08:30')) {
@@ -772,20 +1127,16 @@
       }
 
       finalScore = Math.round(finalScore * 10) / 10;
-      let grade = "2";
       let gradeText = "2 (Qeyri-kafi)";
       let gradeClass = "bg-rose-500/20 text-rose-300 border border-rose-500/30";
 
       if (finalScore >= 80.5) {
-        grade = "5";
         gradeText = "5 (Əla) 🎉";
         gradeClass = "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
       } else if (finalScore >= 60.5) {
-        grade = "4";
         gradeText = "4 (Yaxşı) 👍";
         gradeClass = "bg-blue-500/20 text-blue-300 border border-blue-500/30";
       } else if (finalScore >= 30.5) {
-        grade = "3";
         gradeText = "3 (Kafi)";
         gradeClass = "bg-amber-500/20 text-amber-300 border border-amber-500/30";
       }
@@ -798,13 +1149,123 @@
       badgeEl.className = "inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-2 " + gradeClass;
     }
 
-    // Bell Schedule Modal
+    // Schedule Modal Tabs & Timetable
     const scheduleModal = document.getElementById('scheduleModal');
-    function openScheduleModal() { scheduleModal.showModal(); }
+    function openScheduleModal() {
+      scheduleModal.showModal();
+      renderClassTimetable();
+    }
     function closeScheduleModal() { scheduleModal.close(); }
     scheduleModal.addEventListener('click', (e) => { if (e.target === scheduleModal) closeScheduleModal(); });
 
-    // FAQ Accordion Toggle
+    function switchScheduleTab(tab) {
+      const bellTab = document.getElementById('bellTabContent');
+      const classTab = document.getElementById('classTabContent');
+      const bellBtn = document.getElementById('tabBellBtn');
+      const classBtn = document.getElementById('tabClassBtn');
+
+      if (tab === 'bell') {
+        bellTab.classList.remove('hidden');
+        classTab.classList.add('hidden');
+        bellBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-blue-600 text-white transition";
+        classBtn.className = "flex-1 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition";
+      } else {
+        bellTab.classList.add('hidden');
+        classTab.classList.remove('hidden');
+        classBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-blue-600 text-white transition";
+        bellBtn.className = "flex-1 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition";
+        renderClassTimetable();
+      }
+    }
+
+    const classSchedules = {
+      "10A": {
+        "1": ["Cəbr və Analizin Başlanğıcı", "Həndəsə", "Fizika", "Azərbaycan Dili", "İnformatika", "Bədən Tərbiyəsi"],
+        "2": ["Kimya", "Biologiya", "Xarici Dil (İngilis)", "Tarix", "Cəbr", "Ədəbiyyat"],
+        "3": ["Fizika", "Həndəsə", "İnformatika (Praktika)", "Coğrafiya", "Xarici Dil", "Çağırışaqədər Hazırlıq"],
+        "4": ["Cəbr", "Kimya", "Biologiya", "Azərbaycan Dili", "Tarix", "Fizika"],
+        "5": ["Həndəsə", "Ədəbiyyat", "İnformatika", "Xarici Dil", "Bədən Tərbiyəsi", "Fakültativ Məşğələ"]
+      },
+      "11H": {
+        "1": ["Riyaziyyat (DİM Buraxılış)", "Azərbaycan Dili", "İngilis Dili", "Fizika", "Kimya", "İmtahan Hazırlığı"],
+        "2": ["Riyaziyyat", "Fizika (Məsələ həlli)", "Tarix", "Biologiya", "İngilis Dili", "Ədəbiyyat"],
+        "3": ["Azərbaycan Dili", "Riyaziyyat", "Fizika", "İnformatika", "İngilis Dili", "Hərbi Hazırlıq"],
+        "4": ["Riyaziyyat", "Kimya", "Biologiya", "Tarix", "İngilis Dili", "Fizika"],
+        "5": ["Sınaq İmtahanı (Blok)", "Sınaq Müzakirəsi", "Riyaziyyat", "İngilis Dili", "Bədən Tərbiyəsi", "Məsləhət Saatı"]
+      },
+      "9C": {
+        "1": ["Riyaziyyat", "Azərbaycan Dili", "Fizika", "İngilis Dili", "Kimya", "Bədən Tərbiyəsi"],
+        "2": ["Həndəsə", "Biologiya", "Tarix", "Coğrafiya", "Ədəbiyyat", "İnformatika"],
+        "3": ["Riyaziyyat", "Fizika", "Azərbaycan Dili", "İngilis Dili", "Musiqi", "Təsviri İncəsənət"],
+        "4": ["Həndəsə", "Kimya", "Tarix", "Biologiya", "Ədəbiyyat", "İnformatika"],
+        "5": ["Riyaziyyat", "Azərbaycan Dili", "İngilis Dili", "Fizika", "Bədən Tərbiyəsi", "Həyat Bilgisi"]
+      }
+    };
+
+    function renderClassTimetable() {
+      const cls = document.getElementById('classSelector').value;
+      const day = document.getElementById('daySelector').value;
+      const list = document.getElementById('classTimetableList');
+      const lessons = (classSchedules[cls] && classSchedules[cls][day]) || [];
+
+      list.innerHTML = lessons.map((les, i) => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-blue-400 font-bold w-16">${i + 1}-ci Dərs</span>
+          <span class="text-slate-200 font-sans font-medium flex-1 text-left px-2">${les}</span>
+          <span class="text-[10px] text-slate-500 font-mono">45 dəq</span>
+        </div>
+      `).join('');
+    }
+
+    // Formula Cheat Sheet Modal
+    const formulaModal = document.getElementById('formulaModal');
+    function openFormulaModal() {
+      formulaModal.showModal();
+      renderFormulas('all');
+    }
+    function closeFormulaModal() { formulaModal.close(); }
+    formulaModal.addEventListener('click', (e) => { if (e.target === formulaModal) closeFormulaModal(); });
+
+    const formulasData = [
+      { cat: 'math', title: 'Pifaqor Teoremi', formula: 'a² + b² = c²', desc: 'Düzbucaqlı üçbucaqda katetlərin kvadratları cəmi hipotenuzun kvadratına bərabərdir.' },
+      { cat: 'math', title: 'Kvadrat Tənliyin Diskriminantı', formula: 'D = b² - 4ac  ➔  x₁,₂ = (-b ± √D) / 2a', desc: 'D > 0 olduqda iki müxtəlif, D = 0 olduqda bir kökü var.' },
+      { cat: 'math', title: 'Əsas Triqonometrik Eynilik', formula: 'sin²α + cos²α = 1', desc: 'İstənilən bucaq üçün sinus və kosinusun kvadratları cəmi 1-ə bərabərdir.' },
+      { cat: 'math', title: 'Dairənin Sahəsi və Çevrənin Uzunluğu', formula: 'S = πr²  |  L = 2πr', desc: 'r radiuslu dairənin sahəsi və çevrəsinin uzunluq formulu.' },
+      { cat: 'phys', title: 'Nyutonun II Qanunu', formula: 'F = m · a', desc: 'Cismə təsir edən əvəzləyici qüvvə onun kütləsi ilə təcilinin hasilinə bərabərdir.' },
+      { cat: 'phys', title: 'Kinetik və Potensial Enerji', formula: 'E_k = (m · v²) / 2  |  E_p = m · g · h', desc: 'Mexaniki hərəkət enerjisi və cazibə sahəsindəki potensial enerji.' },
+      { cat: 'phys', title: 'Dövrə Hissəsi üçün Om Qanunu', formula: 'I = U / R', desc: 'Cərəyan şiddəti gərginliklə düz, müqavimətlə tərs mütənasibdir.' },
+      { cat: 'phys', title: 'Arximed Qüvvəsi (İtələmə qüvvəsi)', formula: 'F_A = ρ_maye · g · V_cisim', desc: 'Mayeyə batırılmış cismə təsir edən qaldırıcı qüvvə.' },
+      { cat: 'chem', title: 'Maddə Miqdarı və Molyar Kütlə', formula: 'n = m / M  =  N / N_A', desc: 'Molyar kütlə və Avoqadro sabiti (N_A = 6.02 · 10²³ mol⁻¹).' },
+      { cat: 'chem', title: 'Məhlulun Qatılığı (Kütlə payı)', formula: 'ω = (m_həll olan / m_məhlul) · 100%', desc: 'Həll olan maddənin məhluldakı faiz nisbəti.' }
+    ];
+
+    function filterFormulas(cat) {
+      document.querySelectorAll('.formula-tab').forEach(b => {
+        b.className = "formula-tab px-3 py-1.5 rounded-xl font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0";
+      });
+      event.target.className = "formula-tab px-3 py-1.5 rounded-xl font-semibold bg-emerald-600 text-white shrink-0";
+      renderFormulas(cat);
+    }
+
+    function renderFormulas(cat) {
+      const container = document.getElementById('formulaContainer');
+      const filtered = cat === 'all' ? formulasData : formulasData.filter(f => f.cat === cat);
+
+      container.innerHTML = filtered.map(f => `
+        <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-slate-200">${f.title}</span>
+            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 ${f.cat === 'math' ? 'text-blue-400' : f.cat === 'phys' ? 'text-amber-400' : 'text-purple-400'}">${f.cat === 'math' ? 'Riyaziyyat' : f.cat === 'phys' ? 'Fizika' : 'Kimya'}</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-900 font-mono text-emerald-300 font-bold text-sm tracking-wide mb-1 border border-slate-800/80">
+            ${f.formula}
+          </div>
+          <p class="text-[11px] text-slate-400 leading-normal">${f.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    // FAQ Accordion
     function toggleFaq(index) {
       const content = document.getElementById(`faqContent-${index}`);
       const icon = document.getElementById(`faqIcon-${index}`);
@@ -817,7 +1278,7 @@
       }
     }
 
-    // Command Palette & Search
+    // Command Palette & Search (Ctrl + K)
     const searchModal = document.getElementById('searchModal');
     function openSearchModal() {
       searchModal.showModal();
@@ -836,15 +1297,17 @@
     });
 
     const searchableItems = [
-      { name: 'TDV E-School', desc: 'Məktəb tədris portalı, dərsliklər və tapşırıqlar', url: 'https://tdv-e-school.vercel.app/', icon: '🎓' },
+      { name: 'TDV E-School', desc: 'Məktəb tədris portalı, 100+ dərs və sınaqlar', url: 'https://tdv-e-school.vercel.app/', icon: '🎓' },
       { name: 'Riyaziyyat BSQ / KSQ', desc: '10-cu və 9-cu sinif Riyaziyyat imtahan arxivi', url: 'https://tdv-e-school.vercel.app/', icon: '📐' },
       { name: 'Fizika Dərsləri', desc: 'Mexanika, termodinamika və optika vəsaitləri', url: 'https://tdv-e-school.vercel.app/', icon: '⚡' },
       { name: 'PvP Bilik Arenası', desc: '1v1 sual-cavab intellektual döyüşü', url: 'https://tdv-e-school.vercel.app/', icon: '⚔️' },
       { name: 'TDV Sports — Turnir', desc: 'Canlı minifutbol nəticələri, xal cədvəli və oyunlar', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '⚽' },
-      { name: '10A vs 11H Matçı', desc: 'Son keçirilən turnir oyununun statistikası', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🏆' },
+      { name: 'Turnir Cədvəli (10A, 11H, 9C)', desc: 'Qrup mərhələsi xal vəziyyəti və qol fərqləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🏆' },
       { name: 'Bombardirlər Siyahısı', desc: 'Turnirin ən çox qol vuran şagirdləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🥇' },
+      { name: 'Məktəb Düstur Bankı', desc: 'Riyaziyyat, Fizika və Kimya düsturları', action: 'formula', icon: '📖' },
       { name: 'KSQ / BSQ Bal Kalkulyatoru', desc: 'Yarımillik qiyməti hesablama aləti', action: 'calc', icon: '🧮' },
-      { name: 'Məktəb Zəng Cədvəli', desc: 'Standart dərs və tənəffüs vaxtları', action: 'schedule', icon: '⏰' },
+      { name: 'Zəng & Sinif Dərs Cədvəli', desc: 'Standart dərs vaxtları və 10A, 11H cədvəli', action: 'schedule', icon: '⏰' },
+      { name: 'Gecə / Gündüz Rejimi', desc: 'Saytın rəng mövzusunu dəyiş', action: 'theme', icon: '🌗' },
       { name: 'TDV Games', desc: 'İnteraktiv oyunlar (Hazırlanır)', disabled: true, icon: '🎮' }
     ];
 
@@ -857,9 +1320,15 @@
       ) : searchableItems;
 
       resultsContainer.innerHTML = filtered.map(item => `
-        <div onclick="${item.action === 'calc' ? 'closeSearchModal(); openCalcModal();' : item.action === 'schedule' ? 'closeSearchModal(); openScheduleModal();' : item.disabled ? '' : 'window.open(\'' + item.url + '\', \'_blank\');'}" class="flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group">
+        <div onclick="${
+          item.action === 'calc' ? 'closeSearchModal(); openCalcModal();' :
+          item.action === 'schedule' ? 'closeSearchModal(); openScheduleModal();' :
+          item.action === 'formula' ? 'closeSearchModal(); openFormulaModal();' :
+          item.action === 'theme' ? 'closeSearchModal(); toggleTheme();' :
+          item.disabled ? '' : 'window.open(\'' + item.url + '\', \'_blank\');'
+        }" class="flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base">${item.icon}</div>
+            <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base shrink-0">${item.icon}</div>
             <div>
               <div class="font-bold text-white group-hover:text-blue-400">${item.name}</div>
               <div class="text-slate-400 text-[11px]">${item.desc}</div>
