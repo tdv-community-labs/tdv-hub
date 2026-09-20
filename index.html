@@ -527,10 +527,22 @@
             <p class="text-xs text-slate-400">Gündəlik ev tapşırıqlarını və dərslərini burada qeyd et (brauzerində saxlanılır)</p>
           </div>
         </div>
-        <div class="flex items-center gap-1.5 text-xs">
-          <button onclick="filterTasks('all')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold">Hamısı</button>
-          <button onclick="filterTasks('active')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white">Aktiv</button>
-          <button onclick="filterTasks('completed')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white">Bitmiş</button>
+        <div class="flex items-center gap-1.5 text-xs flex-wrap">
+          <button id="taskFilterAll" onclick="filterTasks('all')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold flex items-center gap-1.5">
+            <span>Hamısı</span>
+            <span id="taskCountAll" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-mono">0</span>
+          </button>
+          <button id="taskFilterActive" onclick="filterTasks('active')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5">
+            <span>Aktiv</span>
+            <span id="taskCountActive" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-700 font-mono">0</span>
+          </button>
+          <button id="taskFilterCompleted" onclick="filterTasks('completed')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5">
+            <span>Bitmiş</span>
+            <span id="taskCountCompleted" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-700 font-mono">0</span>
+          </button>
+          <button id="clearCompletedTasksBtn" onclick="clearCompletedTasks()" class="hidden px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20 transition font-medium text-[11px]" title="Tamamlanmış tapşırıqları təmizlə">
+            Təmizlə
+          </button>
         </div>
       </div>
 
@@ -902,40 +914,55 @@
         </div>
         <div>
           <h3 class="font-bold text-white text-base">KSQ və BSQ Bal Hesablayıcı</h3>
-          <p class="text-[11px] text-slate-400">Yarımillik yekun balı və qiyməti hesablayın</p>
+          <p class="text-[11px] text-slate-400">Canlı avtomatik hesablama və bal payı bölgüsü</p>
         </div>
       </div>
-      <button onclick="closeCalcModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+      <button onclick="closeCalcModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800" aria-label="Bağla">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
 
-    <form onsubmit="calculateGrade(event)" class="space-y-4 text-xs">
+    <form id="gradeCalcForm" onsubmit="calculateGrade(event)" class="space-y-4 text-xs">
       <div>
-        <label class="block text-slate-300 font-semibold mb-1">KSQ Ballarının Ortalaması (0 - 100):</label>
-        <input id="calcKsq" type="number" min="0" max="100" step="0.1" required placeholder="Məs: 80" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono">
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-slate-300 font-semibold">KSQ Ballarının Ortalaması (0 - 100):</label>
+          <span id="ksqShareBadge" class="text-[10px] font-mono text-amber-400 font-semibold hidden">Pay: 0 bal</span>
+        </div>
+        <input id="calcKsq" type="number" min="0" max="100" step="0.1" required placeholder="Məs: 80" oninput="liveCalculateGrade()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono text-sm">
       </div>
 
-      <div class="flex items-center gap-2">
-        <input type="checkbox" id="hasBsq" checked onchange="toggleBsqInput(this.checked)" class="rounded bg-slate-950 border-slate-700 text-amber-500 focus:ring-0">
-        <label for="hasBsq" class="text-slate-300 select-none">Fənn üzrə BSQ imtahanı keçirilir</label>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="hasBsq" checked onchange="toggleBsqInput(this.checked)" class="rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-0 cursor-pointer w-4 h-4">
+          <label for="hasBsq" class="text-slate-300 select-none cursor-pointer">Fənn üzrə BSQ imtahanı keçirilir</label>
+        </div>
+        <span class="text-[10px] font-mono text-slate-400">40% / 60%</span>
       </div>
 
       <div id="bsqField">
-        <label class="block text-slate-300 font-semibold mb-1">BSQ Balı (0 - 100):</label>
-        <input id="calcBsq" type="number" min="0" max="100" step="0.1" placeholder="Məs: 85" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono">
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-slate-300 font-semibold">BSQ Balı (0 - 100):</label>
+          <span id="bsqShareBadge" class="text-[10px] font-mono text-blue-400 font-semibold hidden">Pay: 0 bal</span>
+        </div>
+        <input id="calcBsq" type="number" min="0" max="100" step="0.1" placeholder="Məs: 85" oninput="liveCalculateGrade()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono text-sm">
       </div>
 
       <!-- Result Display -->
-      <div id="calcResult" class="hidden p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-1">
-        <div class="text-[11px] text-slate-400">Yekun Yarımillik Balınız:</div>
-        <div id="calcFinalScore" class="text-3xl font-black text-amber-400 font-mono">--</div>
-        <div id="calcGradeBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold mt-1">--</div>
+      <div id="calcResult" class="hidden p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-1.5 transition-all">
+        <div class="text-[11px] text-slate-400 font-medium">Yekun Yarımillik Qiymətiniz:</div>
+        <div id="calcFinalScore" class="text-3xl font-black text-amber-400 font-mono tracking-tight">--</div>
+        <div id="calcGradeBadge" class="inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-1">--</div>
+        <div id="calcDetailsText" class="text-[10px] text-slate-400 font-mono pt-1"></div>
       </div>
 
-      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold transition shadow-lg shadow-amber-900/30">
-        Hesabla
-      </button>
+      <div class="flex gap-2">
+        <button type="submit" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold transition shadow-lg shadow-amber-900/30">
+          Hesabla
+        </button>
+        <button type="button" onclick="resetCalculator()" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition" title="Sıfırla">
+          Təmizlə
+        </button>
+      </div>
     </form>
   </dialog>
 
@@ -1060,6 +1087,15 @@
       <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
+    </div>
+
+    <!-- Search Box -->
+    <div class="mb-3">
+      <div class="flex items-center gap-2 bg-slate-950 border border-slate-700 focus-within:border-emerald-500 rounded-xl px-3 py-2 text-xs transition">
+        <i data-lucide="search" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+        <input id="formulaSearchInput" type="text" placeholder="Düstur adı və ya açar söz axtar (məs: Nyuton, Om, Pifaqor, enerji)..." oninput="searchFormulas(this.value)" class="w-full bg-transparent text-white placeholder-slate-500 focus:outline-none font-medium text-xs">
+        <button onclick="clearFormulaSearch()" id="clearFormulaSearchBtn" class="text-slate-500 hover:text-white hidden text-[10px]">✕</button>
+      </div>
     </div>
 
     <!-- Category Pills -->
@@ -1429,11 +1465,15 @@
       }
     }
     updateLiveBell();
-    setInterval(updateLiveBell, 30000);
+    setInterval(updateLiveBell, 10000);
 
-    // Grade Calculator Logic
+    // Grade Calculator Logic (Optimized with live calculation & share breakdown)
     const calcModal = document.getElementById('calcModal');
-    function openCalcModal() { calcModal.showModal(); }
+    function openCalcModal() {
+      calcModal.showModal();
+      const ksqEl = document.getElementById('calcKsq');
+      if (ksqEl) setTimeout(() => ksqEl.focus(), 80);
+    }
     function closeCalcModal() { calcModal.close(); }
     calcModal.addEventListener('click', (e) => { if (e.target === calcModal) closeCalcModal(); });
 
@@ -1441,17 +1481,63 @@
       const field = document.getElementById('bsqField');
       if (hasBsq) field.classList.remove('hidden');
       else field.classList.add('hidden');
+      liveCalculateGrade();
     }
 
-    function calculateGrade(e) {
-      e.preventDefault();
-      const ksq = parseFloat(document.getElementById('calcKsq').value) || 0;
+    function liveCalculateGrade() {
+      const ksqInput = document.getElementById('calcKsq');
+      const bsqInput = document.getElementById('calcBsq');
       const hasBsq = document.getElementById('hasBsq').checked;
-      let finalScore = ksq;
+      const resBox = document.getElementById('calcResult');
+      const ksqBadge = document.getElementById('ksqShareBadge');
+      const bsqBadge = document.getElementById('bsqShareBadge');
+      const detailsText = document.getElementById('calcDetailsText');
 
+      let ksqVal = ksqInput.value.trim();
+      if (!ksqVal) {
+        resBox.classList.add('hidden');
+        if (ksqBadge) ksqBadge.classList.add('hidden');
+        if (bsqBadge) bsqBadge.classList.add('hidden');
+        return;
+      }
+
+      let ksq = parseFloat(ksqVal);
+      if (isNaN(ksq)) return;
+      if (ksq > 100) { ksq = 100; ksqInput.value = 100; }
+      if (ksq < 0) { ksq = 0; ksqInput.value = 0; }
+
+      let finalScore = ksq;
       if (hasBsq) {
-        const bsq = parseFloat(document.getElementById('calcBsq').value) || 0;
-        finalScore = (ksq * 0.4) + (bsq * 0.6);
+        let bsqVal = bsqInput.value.trim();
+        let bsq = bsqVal ? parseFloat(bsqVal) : 0;
+        if (isNaN(bsq)) bsq = 0;
+        if (bsq > 100) { bsq = 100; bsqInput.value = 100; }
+        if (bsq < 0) { bsq = 0; bsqInput.value = 0; }
+
+        const ksqShare = ksq * 0.4;
+        const bsqShare = bsq * 0.6;
+        finalScore = ksqShare + bsqShare;
+
+        if (ksqBadge) {
+          ksqBadge.textContent = `Pay (40%): ${ksqShare.toFixed(1)} bal`;
+          ksqBadge.classList.remove('hidden');
+        }
+        if (bsqBadge) {
+          bsqBadge.textContent = `Pay (60%): ${bsqShare.toFixed(1)} bal`;
+          bsqBadge.classList.remove('hidden');
+        }
+        if (detailsText) {
+          detailsText.textContent = `KSQ (40%): ${ksqShare.toFixed(1)} bal + BSQ (60%): ${bsqShare.toFixed(1)} bal`;
+        }
+      } else {
+        if (ksqBadge) {
+          ksqBadge.textContent = `Pay (100%): ${ksq.toFixed(1)} bal`;
+          ksqBadge.classList.remove('hidden');
+        }
+        if (bsqBadge) bsqBadge.classList.add('hidden');
+        if (detailsText) {
+          detailsText.textContent = `Fənn üzrə yalnız KSQ əsasında (100% pay)`;
+        }
       }
 
       finalScore = Math.round(finalScore * 10) / 10;
@@ -1469,12 +1555,30 @@
         gradeClass = "bg-amber-500/20 text-amber-300 border border-amber-500/30";
       }
 
-      const resBox = document.getElementById('calcResult');
       resBox.classList.remove('hidden');
       document.getElementById('calcFinalScore').textContent = finalScore + " Bal";
       const badgeEl = document.getElementById('calcGradeBadge');
       badgeEl.textContent = "Qiymət: " + gradeText;
-      badgeEl.className = "inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-2 " + gradeClass;
+      badgeEl.className = "inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-1 " + gradeClass;
+    }
+
+    function calculateGrade(e) {
+      if (e) e.preventDefault();
+      liveCalculateGrade();
+    }
+
+    function resetCalculator() {
+      const form = document.getElementById('gradeCalcForm');
+      if (form) form.reset();
+      document.getElementById('hasBsq').checked = true;
+      document.getElementById('bsqField').classList.remove('hidden');
+      const ksqBadge = document.getElementById('ksqShareBadge');
+      const bsqBadge = document.getElementById('bsqShareBadge');
+      if (ksqBadge) ksqBadge.classList.add('hidden');
+      if (bsqBadge) bsqBadge.classList.add('hidden');
+      document.getElementById('calcResult').classList.add('hidden');
+      const ksqEl = document.getElementById('calcKsq');
+      if (ksqEl) ksqEl.focus();
     }
 
     // Schedule Modal Tabs & Timetable
@@ -1545,11 +1649,18 @@
       `).join('');
     }
 
-    // Formula Cheat Sheet Modal
+    // Formula Cheat Sheet Modal (Optimized with live search & 1-click copy)
     const formulaModal = document.getElementById('formulaModal');
+    let currentFormulaCat = 'all';
+    let currentFormulaQuery = '';
+
     function openFormulaModal() {
       formulaModal.showModal();
-      renderFormulas('all');
+      const sInput = document.getElementById('formulaSearchInput');
+      if (sInput) sInput.value = '';
+      currentFormulaQuery = '';
+      currentFormulaCat = 'all';
+      renderFormulas();
     }
     function closeFormulaModal() { formulaModal.close(); }
     formulaModal.addEventListener('click', (e) => { if (e.target === formulaModal) closeFormulaModal(); });
@@ -1568,29 +1679,91 @@
     ];
 
     function filterFormulas(cat) {
+      currentFormulaCat = cat;
       document.querySelectorAll('.formula-tab').forEach(b => {
         b.className = "formula-tab px-3 py-1.5 rounded-xl font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0";
       });
-      event.target.className = "formula-tab px-3 py-1.5 rounded-xl font-semibold bg-emerald-600 text-white shrink-0";
-      renderFormulas(cat);
+      if (window.event && window.event.target) {
+        window.event.target.className = "formula-tab px-3 py-1.5 rounded-xl font-semibold bg-emerald-600 text-white shrink-0";
+      }
+      renderFormulas();
     }
 
-    function renderFormulas(cat) {
-      const container = document.getElementById('formulaContainer');
-      const filtered = cat === 'all' ? formulasData : formulasData.filter(f => f.cat === cat);
+    function searchFormulas(query) {
+      currentFormulaQuery = (query || '').trim().toLowerCase();
+      const clearBtn = document.getElementById('clearFormulaSearchBtn');
+      if (clearBtn) {
+        if (currentFormulaQuery) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      renderFormulas();
+    }
 
-      container.innerHTML = filtered.map(f => `
-        <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition">
-          <div class="flex items-center justify-between mb-1">
-            <span class="font-bold text-slate-200">${f.title}</span>
-            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 ${f.cat === 'math' ? 'text-blue-400' : f.cat === 'phys' ? 'text-amber-400' : 'text-purple-400'}">${f.cat === 'math' ? 'Riyaziyyat' : f.cat === 'phys' ? 'Fizika' : 'Kimya'}</span>
+    function clearFormulaSearch() {
+      const input = document.getElementById('formulaSearchInput');
+      if (input) input.value = '';
+      searchFormulas('');
+      if (input) input.focus();
+    }
+
+    function copyFormula(formulaText, btnEl) {
+      navigator.clipboard.writeText(formulaText).then(() => {
+        const originalHtml = btnEl.innerHTML;
+        btnEl.innerHTML = '<span class="text-emerald-400 font-bold text-[10px] px-1">Kopyalandı! ✓</span>';
+        setTimeout(() => {
+          btnEl.innerHTML = originalHtml;
+        }, 1800);
+      });
+    }
+
+    function renderFormulas() {
+      const container = document.getElementById('formulaContainer');
+      let filtered = currentFormulaCat === 'all' ? formulasData : formulasData.filter(f => f.cat === currentFormulaCat);
+
+      if (currentFormulaQuery) {
+        filtered = filtered.filter(f =>
+          f.title.toLowerCase().includes(currentFormulaQuery) ||
+          f.formula.toLowerCase().includes(currentFormulaQuery) ||
+          f.desc.toLowerCase().includes(currentFormulaQuery) ||
+          (f.cat === 'math' && 'riyaziyyat'.includes(currentFormulaQuery)) ||
+          (f.cat === 'phys' && 'fizika'.includes(currentFormulaQuery)) ||
+          (f.cat === 'chem' && 'kimya'.includes(currentFormulaQuery))
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full p-8 rounded-2xl bg-slate-950 border border-slate-800 text-center text-slate-400 space-y-2">
+            <i data-lucide="search-x" class="w-8 h-8 text-slate-600 mx-auto"></i>
+            <div class="font-semibold text-slate-300">Axtarışa uyğun düstur tapılmadı</div>
+            <p class="text-xs text-slate-500">Açar sözü dəyişərək yenidən yoxlayın və ya kateqoriyanı "Bütün" seçin.</p>
           </div>
-          <div class="p-2 rounded-xl bg-slate-900 font-mono text-emerald-300 font-bold text-sm tracking-wide mb-1 border border-slate-800/80">
-            ${f.formula}
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(f => {
+        const catLabel = f.cat === 'math' ? 'Riyaziyyat' : f.cat === 'phys' ? 'Fizika' : 'Kimya';
+        const catColor = f.cat === 'math' ? 'text-blue-400' : f.cat === 'phys' ? 'text-amber-400' : 'text-purple-400';
+        const safeFormula = f.formula.replace(/"/g, '&quot;');
+        return `
+          <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/40 transition group">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold text-slate-200 text-xs">${f.title}</span>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 ${catColor}">${catLabel}</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 font-mono text-emerald-300 font-bold text-sm tracking-wide mb-1.5 border border-slate-800/80">
+              <span class="truncate pr-2">${f.formula}</span>
+              <button onclick="copyFormula('${safeFormula}', this)" class="shrink-0 p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition" title="Düsturu kopyala">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-normal">${f.desc}</p>
           </div>
-          <p class="text-[11px] text-slate-400 leading-normal">${f.desc}</p>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+      lucide.createIcons();
     }
 
     // Campus Modal
@@ -1614,7 +1787,7 @@
       });
     }
 
-    // Student Homework & Task Planner (LocalStorage)
+    // Student Homework & Task Planner (LocalStorage with dynamic filter badges & clear completed)
     let currentTaskFilter = 'all';
 
     function getStudentTasks() {
@@ -1662,12 +1835,30 @@
       saveStudentTasks(tasks);
     }
 
+    function clearCompletedTasks() {
+      let tasks = getStudentTasks();
+      tasks = tasks.filter(t => !t.completed);
+      saveStudentTasks(tasks);
+    }
+
     function filterTasks(f) {
       currentTaskFilter = f;
-      document.querySelectorAll('.task-filter-btn').forEach(btn => {
-        btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white";
+      const filterBtns = {
+        all: document.getElementById('taskFilterAll'),
+        active: document.getElementById('taskFilterActive'),
+        completed: document.getElementById('taskFilterCompleted')
+      };
+
+      Object.keys(filterBtns).forEach(key => {
+        const btn = filterBtns[key];
+        if (btn) {
+          if (key === f) {
+            btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold flex items-center gap-1.5";
+          } else {
+            btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5";
+          }
+        }
       });
-      event.target.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold";
       renderStudentTasks();
     }
 
@@ -1676,12 +1867,30 @@
       let tasks = getStudentTasks();
 
       // Seed initial example tasks if empty
-      if (tasks.length === 0) {
+      if (tasks.length === 0 && !localStorage.getItem('tdv_student_tasks_initialized')) {
         tasks = [
           { id: 1, subject: 'Riyaziyyat', text: 'Səh 52, çalışma 14-20 (Kvadrat tənliklər)', due: 'Sabah', completed: false },
           { id: 2, subject: 'Fizika', text: 'Nyuton qanunları üzrə sınaq testinə hazırlaşmaq', due: 'Cümə axşamı', completed: true }
         ];
         localStorage.setItem('tdv_student_tasks', JSON.stringify(tasks));
+        localStorage.setItem('tdv_student_tasks_initialized', 'true');
+      }
+
+      const allCount = tasks.length;
+      const activeCount = tasks.filter(t => !t.completed).length;
+      const completedCount = tasks.filter(t => t.completed).length;
+
+      const countAllEl = document.getElementById('taskCountAll');
+      const countActiveEl = document.getElementById('taskCountActive');
+      const countCompletedEl = document.getElementById('taskCountCompleted');
+      const clearBtn = document.getElementById('clearCompletedTasksBtn');
+
+      if (countAllEl) countAllEl.textContent = allCount;
+      if (countActiveEl) countActiveEl.textContent = activeCount;
+      if (countCompletedEl) countCompletedEl.textContent = completedCount;
+      if (clearBtn) {
+        if (completedCount > 0) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
       }
 
       let filtered = tasks;
@@ -1689,7 +1898,10 @@
       if (currentTaskFilter === 'completed') filtered = tasks.filter(t => t.completed);
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center text-slate-500">Heç bir tapşırıq yoxdur.</div>`;
+        const emptyMsg = currentTaskFilter === 'completed' ? 'Heç bir tamamlanmış tapşırıq yoxdur.' :
+                         currentTaskFilter === 'active' ? 'Bütün tapşırıqlar tamamlanıb! 🎉' :
+                         'Hələ heç bir tapşırıq əlavə edilməyib.';
+        container.innerHTML = `<div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center text-slate-500 font-medium">${emptyMsg}</div>`;
         return;
       }
 
@@ -1705,7 +1917,7 @@
               <div class="text-xs font-medium text-slate-200 mt-1 truncate ${t.completed ? 'line-through text-slate-500' : ''}">${t.text}</div>
             </div>
           </div>
-          <button onclick="deleteTask(${t.id})" class="text-slate-500 hover:text-rose-400 p-1 rounded-lg transition" title="Sil">
+          <button onclick="deleteTask(${t.id})" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg transition" title="Sil">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         </div>
@@ -1763,29 +1975,34 @@
       { name: 'TDV Games', desc: 'İnteraktiv oyunlar (Hazırlanır)', disabled: true, icon: '🎮' }
     ];
 
+    let searchSelectedIndex = -1;
+    let currentSearchResults = [];
+
     function handleSearch(query) {
       const resultsContainer = document.getElementById('searchResults');
       const q = query.trim().toLowerCase();
 
-      const filtered = q ? searchableItems.filter(item => 
+      currentSearchResults = q ? searchableItems.filter(item => 
         item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)
       ) : searchableItems;
 
-      resultsContainer.innerHTML = filtered.map(item => `
-        <div onclick="${
-          item.action === 'calc' ? 'closeSearchModal(); openCalcModal();' :
-          item.action === 'schedule' ? 'closeSearchModal(); openScheduleModal();' :
-          item.action === 'formula' ? 'closeSearchModal(); openFormulaModal();' :
-          item.action === 'campus' ? 'closeSearchModal(); openCampusModal();' :
-          item.action === 'share' ? 'closeSearchModal(); openShareModal();' :
-          item.action === 'chime' ? 'closeSearchModal(); playBellChime();' :
-          item.action === 'theme' ? 'closeSearchModal(); toggleTheme();' :
-          item.disabled ? '' : 'window.open(\'' + item.url + '\', \'_blank\');'
-        }" class="flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group">
+      searchSelectedIndex = currentSearchResults.length > 0 ? 0 : -1;
+
+      if (currentSearchResults.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="p-6 text-center text-slate-500 text-xs">
+            Axtarışa uyğun heç bir alət və ya səhifə tapılmadı.
+          </div>
+        `;
+        return;
+      }
+
+      resultsContainer.innerHTML = currentSearchResults.map((item, idx) => `
+        <div id="search-item-${idx}" onclick="executeSearchItem(${idx})" class="search-result-item flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group ${idx === 0 ? 'bg-slate-800/70 border border-blue-500/40' : 'border border-transparent'}">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base shrink-0">${item.icon}</div>
             <div>
-              <div class="font-bold text-white group-hover:text-blue-400">${item.name}</div>
+              <div class="font-bold text-white group-hover:text-blue-400 text-xs">${item.name}</div>
               <div class="text-slate-400 text-[11px]">${item.desc}</div>
             </div>
           </div>
@@ -1793,6 +2010,57 @@
         </div>
       `).join('');
       lucide.createIcons();
+    }
+
+    function executeSearchItem(idx) {
+      if (idx < 0 || idx >= currentSearchResults.length) return;
+      const item = currentSearchResults[idx];
+      if (item.disabled) return;
+
+      closeSearchModal();
+      if (item.action === 'calc') openCalcModal();
+      else if (item.action === 'schedule') openScheduleModal();
+      else if (item.action === 'formula') openFormulaModal();
+      else if (item.action === 'campus') openCampusModal();
+      else if (item.action === 'share') openShareModal();
+      else if (item.action === 'chime') playBellChime();
+      else if (item.action === 'theme') toggleTheme();
+      else if (item.url) window.open(item.url, '_blank');
+    }
+
+    function updateSearchSelection() {
+      document.querySelectorAll('.search-result-item').forEach((el, idx) => {
+        if (idx === searchSelectedIndex) {
+          el.className = "search-result-item flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 cursor-pointer transition group bg-slate-800/90 border border-blue-500/50 shadow-sm";
+          el.scrollIntoView({ block: 'nearest' });
+        } else {
+          el.className = "search-result-item flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 cursor-pointer transition group border border-transparent";
+        }
+      });
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (currentSearchResults.length > 0) {
+            searchSelectedIndex = (searchSelectedIndex + 1) % currentSearchResults.length;
+            updateSearchSelection();
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (currentSearchResults.length > 0) {
+            searchSelectedIndex = (searchSelectedIndex - 1 + currentSearchResults.length) % currentSearchResults.length;
+            updateSearchSelection();
+          }
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          executeSearchItem(searchSelectedIndex);
+        } else if (e.key === 'Escape') {
+          closeSearchModal();
+        }
+      });
     }
 
     // Idea Modal Handling
