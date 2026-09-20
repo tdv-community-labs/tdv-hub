@@ -1,0 +1,11 @@
+{
+  "name": "tdv-hub",
+  "version": "1.0.0",
+  "description": "TDV Community Labs - Central Digital Campus Portal",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["tdv", "education", "sports", "portal", "hub"],
+  "author": "TDV Community Labs",
+  "license": "MIT"
+}
