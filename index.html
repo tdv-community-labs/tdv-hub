@@ -9,6 +9,11 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233B82F6'/%3E%3Cstop offset='100%25' stop-color='%2322C55E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23080C16'/%3E%3Cpath d='M32 14 L48 24 L48 40 L32 50 L16 40 L16 24 Z' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%233B82F6'/%3E%3C/svg%3E">
 
+  <!-- Cybersecurity: Content Security Policy (CSP) & Hardening Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -1896,6 +1901,13 @@
       });
     }
 
+    // Anti-XSS HTML Sanitizer Utility
+    function escapeHTML(str) {
+      return String(str || '').replace(/[&<>'"]/g, function(tag) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[tag] || tag;
+      });
+    }
+
     // Student Homework & Task Planner (LocalStorage with dynamic filter badges & clear completed)
     let currentTaskFilter = 'all';
 
@@ -1910,9 +1922,9 @@
 
     function addStudentTask(e) {
       e.preventDefault();
-      const subject = document.getElementById('taskSubject').value;
-      const text = document.getElementById('taskText').value.trim();
-      const due = document.getElementById('taskDue').value.trim() || 'Bu həftə';
+      const subject = (document.getElementById('taskSubject').value || 'Ümumi').trim().slice(0, 30);
+      const text = document.getElementById('taskText').value.trim().slice(0, 200);
+      const due = (document.getElementById('taskDue').value.trim() || 'Bu həftə').slice(0, 50);
       if (!text) return;
 
       const tasks = getStudentTasks();
@@ -2020,10 +2032,10 @@
             <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete(${t.id})" class="rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-0 cursor-pointer w-4 h-4">
             <div class="overflow-hidden truncate">
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">${t.subject}</span>
-                <span class="text-[10px] text-amber-400/90 font-mono">${t.due}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">${escapeHTML(t.subject)}</span>
+                <span class="text-[10px] text-amber-400/90 font-mono">${escapeHTML(t.due)}</span>
               </div>
-              <div class="text-xs font-medium text-slate-200 mt-1 truncate ${t.completed ? 'line-through text-slate-500' : ''}">${t.text}</div>
+              <div class="text-xs font-medium text-slate-200 mt-1 truncate ${t.completed ? 'line-through text-slate-500' : ''}">${escapeHTML(t.text)}</div>
             </div>
           </div>
           <button onclick="deleteTask(${t.id})" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg transition" title="Sil">
@@ -2200,8 +2212,8 @@
         return;
       }
 
-      const author = document.getElementById('ideaAuthor').value.trim();
-      const text = document.getElementById('ideaText').value.trim();
+      const author = escapeHTML(document.getElementById('ideaAuthor').value.trim().slice(0, 50));
+      const text = escapeHTML(document.getElementById('ideaText').value.trim().slice(0, 300));
       if (!author || !text) return;
 
       lastIdeaSubmitTime = now;
