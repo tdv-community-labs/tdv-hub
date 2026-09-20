@@ -1890,6 +1890,72 @@
     function closeShareModal() { shareModal.close(); }
     shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); });
 
+    // High-Reliability Clipboard Copy (Modern Navigator + Fallback textarea)
+    function copyTextToClipboard(text, callback) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (callback) callback();
+        }).catch(() => {
+          fallbackCopyText(text, callback);
+        });
+      } else {
+        fallbackCopyText(text, callback);
+      }
+    }
+
+    function fallbackCopyText(text, callback) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+        if (callback) callback();
+      } catch (err) {
+        console.warn('Clipboard copy failed:', err);
+      }
+    }
+
+    // Web Audio API School Bell Chime Synthesizer (Zero-latency offline bell sound)
+    function playBellChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+
+        // Melodic School Bell chime: C5 (523Hz), E5 (659Hz), G5 (784Hz), C6 (1046Hz)
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const startTime = ctx.currentTime + (idx * 0.32);
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0.001, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.3, startTime + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.85);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + 0.9);
+        });
+      } catch (err) {
+        console.debug('Audio chime playback error:', err);
+      }
+    }
+
     function copyShareLink() {
       const url = window.location.href.split('#')[0] || "https://tdv-community-labs.github.io/tdv-hub/";
       copyTextToClipboard(url, () => {
@@ -2228,6 +2294,15 @@
         const countEl = document.getElementById('ideaCharCount');
         if (countEl) countEl.textContent = '0 / 300';
       }, 1400);
+    }
+
+    // Register Service Worker for Offline PWA Support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.debug('ServiceWorker registration skipped:', err);
+        });
+      });
     }
   </script>
 </body>
