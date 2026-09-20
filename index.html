@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TDV Community Labs — Rəqəmsal Kampus Portalı</title>
-  <meta name="description" content="TDV Community Labs — Məktəb icmasının vahid rəqəmsal ekosistemi, tədris mərkəzi, idman turnirləri və innovativ layihələr.">
+  <meta name="description" content="TDV Community Labs — Məktəb icmasının vahid rəqəmsal ekosistemi: tədris portalı, idman turniri, canlı zəng cədvəli və KSQ/BSQ bal kalkulyatoru.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
@@ -17,6 +17,7 @@
         extend: {
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
             brand: {
@@ -77,33 +78,40 @@
       50% { opacity: 0.35; transform: scale(0.8); }
     }
     dialog::backdrop {
-      background: rgba(4, 7, 15, 0.8);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(4, 7, 15, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .scrollbar-none::-webkit-scrollbar {
-      display: none;
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 300px;
+      transition: max-height 0.4s ease-in;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white antialiased">
 
-  <!-- Top Announcement Bar (Campus Ticker) -->
-  <aside aria-label="Campus announcements" class="bg-gradient-to-r from-blue-950/60 via-slate-900/80 to-emerald-950/60 border-b border-slate-800/80 py-2 px-4 text-xs">
+  <!-- Top Campus Ticker -->
+  <aside aria-label="Campus announcements" class="bg-gradient-to-r from-blue-950/70 via-slate-900/80 to-emerald-950/70 border-b border-slate-800/80 py-2 px-4 text-xs sticky top-0 z-50">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
       <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-[10px] tracking-wide uppercase shrink-0">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-[10px] tracking-wide uppercase shrink-0">
           <i data-lucide="bell" class="w-3 h-3"></i>
           Elan
         </span>
-        <span id="tickerText" class="text-slate-300 text-xs truncate transition-opacity duration-300">
+        <span id="tickerText" class="text-slate-200 text-xs truncate transition-opacity duration-300">
           ⚽ TDV Minifutbol turnirində növbəti tur oyunlarının canlı nəticələri yeniləndi!
         </span>
       </div>
       <div class="hidden sm:flex items-center gap-4 text-slate-400 shrink-0 text-[11px]">
-        <span class="flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span>
-          Bütün Portallar Aktivdir
+        <!-- Live Current Period Status Indicator -->
+        <span id="liveBellBadge" class="flex items-center gap-1.5 text-emerald-400 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+          <span id="liveBellText">Dərs rejimi yoxlanılır...</span>
         </span>
         <span>•</span>
         <button onclick="openSearchModal()" class="hover:text-white flex items-center gap-1 transition">
@@ -115,7 +123,7 @@
   </aside>
 
   <!-- Main Navigation Header -->
-  <header class="w-full border-b border-slate-800/80 bg-slate-950/50 backdrop-blur-md sticky top-0 z-40">
+  <header class="w-full border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md z-40">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <a href="#" class="flex items-center gap-3 group">
@@ -131,11 +139,23 @@
         </a>
       </div>
 
-      <!-- Quick Actions -->
+      <!-- Navigation & Tools Menu -->
       <div class="flex items-center gap-2.5">
+        <!-- Quick Grade Calculator Trigger -->
+        <button onclick="openCalcModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-2 rounded-xl border border-amber-500/30 transition shadow-sm">
+          <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Bal Kalkulyatoru</span>
+        </button>
+
+        <!-- Bell Schedule Modal Trigger -->
+        <button onclick="openScheduleModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-2 rounded-xl border border-blue-500/30 transition shadow-sm">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Zəng Cədvəli</span>
+        </button>
+
         <button onclick="openSearchModal()" class="hidden md:inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white bg-slate-900/80 hover:bg-slate-800 px-3 py-2 rounded-xl border border-slate-800 hover:border-slate-700 transition">
           <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400"></i>
-          <span>Layihələrdə cəld axtarış...</span>
+          <span>Cəld axtarış...</span>
           <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400">Ctrl K</kbd>
         </button>
 
@@ -160,21 +180,21 @@
         <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">İnnovativ Rəqəmsal Mərkəz</span>
       </h1>
       <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-8 font-normal">
-        TDV Community Labs — məktəbimizin tədris resursları, idman turnirləri və gələcək proqramlaşdırma layihələrini tək bir müasir platformada birləşdirir.
+        TDV Community Labs — tədris materialları, minifutbol çempionatı, bal hesablama və gələcək layihələri tək bir müasir platformada təqdim edir.
       </p>
 
-      <!-- Live Search Bar Trigger (Mobile / Prominent) -->
+      <!-- Interactive Search Trigger -->
       <div class="max-w-md mx-auto">
         <div onclick="openSearchModal()" class="flex items-center gap-3 bg-slate-900/90 border border-slate-700/80 hover:border-blue-500/60 rounded-2xl px-4 py-3 cursor-pointer shadow-lg shadow-black/40 transition group">
           <i data-lucide="search" class="w-4 h-4 text-blue-400 group-hover:scale-110 transition"></i>
-          <span class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition text-left flex-grow">Fənn, imtahan və ya futbol matçı axtarın...</span>
+          <span class="text-xs sm:text-sm text-slate-400 group-hover:text-slate-200 transition text-left flex-grow">Fənn, sınaq və ya futbol matçı axtarın...</span>
           <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-[11px] font-mono text-slate-400 border border-slate-700">Axtar</span>
         </div>
       </div>
     </div>
 
     <!-- Live Metric Counters Bar -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-12">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10">
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
         <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-1">100+</div>
         <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Elektron Dərs & Resurs</div>
@@ -184,7 +204,7 @@
         <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Turnir Komandası</div>
       </div>
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
-        <div class="text-2xl sm:text-3xl font-extrabold text-indigo-400 mb-1">10+</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mb-1">10+</div>
         <div class="text-[11px] sm:text-xs text-slate-400 font-medium">BSQ / KSQ İmtahanı</div>
       </div>
       <div class="glass-card rounded-2xl p-4 text-center border-slate-800/80">
@@ -194,7 +214,7 @@
     </div>
 
     <!-- 3 Core Project Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-14">
       
       <!-- 1. TDV E-School Card (Green Theme) -->
       <div class="glass-card glass-card-green rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
@@ -218,13 +238,11 @@
             Məktəb tədris portalı, bütün fənlər üzrə 100+ elektron dərs vəsaiti, KSQ/BSQ sınaq arxivi və şagirdlər üçün 1v1 PvP bilik yarışı platforması.
           </p>
 
-          <!-- Subject Tags -->
           <div class="flex flex-wrap gap-1.5 mb-6">
             <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-[11px] border border-emerald-500/20 font-medium">#Riyaziyyat</span>
             <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-[11px] border border-emerald-500/20 font-medium">#Fizika</span>
             <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-[11px] border border-emerald-500/20 font-medium">#Kimya</span>
             <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-[11px] border border-emerald-500/20 font-medium">#İnformatika</span>
-            <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-300 text-[11px] border border-emerald-500/20 font-medium">#Biologiya</span>
           </div>
         </div>
 
@@ -258,10 +276,8 @@
             Məktəb daxili minifutbol turnirinin canlı oyun nəticələri, real-vaxt xal cədvəlləri, qrup mərhələləri, bombardirlər və Sofascore tipli oyunçu statistikası.
           </p>
 
-          <!-- Sports Tags -->
           <div class="flex flex-wrap gap-1.5 mb-6">
             <span class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-300 text-[11px] border border-blue-500/20 font-medium">#CanlıNəticələr</span>
-            <span class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-300 text-[11px] border border-blue-500/20 font-medium">#QrupMərhələsi</span>
             <span class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-300 text-[11px] border border-blue-500/20 font-medium">#Bombardirlər</span>
             <span class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-300 text-[11px] border border-blue-500/20 font-medium">#XalCədvəli</span>
           </div>
@@ -297,22 +313,18 @@
             Məktəb şagirdlərinin hazırlayacağı təhsil yönümlü interaktiv oyunlar, məntiq yarışları və intellektual viktorinalar üçün ayrılmış xüsusi zona.
           </p>
 
-          <!-- Future Tags -->
           <div class="flex flex-wrap gap-1.5 mb-6">
             <span class="px-2 py-0.5 rounded-lg bg-slate-800/70 text-slate-400 text-[11px] border border-slate-700/40 font-medium">#MəntiqOyunları</span>
             <span class="px-2 py-0.5 rounded-lg bg-slate-800/70 text-slate-400 text-[11px] border border-slate-700/40 font-medium">#Viktorina</span>
-            <span class="px-2 py-0.5 rounded-lg bg-slate-800/70 text-slate-400 text-[11px] border border-slate-700/40 font-medium">#ŞagirdLayihələri</span>
           </div>
         </div>
 
         <div class="space-y-2.5">
-          <!-- NO HYPERLINK AS SPECIFIED -->
           <div class="w-full inline-flex items-center justify-center gap-2 bg-slate-800/50 text-slate-400 text-sm font-semibold py-3 px-4 rounded-2xl border border-slate-700/40 cursor-not-allowed select-none">
             <i data-lucide="clock" class="w-4 h-4 text-purple-400"></i>
             <span>Hazırlanır — Tezliklə</span>
           </div>
           
-          <!-- Interactive Suggestion Trigger -->
           <button onclick="openIdeaModal()" class="w-full inline-flex items-center justify-center gap-1.5 text-xs text-purple-400 hover:text-purple-300 py-1.5 font-medium transition">
             <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
             <span>Oyun ideyan var? Təklif et →</span>
@@ -322,40 +334,159 @@
 
     </div>
 
-    <!-- Community Mission Banner -->
-    <div class="mt-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-slate-900/90 border border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-black/40">
-      <div class="space-y-2 text-center md:text-left max-w-xl">
-        <h3 class="text-lg sm:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-          <span>🏛️ Məktəb İcması və Rəqəmsal İnkişaf</span>
-        </h3>
-        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
-          TDV Community Labs bütün şagirdlərin təhsil bərabərliyi, idman həmrəyliyi və rəqəmsal bacarıqlarını inkişaf etdirmək üçün müstəqil olaraq qurulmuşdur.
-        </p>
+    <!-- Quick Tools Interactive Grid: Bell Schedule & Grade Calculator -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+      
+      <!-- Tool 1: Live Bell Schedule Card -->
+      <div class="glass-card rounded-3xl p-6 sm:p-7 border-slate-800/90 relative overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">Zəng Cədvəli & Dərs Rejimi</h3>
+              <p class="text-xs text-slate-400">Cari zəng statusu və tənəffüslər</p>
+            </div>
+          </div>
+          <button onclick="openScheduleModal()" class="text-xs font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 px-3 py-1.5 rounded-xl border border-blue-500/20 transition">
+            Tam Cədvəl
+          </button>
+        </div>
+
+        <div id="bellTrackerBanner" class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 mb-4 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold tracking-wide">Hazırkı Status:</div>
+            <div id="bellCurrentName" class="text-sm font-bold text-white mt-0.5">Yoxlanılır...</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] text-slate-400 uppercase font-semibold tracking-wide">Qalan Vaxt:</div>
+            <div id="bellRemainingTime" class="text-sm font-mono font-bold text-emerald-400 mt-0.5">--:--</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="block text-[10px] text-slate-500">1-ci Dərs</span>
+            <span class="font-bold text-slate-300 font-mono">08:30 - 09:15</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="block text-[10px] text-slate-500">Böyük Tənəffüs</span>
+            <span class="font-bold text-amber-400 font-mono">11:05 - 11:20</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <span class="block text-[10px] text-slate-500">Dərslərin Sonu</span>
+            <span class="font-bold text-slate-300 font-mono">14:50</span>
+          </div>
+        </div>
       </div>
-      <div class="flex items-center gap-3 shrink-0">
-        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700 transition flex items-center gap-2">
-          <i data-lucide="code-2" class="w-4 h-4 text-blue-400"></i>
-          <span>Açıq Kod Bazası</span>
-        </a>
+
+      <!-- Tool 2: Grade Calculator Card -->
+      <div class="glass-card rounded-3xl p-6 sm:p-7 border-slate-800/90 relative overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+              <i data-lucide="calculator" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">KSQ və BSQ Bal Kalkulyatoru</h3>
+              <p class="text-xs text-slate-400">Yarımillik yekun qiymətinizi cəld hesablayın</p>
+            </div>
+          </div>
+          <button onclick="openCalcModal()" class="text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/20 transition">
+            Kalkulyatoru Aç
+          </button>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400">Hesablama Formulu:</span>
+            <span class="font-mono text-slate-300 bg-slate-800 px-2 py-0.5 rounded">KSQ × 40% + BSQ × 60%</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2 text-center text-xs">
+            <div class="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300">
+              <div class="text-[10px] text-rose-400">0 - 30</div>
+              <div class="font-black text-sm">"2"</div>
+            </div>
+            <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
+              <div class="text-[10px] text-amber-400">31 - 60</div>
+              <div class="font-black text-sm">"3"</div>
+            </div>
+            <div class="p-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300">
+              <div class="text-[10px] text-blue-400">61 - 80</div>
+              <div class="font-black text-sm">"4"</div>
+            </div>
+            <div class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+              <div class="text-[10px] text-emerald-400">81 - 100</div>
+              <div class="font-black text-sm">"5"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive FAQ Section -->
+    <div class="max-w-3xl mx-auto mb-14">
+      <div class="text-center mb-8">
+        <h3 class="text-2xl font-bold text-white mb-2">Tez-tez Verilən Suallar</h3>
+        <p class="text-xs sm:text-sm text-slate-400">Portallar və sistemdən istifadə haqqında əsas məlumatlar</p>
+      </div>
+
+      <div class="space-y-3">
+        <!-- FAQ 1 -->
+        <div class="glass-card rounded-2xl border-slate-800/80 overflow-hidden">
+          <button onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-white hover:text-blue-400 transition">
+            <span>TDV E-School-da KSQ və BSQ sınaqlarını necə işləyə bilərəm?</span>
+            <i id="faqIcon-1" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="faqContent-1" class="accordion-content px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            E-School portalına daxil olduqdan sonra "İmtahan Arxivi" bölməsinə keçin. İstədiyiniz fənni və sinfi seçərək vaxtlı və ya sərbəst rejimdə sınaq testlərini işləyə və dərhal nəticənizi görə bilərsiniz.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="glass-card rounded-2xl border-slate-800/80 overflow-hidden">
+          <button onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-white hover:text-blue-400 transition">
+            <span>Minifutbol turnirinin oyun nəticələri nə vaxt yenilənir?</span>
+            <i id="faqIcon-2" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="faqContent-2" class="accordion-content px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Hər oyun başa çatdıqdan dərhal sonra hesab və qol vuran oyunçular Firestore bulud bazasında qeydə alınır və real-vaxt rejimində TDV Sports cədvəlində əks olunur.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="glass-card rounded-2xl border-slate-800/80 overflow-hidden">
+          <button onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-white hover:text-blue-400 transition">
+            <span>TDV Games bölməsində şagirdlərin hazırladığı oyunlar yerləşdirilə bilərmi?</span>
+            <i id="faqIcon-3" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="faqContent-3" class="accordion-content px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Bəli! Bu bölmə məhz şagirdlərin proqramlaşdırdığı veb oyunlar, intellektual viktorinalar və məntiq yarışları üçün nəzərdə tutulub. "Oyun ideyanı təklif et" düyməsi ilə öz layihənizi komandaya təqdim edə bilərsiniz.
+          </div>
+        </div>
       </div>
     </div>
 
   </main>
 
   <!-- Footer -->
-  <footer class="w-full border-t border-slate-800/60 py-8 bg-slate-950/80 mt-10">
+  <footer class="w-full border-t border-slate-800/60 py-8 bg-slate-950/80">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
       <div class="flex items-center gap-2">
         <span class="font-bold text-slate-300">TDV Community Labs</span>
         <span>•</span>
-        <span>© 2026 Bütün hüquqlar qorunur.</span>
+        <span>© 2026 Məktəb İcması Portalı</span>
       </div>
       <div class="flex items-center gap-5">
         <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub Təşkilatı</a>
         <span>•</span>
-        <button onclick="openIdeaModal()" class="hover:text-white transition">İdeya Göndər</button>
+        <button onclick="openCalcModal()" class="hover:text-white transition">Bal Kalkulyatoru</button>
         <span>•</span>
-        <a href="mailto:orxannamazovld@gmail.com" class="hover:text-white transition">Əks-əlaqə və Dəstək</a>
+        <button onclick="openScheduleModal()" class="hover:text-white transition">Zəng Cədvəli</button>
+        <span>•</span>
+        <a href="mailto:orxannamazovld@gmail.com" class="hover:text-white transition">Əks-əlaqə</a>
       </div>
     </div>
   </footer>
@@ -364,48 +495,133 @@
   <dialog id="searchModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-0 shadow-2xl max-w-lg w-full m-auto overflow-hidden">
     <div class="p-4 border-b border-slate-800 flex items-center gap-3">
       <i data-lucide="search" class="w-5 h-5 text-blue-400 shrink-0"></i>
-      <input id="searchInput" type="text" placeholder="Layihə, fənn və ya bölmə axtarın..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-medium">
+      <input id="searchInput" type="text" placeholder="Layihə, fənn, sınaq və ya alət axtarın..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-medium">
       <button onclick="closeSearchModal()" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded-lg bg-slate-800 border border-slate-700">ESC</button>
     </div>
     
-    <div id="searchResults" class="p-3 max-h-80 overflow-y-auto space-y-1.5 text-xs">
-      <!-- Default suggestions -->
-      <a href="https://tdv-e-school.vercel.app/" target="_blank" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition group">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">🎓</div>
-          <div>
-            <div class="font-bold text-white group-hover:text-emerald-300 transition">TDV E-School</div>
-            <div class="text-slate-400 text-[11px]">Dərsliklər, KSQ/BSQ sınaqları və PvP</div>
-          </div>
-        </div>
-        <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition"></i>
-      </a>
+    <div id="searchResults" class="p-3 max-h-80 overflow-y-auto space-y-1.5 text-xs"></div>
+  </dialog>
 
-      <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition group">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">⚽</div>
-          <div>
-            <div class="font-bold text-white group-hover:text-blue-300 transition">TDV Sports — Minifutbol</div>
-            <div class="text-slate-400 text-[11px]">Canlı oyun nəticələri və xal cədvəli</div>
-          </div>
+  <!-- ================= DIALOG 2: GRADE CALCULATOR (KSQ & BSQ) ================= -->
+  <dialog id="calcModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-md w-full m-auto">
+    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+          <i data-lucide="calculator" class="w-5 h-5"></i>
         </div>
-        <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition"></i>
-      </a>
+        <div>
+          <h3 class="font-bold text-white text-base">KSQ və BSQ Bal Hesablayıcı</h3>
+          <p class="text-[11px] text-slate-400">Yarımillik yekun balı və qiyməti hesablayın</p>
+        </div>
+      </div>
+      <button onclick="closeCalcModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
 
-      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/30 opacity-70">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">🎮</div>
-          <div>
-            <div class="font-bold text-slate-300">TDV Games</div>
-            <div class="text-slate-500 text-[11px]">Hazırlıq mərhələsindədir (Tezliklə)</div>
-          </div>
+    <form onsubmit="calculateGrade(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block text-slate-300 font-semibold mb-1">KSQ Ballarının Ortalaması (0 - 100):</label>
+        <input id="calcKsq" type="number" min="0" max="100" step="0.1" required placeholder="Məs: 80" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input type="checkbox" id="hasBsq" checked onchange="toggleBsqInput(this.checked)" class="rounded bg-slate-950 border-slate-700 text-amber-500 focus:ring-0">
+        <label for="hasBsq" class="text-slate-300 select-none">Fənn üzrə BSQ imtahanı keçirilir</label>
+      </div>
+
+      <div id="bsqField">
+        <label class="block text-slate-300 font-semibold mb-1">BSQ Balı (0 - 100):</label>
+        <input id="calcBsq" type="number" min="0" max="100" step="0.1" placeholder="Məs: 85" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono">
+      </div>
+
+      <!-- Result Display -->
+      <div id="calcResult" class="hidden p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-1">
+        <div class="text-[11px] text-slate-400">Yekun Yarımillik Balınız:</div>
+        <div id="calcFinalScore" class="text-3xl font-black text-amber-400 font-mono">--</div>
+        <div id="calcGradeBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold mt-1">--</div>
+      </div>
+
+      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold transition shadow-lg shadow-amber-900/30">
+        Hesabla
+      </button>
+    </form>
+  </dialog>
+
+  <!-- ================= DIALOG 3: FULL BELL SCHEDULE MODAL ================= -->
+  <dialog id="scheduleModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-lg w-full m-auto">
+    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
+          <i data-lucide="clock" class="w-5 h-5"></i>
         </div>
-        <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-purple-300 font-mono">Rezerv</span>
+        <div>
+          <h3 class="font-bold text-white text-base">Məktəb Zəng Cədvəli</h3>
+          <p class="text-[11px] text-slate-400">Həftəiçi standart dərs və tənəffüs saatları</p>
+        </div>
+      </div>
+      <button onclick="closeScheduleModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="space-y-2 text-xs font-mono">
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">1-ci Dərs</span>
+        <span class="text-blue-400 font-bold">08:30 — 09:15</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+        <span>Tənəffüs</span>
+        <span>09:15 — 09:25 (10 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">2-ci Dərs</span>
+        <span class="text-blue-400 font-bold">09:25 — 10:10</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+        <span>Tənəffüs</span>
+        <span>10:10 — 10:20 (10 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">3-cü Dərs</span>
+        <span class="text-blue-400 font-bold">10:20 — 11:05</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px]">
+        <span class="font-sans font-bold">🍽️ Böyük Tənəffüs (Nahar)</span>
+        <span>11:05 — 11:20 (15 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">4-cü Dərs</span>
+        <span class="text-blue-400 font-bold">11:20 — 12:05</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+        <span>Tənəffüs</span>
+        <span>12:05 — 12:15 (10 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">5-ci Dərs</span>
+        <span class="text-blue-400 font-bold">12:15 — 13:00</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+        <span>Tənəffüs</span>
+        <span>13:00 — 13:10 (10 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">6-cı Dərs</span>
+        <span class="text-blue-400 font-bold">13:10 — 13:55</span>
+      </div>
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 text-[11px] text-slate-500">
+        <span>Tənəffüs</span>
+        <span>13:55 — 14:05 (10 dəq)</span>
+      </div>
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+        <span class="text-slate-300 font-sans font-semibold">7-ci Dərs (Dərslərin Sonu)</span>
+        <span class="text-emerald-400 font-bold">14:05 — 14:50</span>
       </div>
     </div>
   </dialog>
 
-  <!-- ================= DIALOG 2: GAME IDEA PROPOSAL MODAL ================= -->
+  <!-- ================= DIALOG 4: GAME IDEA MODAL ================= -->
   <dialog id="ideaModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-md w-full m-auto">
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2.5">
@@ -448,7 +664,8 @@
       "⚽ TDV Minifutbol turnirində növbəti tur oyunlarının canlı nəticələri yeniləndi!",
       "📚 TDV E-School: 10-cu sinif Riyaziyyat və Fizika BSQ imtahan sınaqları yükləndi.",
       "⚔️ E-School PvP Arenasında 1v1 bilik döyüşləri davam edir!",
-      "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün qeydiyyat tezliklə başlayacaq."
+      "🧮 KSQ və BSQ Bal Kalkulyatoru indi portala əlavə olundu — yekun qiymətinizi hesablayın!",
+      "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün təkliflər qəbul olunur."
     ];
     let tickerIndex = 0;
     setInterval(() => {
@@ -463,20 +680,153 @@
       }
     }, 4500);
 
-    // Command Palette Modal Handling
+    // Live Bell Schedule Tracker
+    const bellSchedule = [
+      { name: '1-ci Dərs', start: '08:30', end: '09:15', isClass: true },
+      { name: '1-ci Tənəffüs', start: '09:15', end: '09:25', isClass: false },
+      { name: '2-ci Dərs', start: '09:25', end: '10:10', isClass: true },
+      { name: '2-ci Tənəffüs', start: '10:10', end: '10:20', isClass: false },
+      { name: '3-cü Dərs', start: '10:20', end: '11:05', isClass: true },
+      { name: 'Böyük Tənəffüs (Nahar)', start: '11:05', end: '11:20', isClass: false },
+      { name: '4-cü Dərs', start: '11:20', end: '12:05', isClass: true },
+      { name: '4-cü Tənəffüs', start: '12:05', end: '12:15', isClass: false },
+      { name: '5-ci Dərs', start: '12:15', end: '13:00', isClass: true },
+      { name: '5-ci Tənəffüs', start: '13:00', end: '13:10', isClass: false },
+      { name: '6-cı Dərs', start: '13:10', end: '13:55', isClass: true },
+      { name: '6-cı Tənəffüs', start: '13:55', end: '14:05', isClass: false },
+      { name: '7-ci Dərs', start: '14:05', end: '14:50', isClass: true }
+    ];
+
+    function toMinutes(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function updateLiveBell() {
+      const now = new Date();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      const day = now.getDay(); // 0 = Sunday, 6 = Saturday
+
+      const badge = document.getElementById('liveBellBadge');
+      const text = document.getElementById('liveBellText');
+      const currentNameEl = document.getElementById('bellCurrentName');
+      const remainingEl = document.getElementById('bellRemainingTime');
+
+      if (day === 0 || day === 6) {
+        if (text) text.textContent = "Həftəsonu (Tətil)";
+        if (currentNameEl) currentNameEl.textContent = "Həftəsonu İstirahəti";
+        if (remainingEl) remainingEl.textContent = "--:--";
+        return;
+      }
+
+      let activePeriod = null;
+      for (const p of bellSchedule) {
+        const s = toMinutes(p.start);
+        const e = toMinutes(p.end);
+        if (currentMin >= s && currentMin < e) {
+          activePeriod = { ...p, remaining: e - currentMin };
+          break;
+        }
+      }
+
+      if (activePeriod) {
+        const desc = `${activePeriod.name} (${activePeriod.remaining} dəq qalıb)`;
+        if (text) text.textContent = desc;
+        if (currentNameEl) currentNameEl.textContent = activePeriod.name;
+        if (remainingEl) remainingEl.textContent = `${activePeriod.remaining} dəqiqə`;
+      } else if (currentMin < toMinutes('08:30')) {
+        const rem = toMinutes('08:30') - currentMin;
+        if (text) text.textContent = `Dərslərə ${rem} dəq qalıb`;
+        if (currentNameEl) currentNameEl.textContent = "Dərslər başlamayıb";
+        if (remainingEl) remainingEl.textContent = `${rem} dəq`;
+      } else {
+        if (text) text.textContent = "Dərslər bitdi";
+        if (currentNameEl) currentNameEl.textContent = "Dərslər başa çatdı";
+        if (remainingEl) remainingEl.textContent = "Sabahadək";
+      }
+    }
+    updateLiveBell();
+    setInterval(updateLiveBell, 30000);
+
+    // Grade Calculator Logic
+    const calcModal = document.getElementById('calcModal');
+    function openCalcModal() { calcModal.showModal(); }
+    function closeCalcModal() { calcModal.close(); }
+    calcModal.addEventListener('click', (e) => { if (e.target === calcModal) closeCalcModal(); });
+
+    function toggleBsqInput(hasBsq) {
+      const field = document.getElementById('bsqField');
+      if (hasBsq) field.classList.remove('hidden');
+      else field.classList.add('hidden');
+    }
+
+    function calculateGrade(e) {
+      e.preventDefault();
+      const ksq = parseFloat(document.getElementById('calcKsq').value) || 0;
+      const hasBsq = document.getElementById('hasBsq').checked;
+      let finalScore = ksq;
+
+      if (hasBsq) {
+        const bsq = parseFloat(document.getElementById('calcBsq').value) || 0;
+        finalScore = (ksq * 0.4) + (bsq * 0.6);
+      }
+
+      finalScore = Math.round(finalScore * 10) / 10;
+      let grade = "2";
+      let gradeText = "2 (Qeyri-kafi)";
+      let gradeClass = "bg-rose-500/20 text-rose-300 border border-rose-500/30";
+
+      if (finalScore >= 80.5) {
+        grade = "5";
+        gradeText = "5 (Əla) 🎉";
+        gradeClass = "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else if (finalScore >= 60.5) {
+        grade = "4";
+        gradeText = "4 (Yaxşı) 👍";
+        gradeClass = "bg-blue-500/20 text-blue-300 border border-blue-500/30";
+      } else if (finalScore >= 30.5) {
+        grade = "3";
+        gradeText = "3 (Kafi)";
+        gradeClass = "bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      }
+
+      const resBox = document.getElementById('calcResult');
+      resBox.classList.remove('hidden');
+      document.getElementById('calcFinalScore').textContent = finalScore + " Bal";
+      const badgeEl = document.getElementById('calcGradeBadge');
+      badgeEl.textContent = "Qiymət: " + gradeText;
+      badgeEl.className = "inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-2 " + gradeClass;
+    }
+
+    // Bell Schedule Modal
+    const scheduleModal = document.getElementById('scheduleModal');
+    function openScheduleModal() { scheduleModal.showModal(); }
+    function closeScheduleModal() { scheduleModal.close(); }
+    scheduleModal.addEventListener('click', (e) => { if (e.target === scheduleModal) closeScheduleModal(); });
+
+    // FAQ Accordion Toggle
+    function toggleFaq(index) {
+      const content = document.getElementById(`faqContent-${index}`);
+      const icon = document.getElementById(`faqIcon-${index}`);
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.add('open');
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Command Palette & Search
     const searchModal = document.getElementById('searchModal');
     function openSearchModal() {
       searchModal.showModal();
       document.getElementById('searchInput').focus();
+      handleSearch('');
     }
-    function closeSearchModal() {
-      searchModal.close();
-    }
-    searchModal.addEventListener('click', (e) => {
-      if (e.target === searchModal) closeSearchModal();
-    });
+    function closeSearchModal() { searchModal.close(); }
+    searchModal.addEventListener('click', (e) => { if (e.target === searchModal) closeSearchModal(); });
 
-    // Keyboard Shortcut (Ctrl + K / Cmd + K)
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -485,7 +835,6 @@
       }
     });
 
-    // Live search filter
     const searchableItems = [
       { name: 'TDV E-School', desc: 'Məktəb tədris portalı, dərsliklər və tapşırıqlar', url: 'https://tdv-e-school.vercel.app/', icon: '🎓' },
       { name: 'Riyaziyyat BSQ / KSQ', desc: '10-cu və 9-cu sinif Riyaziyyat imtahan arxivi', url: 'https://tdv-e-school.vercel.app/', icon: '📐' },
@@ -494,44 +843,21 @@
       { name: 'TDV Sports — Turnir', desc: 'Canlı minifutbol nəticələri, xal cədvəli və oyunlar', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '⚽' },
       { name: '10A vs 11H Matçı', desc: 'Son keçirilən turnir oyununun statistikası', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🏆' },
       { name: 'Bombardirlər Siyahısı', desc: 'Turnirin ən çox qol vuran şagirdləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🥇' },
-      { name: 'TDV Games', desc: 'İnteraktiv oyunlar (Hazırlanır)', url: '#', disabled: true, icon: '🎮' }
+      { name: 'KSQ / BSQ Bal Kalkulyatoru', desc: 'Yarımillik qiyməti hesablama aləti', action: 'calc', icon: '🧮' },
+      { name: 'Məktəb Zəng Cədvəli', desc: 'Standart dərs və tənəffüs vaxtları', action: 'schedule', icon: '⏰' },
+      { name: 'TDV Games', desc: 'İnteraktiv oyunlar (Hazırlanır)', disabled: true, icon: '🎮' }
     ];
 
     function handleSearch(query) {
       const resultsContainer = document.getElementById('searchResults');
       const q = query.trim().toLowerCase();
-      if (!q) {
-        resultsContainer.innerHTML = `
-          <a href="https://tdv-e-school.vercel.app/" target="_blank" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition group">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">🎓</div>
-              <div><div class="font-bold text-white group-hover:text-emerald-300">TDV E-School</div><div class="text-slate-400 text-[11px]">Dərsliklər, KSQ/BSQ və PvP</div></div>
-            </div>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400"></i>
-          </a>
-          <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition group">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">⚽</div>
-              <div><div class="font-bold text-white group-hover:text-blue-300">TDV Sports — Minifutbol</div><div class="text-slate-400 text-[11px]">Canlı oyun nəticələri və xal cədvəli</div></div>
-            </div>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-blue-400"></i>
-          </a>
-        `;
-        lucide.createIcons();
-        return;
-      }
 
-      const filtered = searchableItems.filter(item => 
+      const filtered = q ? searchableItems.filter(item => 
         item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q)
-      );
-
-      if (filtered.length === 0) {
-        resultsContainer.innerHTML = `<div class="p-6 text-center text-slate-500">Heç bir nəticə tapılmadı.</div>`;
-        return;
-      }
+      ) : searchableItems;
 
       resultsContainer.innerHTML = filtered.map(item => `
-        <a href="${item.disabled ? 'javascript:void(0)' : item.url}" ${item.disabled ? '' : 'target="_blank"'} class="flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group">
+        <div onclick="${item.action === 'calc' ? 'closeSearchModal(); openCalcModal();' : item.action === 'schedule' ? 'closeSearchModal(); openScheduleModal();' : item.disabled ? '' : 'window.open(\'' + item.url + '\', \'_blank\');'}" class="flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base">${item.icon}</div>
             <div>
@@ -540,23 +866,19 @@
             </div>
           </div>
           ${item.disabled ? '<span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-purple-300 font-mono">Tezliklə</span>' : '<i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-blue-400"></i>'}
-        </a>
+        </div>
       `).join('');
       lucide.createIcons();
     }
 
     // Idea Modal Handling
     const ideaModal = document.getElementById('ideaModal');
-    function openIdeaModal() {
-      ideaModal.showModal();
-    }
+    function openIdeaModal() { ideaModal.showModal(); }
     function closeIdeaModal() {
       ideaModal.close();
       document.getElementById('ideaFeedback').classList.add('hidden');
     }
-    ideaModal.addEventListener('click', (e) => {
-      if (e.target === ideaModal) closeIdeaModal();
-    });
+    ideaModal.addEventListener('click', (e) => { if (e.target === ideaModal) closeIdeaModal(); });
 
     function submitIdea(e) {
       e.preventDefault();
