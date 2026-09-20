@@ -1111,7 +1111,7 @@
 
   <!-- ================= DIALOG 5: CAMPUS & CABINET DIRECTORY MODAL ================= -->
   <dialog id="campusModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-lg w-full m-auto">
-    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+    <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-3">
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">
           <i data-lucide="map-pin" class="w-5 h-5"></i>
@@ -1121,13 +1121,22 @@
           <p class="text-[11px] text-slate-400">Otaq nömrələri, korpuslar və laboratoriyalar</p>
         </div>
       </div>
-      <button onclick="closeCampusModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+      <button onclick="closeCampusModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800" aria-label="Bağla">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
 
-    <div class="space-y-2.5 max-h-80 overflow-y-auto pr-1 text-xs">
-      <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+    <!-- Campus Search Input -->
+    <div class="mb-3">
+      <div class="flex items-center gap-2 bg-slate-950 border border-slate-800 focus-within:border-purple-500 rounded-xl px-3 py-2 text-xs transition">
+        <i data-lucide="search" class="w-3.5 h-3.5 text-purple-400 shrink-0"></i>
+        <input id="campusSearchInput" type="text" placeholder="Kabinet adı, otaq nömrəsi və ya korpus axtar (məs: STEAM, 204, Kimya)..." oninput="filterCampusRooms(this.value)" class="w-full bg-transparent text-white placeholder-slate-500 focus:outline-none font-medium text-xs">
+        <button onclick="clearCampusSearch()" id="clearCampusSearchBtn" class="text-slate-500 hover:text-white hidden text-[10px]" title="Təmizlə">✕</button>
+      </div>
+    </div>
+
+    <div id="campusRoomsContainer" class="space-y-2.5 max-h-80 overflow-y-auto pr-1 text-xs">
+      <div class="campus-room-card p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between transition" data-room-search="fizika kimya laboratoriya laboratoriyalar korpus a otaq 204 reaktiv">
         <div>
           <div class="font-bold text-white flex items-center gap-1.5">
             <span>🔬</span>
@@ -1135,10 +1144,10 @@
           </div>
           <div class="text-[11px] text-slate-400 mt-0.5">Praktiki sınaq avadanlıqları və reaktivlər</div>
         </div>
-        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-emerald-400 font-mono font-bold border border-slate-800">Korpus A • Otaq 204</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-emerald-400 font-mono font-bold border border-slate-800 shrink-0 ml-2">Korpus A • Otaq 204</span>
       </div>
 
-      <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+      <div class="campus-room-card p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between transition" data-room-search="steam kompüter kompyuter informatika robototexnika 3d printer korpus b otaq 108">
         <div>
           <div class="font-bold text-white flex items-center gap-1.5">
             <span>💻</span>
@@ -1146,10 +1155,10 @@
           </div>
           <div class="text-[11px] text-slate-400 mt-0.5">Proqramlaşdırma, robototexnika və 3D printer</div>
         </div>
-        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-blue-400 font-mono font-bold border border-slate-800">Korpus B • Otaq 108</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-blue-400 font-mono font-bold border border-slate-800 shrink-0 ml-2">Korpus B • Otaq 108</span>
       </div>
 
-      <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+      <div class="campus-room-card p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between transition" data-room-search="kitabxana oxu zalı ensiklopediya dərslik korpus a mərtəbə 3 mertebe">
         <div>
           <div class="font-bold text-white flex items-center gap-1.5">
             <span>📚</span>
@@ -1157,10 +1166,10 @@
           </div>
           <div class="text-[11px] text-slate-400 mt-0.5">Dərsliklər, ensiklopediyalar və sakit dərs zonası</div>
         </div>
-        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-amber-400 font-mono font-bold border border-slate-800">Korpus A • Mərtəbə 3</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-amber-400 font-mono font-bold border border-slate-800 shrink-0 ml-2">Korpus A • Mərtəbə 3</span>
       </div>
 
-      <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+      <div class="campus-room-card p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between transition" data-room-search="qapalı idman kompleksi stadion minifutbol futbol voleybol həyət heyet">
         <div>
           <div class="font-bold text-white flex items-center gap-1.5">
             <span>⚽</span>
@@ -1168,10 +1177,10 @@
           </div>
           <div class="text-[11px] text-slate-400 mt-0.5">Minifutbol çempionatı və voleybol məşqləri</div>
         </div>
-        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-purple-400 font-mono font-bold border border-slate-800">Həyət Sahəsi</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-purple-400 font-mono font-bold border border-slate-800 shrink-0 ml-2">Həyət Sahəsi</span>
       </div>
 
-      <div class="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+      <div class="campus-room-card p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between transition" data-room-search="tibb məntəqəsi psixoloq psixoloji ilk yardım həkim hekim korpus a otaq 102">
         <div>
           <div class="font-bold text-white flex items-center gap-1.5">
             <span>🩺</span>
@@ -1179,7 +1188,11 @@
           </div>
           <div class="text-[11px] text-slate-400 mt-0.5">İlk tibbi yardım və şagird məsləhətləşməsi</div>
         </div>
-        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-rose-400 font-mono font-bold border border-slate-800">Korpus A • Otaq 102</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-rose-400 font-mono font-bold border border-slate-800 shrink-0 ml-2">Korpus A • Otaq 102</span>
+      </div>
+
+      <div id="noCampusRoomsMsg" class="hidden p-6 rounded-2xl bg-slate-950 border border-slate-800 text-center text-slate-500 text-xs">
+        Axtarışa uyğun kabinet və ya otaq tapılmadı.
       </div>
     </div>
   </dialog>
@@ -1271,8 +1284,11 @@
         <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500">
       </div>
       <div>
-        <label class="block text-slate-300 font-semibold mb-1">Oyunun İdeyası / Qaydaları:</label>
-        <textarea id="ideaText" rows="4" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"></textarea>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-slate-300 font-semibold">Oyunun İdeyası / Qaydaları:</label>
+          <span id="ideaCharCount" class="text-[10px] text-slate-500 font-mono">0 / 300</span>
+        </div>
+        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"></textarea>
       </div>
 
       <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-center font-medium">
@@ -1818,11 +1834,50 @@
       lucide.createIcons();
     }
 
-    // Campus Modal
+    // Campus Modal (Optimized with instant search filter)
     const campusModal = document.getElementById('campusModal');
-    function openCampusModal() { campusModal.showModal(); }
+    function openCampusModal() {
+      campusModal.showModal();
+      clearCampusSearch();
+      const sInput = document.getElementById('campusSearchInput');
+      if (sInput) setTimeout(() => sInput.focus(), 80);
+    }
     function closeCampusModal() { campusModal.close(); }
     campusModal.addEventListener('click', (e) => { if (e.target === campusModal) closeCampusModal(); });
+
+    function filterCampusRooms(query) {
+      const q = (query || '').trim().toLowerCase();
+      const clearBtn = document.getElementById('clearCampusSearchBtn');
+      if (clearBtn) {
+        if (q) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+
+      const cards = document.querySelectorAll('.campus-room-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const searchData = card.getAttribute('data-room-search') || '';
+        if (!q || searchData.includes(q)) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      const noMsg = document.getElementById('noCampusRoomsMsg');
+      if (noMsg) {
+        if (visibleCount === 0) noMsg.classList.remove('hidden');
+        else noMsg.classList.add('hidden');
+      }
+    }
+
+    function clearCampusSearch() {
+      const sInput = document.getElementById('campusSearchInput');
+      if (sInput) sInput.value = '';
+      filterCampusRooms('');
+      if (sInput) sInput.focus();
+    }
 
     // Share Modal & Copy Link
     const shareModal = document.getElementById('shareModal');
@@ -2117,21 +2172,39 @@
       });
     }
 
-    // Idea Modal Handling
+    // Idea Modal Handling (Optimized with live char counter & anti-spam)
     const ideaModal = document.getElementById('ideaModal');
-    function openIdeaModal() { ideaModal.showModal(); }
+    let lastIdeaSubmitTime = 0;
+
+    function openIdeaModal() {
+      ideaModal.showModal();
+      const authorInput = document.getElementById('ideaAuthor');
+      if (authorInput) setTimeout(() => authorInput.focus(), 80);
+    }
     function closeIdeaModal() {
       ideaModal.close();
       document.getElementById('ideaFeedback').classList.add('hidden');
     }
     ideaModal.addEventListener('click', (e) => { if (e.target === ideaModal) closeIdeaModal(); });
 
+    function updateIdeaCharCount(el) {
+      const countEl = document.getElementById('ideaCharCount');
+      if (countEl) countEl.textContent = `${el.value.length} / 300`;
+    }
+
     function submitIdea(e) {
       e.preventDefault();
+      const now = Date.now();
+      if (now - lastIdeaSubmitTime < 5000) {
+        alert('Zəhmət olmasa yeni təklif göndərməzdən əvvəl bir neçə saniyə gözləyin.');
+        return;
+      }
+
       const author = document.getElementById('ideaAuthor').value.trim();
       const text = document.getElementById('ideaText').value.trim();
       if (!author || !text) return;
 
+      lastIdeaSubmitTime = now;
       const ideas = JSON.parse(localStorage.getItem('tdv_game_ideas') || '[]');
       ideas.push({ author, text, date: new Date().toISOString() });
       localStorage.setItem('tdv_game_ideas', JSON.stringify(ideas));
@@ -2140,7 +2213,9 @@
       setTimeout(() => {
         closeIdeaModal();
         document.getElementById('ideaForm').reset();
-      }, 1500);
+        const countEl = document.getElementById('ideaCharCount');
+        if (countEl) countEl.textContent = '0 / 300';
+      }, 1400);
     }
   </script>
 </body>
