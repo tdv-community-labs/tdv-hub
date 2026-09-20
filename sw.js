@@ -1,9 +1,9 @@
 // TDV Hub Service Worker - Offline Cache & Fast Loading
-const CACHE_NAME = 'tdv-hub-v2';
+const CACHE_NAME = 'tdv-hub-v3';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json'
+  './',
+  './index.html',
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -34,12 +34,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      return (
-        cachedResponse ||
-        fetch(event.request).catch(() => {
-          return caches.match('/index.html');
-        })
-      );
+      if (cachedResponse) return cachedResponse;
+      return fetch(event.request).then((networkResponse) => {
+        return networkResponse;
+      }).catch(() => {
+        return caches.match('./index.html') || caches.match('./');
+      });
     })
   );
 });

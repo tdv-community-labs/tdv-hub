@@ -1290,19 +1290,54 @@
     // Initialize Lucide Icons
     lucide.createIcons();
 
-    // Register Service Worker for PWA Offline Support
+    // Register Service Worker for PWA Offline Support (Relative path for GitHub Pages)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
 
-    // Web Audio API Bell Chime Simulator
+    // Universal Clipboard Copy Helper with Legacy Fallback
+    function copyTextToClipboard(text, onSuccess) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (onSuccess) onSuccess();
+        }).catch(() => {
+          fallbackCopyText(text);
+          if (onSuccess) onSuccess();
+        });
+      } else {
+        fallbackCopyText(text);
+        if (onSuccess) onSuccess();
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      textArea.style.top = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+
+    // Web Audio API Bell Chime Simulator (Reuses AudioContext & handles suspended state)
+    let bellAudioCtx = null;
     function playBellChime() {
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!bellAudioCtx || bellAudioCtx.state === 'closed') {
+          bellAudioCtx = new AudioCtx();
+        }
+        if (bellAudioCtx.state === 'suspended') {
+          bellAudioCtx.resume();
+        }
+        const ctx = bellAudioCtx;
 
         // Authentic 4-harmonic bell chime frequencies (C5, E5, G5, C6)
         const freqs = [523.25, 659.25, 783.99, 1046.50];
@@ -1585,6 +1620,18 @@
     const scheduleModal = document.getElementById('scheduleModal');
     function openScheduleModal() {
       scheduleModal.showModal();
+      // Auto-select today's weekday if Monday to Friday
+      const today = new Date().getDay();
+      const daySel = document.getElementById('daySelector');
+      if (today >= 1 && today <= 5 && daySel) {
+        daySel.value = String(today);
+      }
+      // Restore previously chosen class
+      const savedClass = localStorage.getItem('tdv_preferred_class');
+      const clsSel = document.getElementById('classSelector');
+      if (savedClass && clsSel && classSchedules[savedClass]) {
+        clsSel.value = savedClass;
+      }
       renderClassTimetable();
     }
     function closeScheduleModal() { scheduleModal.close(); }
@@ -1635,9 +1682,14 @@
     };
 
     function renderClassTimetable() {
-      const cls = document.getElementById('classSelector').value;
-      const day = document.getElementById('daySelector').value;
+      const clsSel = document.getElementById('classSelector');
+      const cls = clsSel ? clsSel.value : '10A';
+      const daySel = document.getElementById('daySelector');
+      const day = daySel ? daySel.value : '1';
       const list = document.getElementById('classTimetableList');
+      if (!list) return;
+
+      localStorage.setItem('tdv_preferred_class', cls);
       const lessons = (classSchedules[cls] && classSchedules[cls][day]) || [];
 
       list.innerHTML = lessons.map((les, i) => `
@@ -1707,7 +1759,7 @@
     }
 
     function copyFormula(formulaText, btnEl) {
-      navigator.clipboard.writeText(formulaText).then(() => {
+      copyTextToClipboard(formulaText, () => {
         const originalHtml = btnEl.innerHTML;
         btnEl.innerHTML = '<span class="text-emerald-400 font-bold text-[10px] px-1">Kopyalandı! ✓</span>';
         setTimeout(() => {
@@ -1779,11 +1831,13 @@
     shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); });
 
     function copyShareLink() {
-      const url = "https://tdv-community-labs.github.io/tdv-hub/";
-      navigator.clipboard.writeText(url).then(() => {
+      const url = window.location.href.split('#')[0] || "https://tdv-community-labs.github.io/tdv-hub/";
+      copyTextToClipboard(url, () => {
         const text = document.getElementById('copyLinkText');
-        text.textContent = "Kopyalandı! ✓";
-        setTimeout(() => { text.textContent = "Linki Kopyala"; }, 2000);
+        if (text) {
+          text.textContent = "Kopyalandı! ✓";
+          setTimeout(() => { text.textContent = "Linki Kopyala"; }, 2000);
+        }
       });
     }
 
