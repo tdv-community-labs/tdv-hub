@@ -408,7 +408,45 @@
         </div>
       </div>
 
-      <!-- Card 3: TDV Games (NO HYPERLINK - COMING SOON + IDEA MODAL) -->
+      <!-- Card 3: TDV Mafia (LIVE & HYPERLINKED) -->
+      <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group border-red-500/20 hover:border-red-500/40 transition duration-300">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-red-500/15 rounded-full blur-3xl group-hover:bg-red-500/25 transition duration-500"></div>
+        
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-13 h-13 p-3 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 shadow-md shadow-red-500/10 group-hover:scale-105 transition">
+              <i data-lucide="shield-alert" class="w-7 h-7"></i>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-500/15 text-red-400 border border-red-500/25 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-red-400 pulse-dot"></span>
+              Aktiv & Canlı
+            </span>
+          </div>
+
+          <h2 class="text-2xl font-bold text-white mb-2.5 group-hover:text-red-300 transition">
+            TDV Mafia
+          </h2>
+          <p class="text-slate-300 text-sm leading-relaxed mb-5 font-normal">
+            Elit sosial deduksiya və strateji məntiq mühərriki: Dante's Inferno (9 Dairə Əzabları), Operation Valkyrie, Stanford Prison daxil 14 oyun formatı, real-vaxt socket masaları və ikili admin nəzarəti.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-6">
+            <span class="px-2 py-0.5 rounded-lg bg-red-500/10 text-red-300 text-[11px] border border-red-500/20 font-medium">#SosialDeduksiya</span>
+            <span class="px-2 py-0.5 rounded-lg bg-red-500/10 text-red-300 text-[11px] border border-red-500/20 font-medium">#DantesInferno</span>
+            <span class="px-2 py-0.5 rounded-lg bg-red-500/10 text-red-300 text-[11px] border border-red-500/20 font-medium">#CanlıMasa</span>
+            <span class="px-2 py-0.5 rounded-lg bg-red-500/10 text-red-300 text-[11px] border border-red-500/20 font-medium">#14Format</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-red-900/30 hover:shadow-red-600/30 transition duration-300 group/btn">
+            <span>Masaya Qoşul</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition duration-200"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: TDV Games (NO HYPERLINK - COMING SOON + IDEA MODAL) -->
       <div class="glass-card glass-card-disabled rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
         <div class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
         
@@ -875,6 +913,17 @@
             Şagirdlər tərəfindən göndərilən oyun ideyaları və ya kodlaşdırılmış veb oyunlar laboratoriya komandası tərəfindən nəzərdən keçirilir və təhsil tələblərinə uyğun olanlar TDV Games bölməsində yayımlanır.
           </div>
         </div>
+
+        <!-- FAQ 4: TDV Mafia -->
+        <div class="glass-card rounded-2xl border-slate-800/80 overflow-hidden">
+          <button onclick="toggleFaq(4)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-white hover:text-red-400 transition">
+            <span>TDV Mafia oyun platformasına necə qoşula bilərəm?</span>
+            <i id="faqIcon-4" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="faqContent-4" class="accordion-content px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            İstənilən şagird <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-red-400 underline font-semibold">tdv-mafia.vercel.app</a> portalına daxil olaraq dərhal aktiv masalara qoşula, otaq kodu ilə dostunun masasına daxil ola və ya 14 müxtəlif oyun formatından birini seçərək yeni masa aça bilər.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -890,6 +939,11 @@
       </div>
       <div class="flex items-center gap-4 flex-wrap justify-center">
         <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub Təşkilatı</a>
+        <span>•</span>
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-red-400 text-slate-300 font-medium transition flex items-center gap-1">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-400"></i>
+          <span>TDV Mafia</span>
+        </a>
         <span>•</span>
         <button onclick="openCalcModal()" class="hover:text-white transition">Bal Kalkulyatoru</button>
         <span>•</span>
@@ -1447,6 +1501,7 @@
       "🧮 KSQ və BSQ Bal Kalkulyatoru ilə yarımillik qiymətinizi cəld hesablayın.",
       "📖 Yeni: Məktəb Düstur Bankı — Riyaziyyat, Fizika və Kimya formulları əlavə edildi!",
       "🗺️ Məktəb Fənn Kabinetləri və Laboratoriyalar Bələdçisi aktivdir!",
+      "🕵️‍♂️ TDV Mafia: 14 oyun formatı, Dante's Inferno və canlı masalar tdv-mafia.vercel.app ünvanında aktivdir!",
       "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün təkliflər qəbul olunur."
     ];
     let tickerIdx = 0;
@@ -2157,6 +2212,8 @@
       { name: 'TDV Sports — Turnir', desc: 'Canlı minifutbol nəticələri, xal cədvəli və oyunlar', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '⚽' },
       { name: 'Turnir Cədvəli (10A, 11H, 9C)', desc: 'Qrup mərhələsi xal vəziyyəti və qol fərqləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🏆' },
       { name: 'Bombardirlər Siyahısı', desc: 'Turnirin ən çox qol vuran şagirdləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🥇' },
+      { name: 'TDV Mafia — Deduksiya Portalı', desc: 'Canlı sosial deduksiya oyunu, 14 rejim, real-vaxt masaları', url: 'https://tdv-mafia.vercel.app/', icon: '🕵️‍♂️' },
+      { name: "Dante's Inferno (TDV Mafia)", desc: '9 Dairə Əzabları xüsusi 10-14 nəfərlik mafia rejimi', url: 'https://tdv-mafia.vercel.app/', icon: '🔥' },
       { name: 'Məktəb Düstur Bankı', desc: 'Riyaziyyat, Fizika və Kimya düsturları', action: 'formula', icon: '📖' },
       { name: 'Fənn Kabinetləri Bələdçisi', desc: 'Laboratoriyalar, STEAM mərkəzi və otaqlar', action: 'campus', icon: '📍' },
       { name: 'KSQ / BSQ Bal Kalkulyatoru', desc: 'Yarımillik qiyməti hesablama aləti', action: 'calc', icon: '🧮' },
