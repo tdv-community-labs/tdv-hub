@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="az" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDV Games — Məktəb İcması Oyun & Deduksiya Portalı</title>
+  <meta name="description" content="TDV Community Labs rəsmi oyunlar və sosial deduksiya portalı: TDV Mafia, 14 oyun formatı, Dante's Inferno və tələbə oyun laboratoriyası.">
+  <meta name="theme-color" content="#080C16" id="metaThemeColor">
+
+  <!-- Favicon & PWA Manifest -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .dark body {
+      background-color: #060913;
+      color: #f1f5f9;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(239, 68, 68, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .light body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(239, 68, 68, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .light .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.95); }
+    }
+    .pulse-dot {
+      animation: pulse-subtle 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased">
+
+  <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
+  <aside aria-label="Organization Ecosystem Bar" class="bg-slate-950 dark:bg-[#060912] border-b border-slate-800/90 py-1.5 px-4 text-[11px] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Left: Org Brand & Live Ticker -->
+      <div class="flex items-center gap-3 overflow-hidden">
+        <div class="flex items-center gap-1.5 shrink-0 font-bold text-slate-200">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+          <span class="hidden sm:inline text-slate-400 font-normal">Təşkilat:</span>
+          <a href="index.html" class="tracking-tight hover:text-purple-400 transition">TDV Community Labs</a>
+        </div>
+        <span class="text-slate-700 hidden sm:inline">•</span>
+        <div class="flex items-center gap-2 truncate">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-bold text-[9px] uppercase shrink-0">
+            <i data-lucide="shield-alert" class="w-2.5 h-2.5"></i>
+            Mafia Canlı
+          </span>
+          <span id="tickerText" class="text-slate-300 text-[11px] truncate">
+            🕵️‍♂️ TDV Mafia: 14 fərqli oyun rejimi və canlı oyun masaları aktivdir!
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Direct Link to Hub & Theme Toggle -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a href="index.html" class="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-2.5 py-1 rounded-lg border border-blue-500/20 transition">
+          <i data-lucide="arrow-left" class="w-3 h-3"></i>
+          <span>Mərkəzə Qayıt</span>
+        </a>
+
+        <!-- Theme Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" aria-label="Mövzunu dəyiş" class="p-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition flex items-center justify-center">
+          <i id="themeIcon" data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ================= MAIN NAVIGATION HEADER ================= -->
+  <header class="w-full border-b border-slate-800/80 bg-slate-950/70 dark:bg-[#080C16]/80 backdrop-blur-md z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <a href="games.html" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-600 to-red-500 flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-105 transition">
+            <i data-lucide="gamepad-2" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-lg tracking-tight text-white dark:text-white flex items-center gap-1.5">
+              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-rose-400">Games</span>
+            </span>
+            <span class="block text-[10px] text-slate-400 -mt-1 font-medium">Oyun & Sosial Deduksiya Zonası</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Ecosystem Switcher Links -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 p-1 rounded-2xl text-xs font-medium">
+        <a href="index.html" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i>
+          Mərkəz
+        </a>
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-400"></i>
+          E-School
+        </a>
+        <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-blue-400"></i>
+          Sports
+        </a>
+        <a href="games.html" class="px-3 py-1.5 rounded-xl bg-purple-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
+          <i data-lucide="gamepad-2" class="w-3.5 h-3.5"></i>
+          Games
+          <span class="text-[9px] px-1 py-0.2 rounded bg-white/20 text-white font-bold">Aktiv</span>
+        </a>
+      </nav>
+
+      <!-- Action Button: Launch Mafia Directly -->
+      <div class="flex items-center gap-2">
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 px-4 py-2 rounded-xl shadow-lg shadow-red-900/30 transition">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          <span>Mafia-ya Başla</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN HERO ================= -->
+  <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
+
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-wider mb-4">
+        <span class="w-2 h-2 rounded-full bg-red-400 pulse-dot"></span>
+        Məktəb Oyun & Deduksiya Mərkəzi
+      </div>
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white dark:text-white tracking-tight leading-tight mb-4">
+        Strateji Məntiq, Deduksiya və <br>
+        <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">İnteraktiv Əyləncə Zonası</span>
+      </h1>
+      <p class="text-slate-300 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 font-normal">
+        TDV Games — məktəb şagirdlərinin birgə intellektual vaxt keçirməsi, sosial deduksiya masalarında strategiya qurması və yeni oyun layihələri üçün nəzərdə tutulmuş rəsmi əyləncə qanadıdır.
+      </p>
+
+      <div class="flex items-center justify-center gap-3 flex-wrap">
+        <a href="#tdv-mafia" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-sm shadow-lg shadow-red-900/30 transition">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>TDV Mafia (14 Format)</span>
+        </a>
+        <a href="#upcoming-games" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition">
+          <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+          <span>Digər Oyunlar & İdeyalar</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================= FEATURED SHOWCASE: TDV MAFIA ================= -->
+    <section id="tdv-mafia" class="mb-14 scroll-mt-20">
+      
+      <div class="glass-card rounded-3xl p-6 sm:p-10 border border-red-500/30 relative overflow-hidden shadow-2xl shadow-red-950/40">
+        <!-- Glow accents -->
+        <div class="absolute -top-24 -right-24 w-80 h-80 bg-red-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+          
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8 border-b border-slate-800/80 pb-6">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-800 border border-red-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-red-600/30 shrink-0">
+                M
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h2 class="text-2xl sm:text-3xl font-black text-white">TDV Mafia</h2>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500/20 text-red-300 border border-red-500/30">
+                    <span class="w-2 h-2 rounded-full bg-red-400 pulse-dot"></span>
+                    Canlı & Aktiv Platforma
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-300">
+                  Enterprise Mafia / Zero-Knowledge Soket Mühərriki və İkili Admin Nəzarəti
+                </p>
+              </div>
+            </div>
+
+            <!-- Direct Launch Button -->
+            <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-xl shadow-red-900/40 hover:shadow-red-600/50 hover:scale-[1.02] transition duration-200 text-sm">
+              <span>Masaya Qoşul / Portala Daxil Ol</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+          <!-- Feature Description -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+              <div class="flex items-center gap-2 text-red-400 font-bold text-sm mb-1.5">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span>14 Oyun Formatı</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Dante's Inferno, Stanford Prison, Operation Valkyrie, Catenaccio və 40-50 nəfərlik All-In daxil olmaqla hər ölçülü heyət üçün unikal rejimlər.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+              <div class="flex items-center gap-2 text-rose-400 font-bold text-sm mb-1.5">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span>Zero-Knowledge Gizlilik</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Oyunçu rolları və gecə hərəkətləri serverless soket səviyyəsində qorunur; heç bir mülki digərinin rolunu öncədən öyrənə bilməz.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+              <div class="flex items-center gap-2 text-purple-400 font-bold text-sm mb-1.5">
+                <i data-lucide="shield" class="w-4 h-4"></i>
+                <span>İkili Kilid İdarəetməsi</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Bailiff Console (masa nizamı və səsvermə) və Architect Console (mühərrik sazlamaları) ilə tam ədalətli oyun mühiti.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Format Roster Showcase Strip -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-red-400"></i>
+              Populyar Formatlar Kataloqu
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-center">
+              
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-red-500/20 hover:border-red-500/40 transition">
+                <div class="text-lg mb-1">🔥</div>
+                <div class="font-bold text-white text-xs">Dante's Inferno</div>
+                <div class="text-[10px] text-red-400">9 Dairə Əzabları</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                <div class="text-lg mb-1">⚔️</div>
+                <div class="font-bold text-white text-xs">Operation Valkyrie</div>
+                <div class="text-[10px] text-slate-400">Taktiki Sui-qəsd</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                <div class="text-lg mb-1">🏢</div>
+                <div class="font-bold text-white text-xs">Stanford Prison</div>
+                <div class="text-[10px] text-slate-400">Sosial Eksperiment</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                <div class="text-lg mb-1">🛡️</div>
+                <div class="font-bold text-white text-xs">Catenaccio</div>
+                <div class="text-[10px] text-slate-400">İtalyan Müdafiəsi</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                <div class="text-lg mb-1">👥</div>
+                <div class="font-bold text-white text-xs">All-In Heyət</div>
+                <div class="text-[10px] text-slate-400">40-50 Nəfərlik</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition">
+                <div class="text-lg mb-1">🏙️</div>
+                <div class="font-bold text-white text-xs">Klassik Şəhər</div>
+                <div class="text-[10px] text-slate-400">Mülki vs Mafiya</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom CTA inside Mafia Card -->
+          <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-slate-400 flex items-center gap-2">
+              <i data-lucide="info" class="w-4 h-4 text-red-400"></i>
+              <span>Otaq kodu ilə dostunun masasına qoşulmaq birbaşa portal daxilində mümkündür.</span>
+            </div>
+            <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1 transition">
+              <span>tdv-mafia.vercel.app ünvanına get</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 2: UPCOMING GAMES & INCUBATOR ================= -->
+    <section id="upcoming-games" class="mb-14">
+      
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i>
+            <span>İnkubator & Rezerv Oyunlar</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">Hazırlıq mərhələsində olan interaktiv təhsil layihələri</p>
+        </div>
+        <button onclick="openIdeaModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 hover:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-2 rounded-xl border border-purple-500/30 transition">
+          <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+          <span>Oyun İdeyası Təklif Et</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <!-- Upcoming Game 1 -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between border-slate-800/80">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-xl">
+                🧠
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 text-[10px] font-bold">
+                Hazırlanır
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Məntiq Labirinti</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              Riyazi paradokslar, alqoritmik tapmacalar və addım-addım məntiqi təfəkkürü inkişaf etdirən interaktiv zəka oyunu.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Məntiq & Riyaziyyat</span>
+            <span class="text-purple-400">Tezliklə</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Game 2 -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between border-slate-800/80">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-xl">
+                ♟️
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-[10px] font-bold">
+                Hazırlanır
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Şahmat & Dama Klubu</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              Məktəb daxili onlayn şahmat və dama lövhəsi; sinif yoldaşları arasında real-vaxt turnir və reytinq xalları.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Strateji & Taktika</span>
+            <span class="text-emerald-400">Tezliklə</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Game 3 -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between border-slate-800/80">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-xl">
+                ⚡
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 text-[10px] font-bold">
+                E-School İnteqrasiyası
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">PvP Bilik Arenası</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              TDV E-School portalında artıq aktiv olan 1v1 sürətli bilik dueli: fənlər üzrə sual-cavab döyüşü və liderlik cədvəli.
+            </p>
+          </div>
+          <div>
+            <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-bold transition">
+              <span>Arenaya Get</span>
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 3: IDEA SUBMISSION BOX ================= -->
+    <section class="mb-12">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 text-center max-w-2xl mx-auto">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mx-auto mb-3">
+          💡
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Öz Oyununu Təklif Et!</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5 font-normal">
+          Məktəb portalında hansı oyunların yer almasını istərdin? İdeyalarını və ya kodlaşdırdığın mini-veb layihəni bizimlə bölüş.
+        </p>
+        <button onclick="openIdeaModal()" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>İdeya Formunu Aç</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="w-full border-t border-slate-800/60 py-8 bg-slate-950/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-300">TDV Community Labs</span>
+        <span>•</span>
+        <span>© 2026 Məktəb İcması Portalı</span>
+      </div>
+      <div class="flex items-center gap-4 flex-wrap justify-center">
+        <a href="index.html" class="hover:text-blue-400 transition font-medium">Mərkəzi Portal</a>
+        <span>•</span>
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-red-400 text-slate-300 font-medium transition flex items-center gap-1">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-400"></i>
+          <span>TDV Mafia</span>
+        </a>
+        <span>•</span>
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">E-School</a>
+        <span>•</span>
+        <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Sports</a>
+        <span>•</span>
+        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= DIALOG: GAME IDEA MODAL ================= -->
+  <dialog id="ideaModal" class="rounded-3xl bg-slate-900 text-white border border-slate-700 p-6 shadow-2xl max-w-md w-full m-auto">
+    <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">💡</div>
+        <div>
+          <h3 class="font-bold text-white text-base">Oyun İdeyanı Təklif Et</h3>
+          <p class="text-[11px] text-slate-400">TDV Games bölməsində hansı oyunu görmək istərdin?</p>
+        </div>
+      </div>
+      <button onclick="closeIdeaModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <form id="ideaForm" onsubmit="submitIdea(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block text-slate-300 font-semibold mb-1">Adın və Sinfin:</label>
+        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500">
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-slate-300 font-semibold">Oyunun İdeyası / Qaydaları:</label>
+          <span id="ideaCharCount" class="text-[10px] text-slate-500 font-mono">0 / 300</span>
+        </div>
+        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 resize-none"></textarea>
+      </div>
+
+      <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-center font-medium">
+        Təşəkkür edirik! İdeyanız qeydə alındı. 🚀
+      </div>
+
+      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold transition shadow-lg shadow-purple-900/30">
+        İdeyanı Göndər
+      </button>
+    </form>
+  </dialog>
+
+  <!-- ================= CLIENT JS ================= -->
+  <script>
+    lucide.createIcons();
+
+    // Theme Management (Dark / Light)
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const metaTheme = document.getElementById('metaThemeColor');
+
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        if (icon) icon.setAttribute('data-lucide', 'moon');
+        if (metaTheme) metaTheme.setAttribute('content', '#F8FAFC');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        if (icon) icon.setAttribute('data-lucide', 'sun');
+        if (metaTheme) metaTheme.setAttribute('content', '#080C16');
+      }
+      lucide.createIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      localStorage.setItem('tdv_theme', newTheme);
+      applyTheme(newTheme);
+    }
+
+    const savedTheme = localStorage.getItem('tdv_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Idea Modal Handling
+    const ideaModal = document.getElementById('ideaModal');
+    let lastIdeaSubmitTime = 0;
+
+    function openIdeaModal() {
+      ideaModal.showModal();
+      const authorInput = document.getElementById('ideaAuthor');
+      if (authorInput) setTimeout(() => authorInput.focus(), 80);
+    }
+
+    function closeIdeaModal() {
+      ideaModal.close();
+      document.getElementById('ideaFeedback').classList.add('hidden');
+    }
+
+    ideaModal.addEventListener('click', (e) => { if (e.target === ideaModal) closeIdeaModal(); });
+
+    function updateIdeaCharCount(el) {
+      const countEl = document.getElementById('ideaCharCount');
+      if (countEl) countEl.textContent = `${el.value.length} / 300`;
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag));
+    }
+
+    function submitIdea(e) {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastIdeaSubmitTime < 5000) {
+        alert('Zəhmət olmasa yeni təklif göndərməzdən əvvəl bir neçə saniyə gözləyin.');
+        return;
+      }
+
+      const author = escapeHTML(document.getElementById('ideaAuthor').value.trim().slice(0, 50));
+      const text = escapeHTML(document.getElementById('ideaText').value.trim().slice(0, 300));
+      if (!author || !text) return;
+
+      lastIdeaSubmitTime = now;
+      const ideas = JSON.parse(localStorage.getItem('tdv_game_ideas') || '[]');
+      ideas.push({ author, text, date: new Date().toISOString() });
+      localStorage.setItem('tdv_game_ideas', JSON.stringify(ideas));
+
+      document.getElementById('ideaFeedback').classList.remove('hidden');
+      setTimeout(() => {
+        closeIdeaModal();
+        document.getElementById('ideaForm').reset();
+        const countEl = document.getElementById('ideaCharCount');
+        if (countEl) countEl.textContent = '0 / 300';
+      }, 1400);
+    }
+  </script>
+</body>
+</html>
