@@ -1,21 +1,45 @@
-name: Autonomous Developer Agent
+name: Ecosystem Autonomous Agent
 
 on:
-  issues:
-    types: [opened]
   workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+    inputs:
+      target_repo:
+        description: 'Hədəf Repozitoriya'
+        required: true
+        default: 'tdv-hub'
+        type: choice
+        options:
+          - tdv-hub
+          - tdv-mafia
+          - tdv-e-school
+          - tdv-games
+          - school-minifootball-tournament
+      task_title:
+        description: 'Tapşırığın Başlığı'
+        required: true
+        default: 'Kod refaktorinqi və optimizasiya'
+      task_body:
+        description: 'Təfərrüat'
+        required: false
+        default: 'Koddakı xətaları düzəlt və strukturu təkmilləşdir.'
 
 jobs:
-  run-agent:
+  agent-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Reponu Klonla
+      - name: Hədəf Reponu Klonla
         uses: actions/checkout@v4
+        with:
+          repository: "tdv-community-labs/${{ inputs.target_repo }}"
+          token: ${{ secrets.GH_ORG_TOKEN }}
+          path: target_repo
+
+      - name: Mərkəzi Skriptləri Gətir
+        uses: actions/checkout@v4
+        with:
+          repository: "tdv-community-labs/tdv-hub"
+          token: ${{ secrets.GH_ORG_TOKEN }}
+          path: hub_core
 
       - name: Python Quraşdır
         uses: actions/setup-python@v5
@@ -25,20 +49,26 @@ jobs:
       - name: Asılılıqları Yüklə
         run: pip install google-genai
 
-      - name: Agent Kodu Yazır
+      - name: Gemini Agenti İcra Et
+        working-directory: target_repo
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ISSUE_TITLE: ${{ github.event.issue.title || 'Manual Run' }}
-          ISSUE_BODY: ${{ github.event.issue.body || 'No description provided' }}
-        run: python .github/scripts/autonomous_coder.py
+          TARGET_REPO: ${{ inputs.target_repo }}
+          ISSUE_TITLE: ${{ inputs.task_title }}
+          ISSUE_BODY: ${{ inputs.task_body }}
+        run: python ../hub_core/.github/scripts/autonomous_coder.py
 
-      - name: Pull Request Yarat
+      - name: Hədəf Repoda Pull Request Yarat
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: agent tərəfindən həll olundu"
-          title: "🤖 Agent PR: ${{ github.event.issue.title || 'Manual Optimization' }}"
+          token: ${{ secrets.GH_ORG_TOKEN }}
+          path: target_repo
+          commit-message: "feat: autonomous agent təkmilləşdirməsi"
+          title: "🤖 Agent PR: ${{ inputs.task_title }}"
           body: |
-            Bu Pull Request avtomatik olaraq agent tərəfindən yaradıldı.
+            Bu Pull Request mərkəzi **tdv-hub** agenti tərəfindən avtomatik generasiya edilmişdir.
+            
+            **Tapşırıq:** ${{ inputs.task_title }}
+            **Detallar:** ${{ inputs.task_body }}
           branch: "agent-solution-${{ github.run_id }}"
           delete-branch: true
