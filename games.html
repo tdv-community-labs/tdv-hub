@@ -13,7 +13,106 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+    // ==========================================
+    // TDV COMMUNITY LABS UNIFIED SSO & AUTH GATEWAY
+    // ==========================================
+    const SSO_SESSION_KEY = 'tdv_ecosystem_session_v1';
+
+    function getHubSession() {
+      try {
+        const raw = localStorage.getItem(SSO_SESSION_KEY);
+        if (raw) {
+          const sess = JSON.parse(raw);
+          if (sess && sess.expiresAt > Date.now()) return sess;
+          localStorage.removeItem(SSO_SESSION_KEY);
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function updateSsoUi() {
+      const sess = getHubSession();
+      const label = document.getElementById('ssoUserLabel');
+      const btn = document.getElementById('ssoAuthBtn');
+      if (label && btn) {
+        if (sess) {
+          label.textContent = sess.fullName || sess.username;
+          btn.classList.add('bg-purple-500/25', 'border-purple-400/50', 'text-white');
+        } else {
+          label.textContent = 'Vahid Giriş';
+          btn.classList.remove('bg-purple-500/25', 'border-purple-400/50', 'text-white');
+        }
+      }
+
+      // Update outbound links with SSO ticket
+      const ticket = sess ? btoa(unescape(encodeURIComponent(JSON.stringify(sess)))) : '';
+      document.querySelectorAll('a[href*="tdv-e-school.vercel.app"], a[href*="school-minifootball-tournament.vercel.app"]').forEach(link => {
+        const baseHref = link.getAttribute('data-base-href') || link.href.split('?')[0];
+        link.setAttribute('data-base-href', baseHref);
+        if (ticket) {
+          link.href = baseHref + (baseHref.endsWith('/') ? '' : '/') + '?sso_ticket=' + encodeURIComponent(ticket);
+        } else {
+          link.href = baseHref;
+        }
+      });
+    }
+
+    function openSsoModal() {
+      const sess = getHubSession();
+      if (sess) {
+        const nameEl = document.getElementById('ssoActiveName');
+        const roleEl = document.getElementById('ssoActiveRole');
+        const avEl = document.getElementById('ssoActiveAvatar');
+        if (nameEl) nameEl.textContent = sess.fullName || sess.username;
+        if (roleEl) roleEl.textContent = sess.role === 'teacher' ? 'Fənn Müəllimi' : (sess.schoolClass ? `${sess.schoolClass} Şagirdi` : 'Məktəb Şagirdi');
+        if (avEl) avEl.textContent = sess.avatar || '🧑‍🎓';
+        document.getElementById('ssoProfileModal').classList.remove('hidden');
+      } else {
+        document.getElementById('ssoLoginModal').classList.remove('hidden');
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeSsoModal() {
+      const m1 = document.getElementById('ssoLoginModal');
+      const m2 = document.getElementById('ssoProfileModal');
+      if (m1) m1.classList.add('hidden');
+      if (m2) m2.classList.add('hidden');
+    }
+
+    function ssoLogin(username, grade, role = 'student') {
+      const trimmed = (username || '').trim();
+      if (!trimmed) return;
+      const cleanGrade = Number(grade) || 10;
+      const avatar = role === 'teacher' ? '👨‍🏫' : (cleanGrade >= 10 ? '🧑‍🎓' : '🎒');
+      const session = {
+        userId: 'tdv-usr-' + Date.now().toString(36),
+        username: trimmed,
+        fullName: trimmed,
+        grade: cleanGrade,
+        schoolClass: cleanGrade > 0 ? `${cleanGrade}A` : 'Müəllim',
+        role: role,
+        avatar: avatar,
+        token: 'tdv_token_' + Math.random().toString(36).substring(2),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+      localStorage.setItem(SSO_SESSION_KEY, JSON.stringify(session));
+      closeSsoModal();
+      updateSsoUi();
+    }
+
+    function ssoLogout() {
+      localStorage.removeItem(SSO_SESSION_KEY);
+      closeSsoModal();
+      updateSsoUi();
+    }
+
+    document.addEventListener('DOMContentLoaded', updateSsoUi);
+    window.addEventListener('load', updateSsoUi);
+
+  </script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -168,8 +267,12 @@
         </a>
       </nav>
 
-      <!-- Action Button: Launch Mafia Directly -->
+      <!-- Action Button: Launch Mafia Directly & Unified SSO -->
       <div class="flex items-center gap-2">
+        <button id="ssoAuthBtn" onclick="openSsoModal()" class="inline-flex items-center gap-1.5 text-xs font-bold text-purple-400 hover:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-2 rounded-xl border border-purple-500/30 transition shadow-sm cursor-pointer" title="TDV Community Labs Vahid Giriş">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          <span id="ssoUserLabel">Vahid Giriş</span>
+        </button>
         <a href="https://tdv-mafia-pzvc.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 px-4 py-2 rounded-xl shadow-lg shadow-red-900/30 transition">
           <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
           <span>Mafia-ya Başla</span>
@@ -610,5 +713,96 @@
       }, 1400);
     }
   </script>
+  <!-- ================= SSO LOGIN & PROFILE MODALS ================= -->
+  <!-- SSO Login Modal -->
+  <div id="ssoLoginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-5 relative">
+      <button onclick="closeSsoModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-2.5 rounded-2xl bg-purple-500/15 border border-purple-500/30 text-purple-400">
+          <i data-lucide="shield-check" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-xl font-black text-white">TDV Community Labs Vahid Giriş</h3>
+        <p class="text-xs text-slate-400">Tək hesab ilə E-School, Sports və Games portallarına birbaşa daxil olun.</p>
+      </div>
+
+      <form id="ssoForm" onsubmit="event.preventDefault(); ssoLogin(document.getElementById('ssoUsernameInput').value, document.getElementById('ssoGradeInput').value);" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Ad, Soyad və ya Şagird Kodu:</label>
+          <input type="text" id="ssoUsernameInput" placeholder="Məs: Orxan Əliyev" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Sinif / Status:</label>
+          <select id="ssoGradeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500">
+            <option value="10">10-cu Sinif Şagirdi</option>
+            <option value="11">11-ci Sinif Şagirdi</option>
+            <option value="9">9-cu Sinif Şagirdi</option>
+            <option value="8">8-ci Sinif Şagirdi</option>
+            <option value="7">7-ci Sinif Şagirdi</option>
+            <option value="6">6-cı Sinif Şagirdi</option>
+            <option value="0">Fənn Müəllimi</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Şifrə / PİN Kod:</label>
+          <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500" />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition">
+          Ekosistemə Daxil Ol
+        </button>
+      </form>
+
+      <div class="pt-3 border-t border-white/10 space-y-2">
+        <div class="text-[11px] font-bold text-slate-400 text-center uppercase tracking-wider">1 Toxunuşla Sürətli Giriş:</div>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="ssoLogin('Orxan Əliyev', 10)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
+            <span class="text-sm block">🧑‍🎓</span>
+            <span class="text-[10px] font-bold text-slate-300 block">10-cu Sinif</span>
+          </button>
+          <button type="button" onclick="ssoLogin('Murad Məmmədov', 11)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
+            <span class="text-sm block">🎒</span>
+            <span class="text-[10px] font-bold text-slate-300 block">11-ci Sinif</span>
+          </button>
+          <button type="button" onclick="ssoLogin('Aysel Müəllimə', 0, 'teacher')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
+            <span class="text-sm block">👨‍🏫</span>
+            <span class="text-[10px] font-bold text-slate-300 block">Müəllim</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SSO Profile / Logout Modal -->
+  <div id="ssoProfileModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="w-full max-w-sm p-6 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-5 relative text-center">
+      <button onclick="closeSsoModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-3xl" id="ssoActiveAvatar">🧑‍🎓</div>
+      <div>
+        <h3 class="text-lg font-black text-white" id="ssoActiveName">Şagird</h3>
+        <p class="text-xs text-purple-400 font-bold" id="ssoActiveRole">10A Sinif Şagirdi</p>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-slate-800/80 border border-white/5 text-xs text-slate-300 leading-relaxed text-left">
+        <p class="text-[11px] font-semibold text-slate-400 mb-1">Aktiv Vahid Sessiya:</p>
+        <p>Siz E-School və Sports portallarına təkrar şifrə yazmadan birbaşa daxil ola bilərsiniz.</p>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="closeSsoModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">
+          Bağla
+        </button>
+        <button onclick="ssoLogout()" class="flex-1 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/30 text-rose-300 text-xs font-bold transition">
+          Çıxış Et
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
