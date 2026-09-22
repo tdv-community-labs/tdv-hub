@@ -1569,6 +1569,92 @@
       });
     }
 
+    // Add CACHE_NAME constant for client-side access
+    const CACHE_NAME = 'tdv-hub-v4'; // Matches the cache name in sw.js
+
+    // New function to force Service Worker update
+    function forceServiceWorkerUpdate() {
+      if (!('serviceWorker' in navigator)) {
+        alert('Brauzeriniz Service Worker-i dəstəkləmir.');
+        return;
+      }
+
+      navigator.serviceWorker.getRegistration().then(registration => {
+        if (!registration) {
+          alert('Service Worker qeydiyyatdan keçməyib. Zəhmət olmasa səhifəni yeniləyin və cəhd edin.');
+          return;
+        }
+
+        // 1. Check if a new Service Worker is already waiting
+        if (registration.waiting) {
+          console.log('Yeni Service Worker tapıldı və gözləyir. Aktivləşdirilir...');
+          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+          // Listen for when the new SW takes over and then reload
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('Yeni Service Worker aktivləşdirildi. Səhifə yenilənir...');
+            window.location.reload();
+          });
+          return; // Exit, as we handled it
+        }
+
+        // 2. If no waiting SW, check for updates
+        console.log('Service Worker yeniləməsi yoxlanılır...');
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // If it's installed and the current controller is not null (meaning there was an old one)
+                console.log('Yeni Service Worker quraşdırıldı. Aktivləşdirilir...');
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                // Listen for when the new SW takes over and then reload
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                  console.log('Yeni Service Worker aktivləşdirildi. Səhifə yenilənir...');
+                  window.location.reload();
+                });
+              } else if (newWorker.state === 'activated' && !navigator.serviceWorker.controller) {
+                // First time activation or no old SW, just reload
+                console.log('Service Worker aktivləşdirildi (ilk dəfə). Səhifə yenilənir...');
+                window.location.reload();
+              }
+            });
+          }
+        });
+
+        // Trigger the update check
+        registration.update().then(() => {
+          console.log('Service Worker yeniləmə yoxlaması başladı.');
+          // No need to alert success here, `updatefound` or `statechange` listeners will handle the outcome.
+          // If neither fires, it implies no update found and no waiting SW to activate.
+          setTimeout(() => {
+            if (!registration.waiting && (!registration.installing || registration.installing.state !== 'installing')) {
+                 alert('Ən son versiya artıq yüklənib və ya yeniləmə tapılmadı.');
+            }
+          }, 3000); // Give it some time to find an update
+        }).catch(error => {
+          console.error('Service Worker yenilənmə yoxlaması zamanı xəta:', error);
+          alert('Service Worker yenilənmə yoxlaması zamanı xəta baş verdi.');
+        });
+      }).catch(error => {
+        console.error('Service Worker qeydiyyatı alınarkən xəta:', error);
+        alert('Service Worker qeydiyyatı alınarkən xəta baş verdi.');
+      });
+    }
+
+    // New function to clear application cache
+    function clearAppCache() {
+      if (confirm('Bütün tətbiq keşini təmizləmək istədiyinizə əminsiniz? Bu, tətbiqi yenidən yükləyəcək.')) {
+        caches.delete(CACHE_NAME).then(() => {
+          console.log('Tətbiq keşi təmizləndi.');
+          window.location.reload();
+        }).catch(error => {
+          console.error('Keş təmizləmə zamanı xəta:', error);
+          alert('Keşi təmizləmə zamanı xəta baş verdi.');
+        });
+      }
+    }
+
+
     // Universal Clipboard Copy Helper with Legacy Fallback
     function copyTextToClipboard(text, onSuccess) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1721,8 +1807,8 @@
       { name: '4-cü Tənəffüs', start: '12:05', end: '12:15' },
       { name: '5-ci Dərs', start: '12:15', end: '13:00' },
       { name: '5-ci Tənəffüs', start: '13:00', end: '13:10' },
-      { name: '6-cı Dərs', start: '13:10', end: '13:55' },
-      { name: '6-cı Tənəffüs', start: '13:55', end: '14:05' },
+      { name: '6-ci Dərs', start: '13:10', end: '13:55' },
+      { name: '6-ci Tənəffüs', start: '13:55', end: '14:05' },
       { name: '7-ci Dərs', start: '14:05', end: '14:50' }
     ];
 
@@ -2413,7 +2499,10 @@
       { name: 'Zəngi Çal (Audio)', desc: 'Məktəb zəngi səsini səsləndir', action: 'chime', icon: '🔔' },
       { name: 'Portalı Paylaş / QR Kod', desc: 'Sinif yoldaşlarınla portalı bölüş', action: 'share', icon: '📲' },
       { name: 'Gecə / Gündüz Rejimi', desc: 'Saytın rəng mövzusunu dəyiş', action: 'theme', icon: '🌗' },
-      { name: 'TDV Games — Oyun Portalı', desc: 'TDV Mafia və interaktiv məktəb oyunları', url: 'games.html', icon: '🎮' }
+      { name: 'TDV Games — Oyun Portalı', desc: 'TDV Mafia və interaktiv məktəb oyunları', url: 'games.html', icon: '🎮' },
+      // New items for "Manual Run" PWA management
+      { name: 'PWA Yenilənməsini Məcburi Et', desc: 'Ən son versiyanı yükləmək üçün PWA-nı yenilə', action: 'forceUpdatePWA', icon: '🔄' },
+      { name: 'Tətbiq Keşini Təmizlə', desc: 'Proqramın offline keşilənmiş bütün fayllarını sil', action: 'clearCachePWA', icon: '🧹' }
     ];
 
     let searchSelectedIndex = -1;
@@ -2439,7 +2528,7 @@
       }
 
       resultsContainer.innerHTML = currentSearchResults.map((item, idx) => `
-        <div id="search-item-${idx}" onclick="executeSearchItem(${idx})" class="search-result-item flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group ${idx === 0 ? 'bg-slate-800/70 border border-blue-500/40' : 'border border-transparent'}">
+        <div id="search-item-${idx}" onclick="executeSearchItem(${idx})" class="search-result-item flex items-center justify-between p-3 rounded-xl ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-800/80 cursor-pointer'} transition group ${idx === searchSelectedIndex ? 'bg-slate-800/70 border border-blue-500/40' : 'border border-transparent'}">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base shrink-0">${item.icon}</div>
             <div>
@@ -2466,6 +2555,8 @@
       else if (item.action === 'share') openShareModal();
       else if (item.action === 'chime') playBellChime();
       else if (item.action === 'theme') toggleTheme();
+      else if (item.action === 'forceUpdatePWA') forceServiceWorkerUpdate(); // New action
+      else if (item.action === 'clearCachePWA') clearAppCache(); // New action
       else if (item.url) window.open(item.url, '_blank');
     }
 
