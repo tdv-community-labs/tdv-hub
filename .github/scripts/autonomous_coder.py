@@ -1,14 +1,16 @@
 import os
 import glob
+import subprocess
 from google import genai
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
-ISSUE_TITLE = os.environ.get("ISSUE_TITLE", "Kod optimizasiyası")
-ISSUE_BODY = os.environ.get("ISSUE_BODY", "Xətaları düzəlt və kodu təkmilləşdir.")
+TARGET_REPO = os.environ.get("TARGET_REPO", "tdv-hub")
+ISSUE_TITLE = os.environ.get("ISSUE_TITLE", "Ümumi kod optimizasiyası və refaktorinq")
+ISSUE_BODY = os.environ.get("ISSUE_BODY", "Xətaları aradan qaldır, kodu müasirləşdir və təmizlə.")
 
 client = genai.Client(api_key=API_KEY)
 
-# Kontekst topla
+# Repo daxilindəki kodları topla
 files_context = ""
 target_extensions = ("*.js", "*.jsx", "*.ts", "*.tsx", "*.html", "*.css", "*.py", "*.json")
 excluded_folders = ["node_modules", ".git", "dist", "build", ".github", ".next"]
@@ -25,26 +27,27 @@ for ext in target_extensions:
                 pass
 
 prompt = f"""
-Sən peşəkar full-stack tərtibatçısan. Layihənin kodları aşağıda verilib.
-Sənə həll etməli olduğun bir tapşırıq (Issue) təqdim olunur.
+Sən TDV Community Labs təşkilatının peşəkar full-stack tərtibatçısısan.
+Hazırda işlədiyin repozitoriya: {TARGET_REPO}
 
-TAPŞIRIQ BAŞLIĞI: {ISSUE_TITLE}
-DETALLAR: {ISSUE_BODY}
+HƏLL EDİLMƏLİ TAPŞIRIQ:
+Başlıq: {ISSUE_TITLE}
+Təfərrüat: {ISSUE_BODY}
 
 MÖVCUD KOD BAZASI:
 {files_context}
 
-TƏLƏB:
-1. Tapşırığı tam və xətasız yerinə yetir.
-2. YALNIZ dəyişdirilməli olan faylların TAM yenilənmiş kodunu ver.
+TƏLƏBLƏR:
+1. Tapşırığı tam və xətasız şəkildə həll et.
+2. YALNIZ dəyişdirilməli və ya yeni yaradılmalı olan faylların TAM kodunu ver.
 3. Cavab formatı MÜTLƏQ belə olmalıdır:
 
-FILE: faylin/tam/yolu.ext
+FILE: faylin/nisbi/yolu.ext
 [CODE_START]
 // tam kod buraya
 [CODE_END]
 
-Heç bir əlavə izahat mətni yazma.
+Heç bir əlavə giriş, çıxış və ya izahat mətni yazma.
 """
 
 response = client.models.generate_content(
@@ -55,6 +58,7 @@ response = client.models.generate_content(
 content = response.text
 blocks = content.split("FILE: ")
 
+modified_count = 0
 for block in blocks[1:]:
     lines = block.strip().split("\n")
     target_file = lines[0].strip()
@@ -76,4 +80,7 @@ for block in blocks[1:]:
 
     with open(target_file, "w", encoding="utf-8") as f:
         f.write(clean_code)
-    print(f"[+] Dəyişiklik yazıldı: {target_file}")
+    print(f"[+] Yeniləndi: {target_file}")
+    modified_count += 1
+
+print(f"[*] Cəmi dəyişdirilən fayl sayı: {modified_count}")
