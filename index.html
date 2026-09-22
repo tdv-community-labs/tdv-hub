@@ -18,11 +18,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com">
-    // ==========================================
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+// ==========================================
     // TDV COMMUNITY LABS UNIFIED SSO & AUTH GATEWAY
     // ==========================================
     const SSO_SESSION_KEY = 'tdv_ecosystem_session_v1';
+    let currentRegAvatar = '🧑‍🎓';
 
     function getHubSession() {
       try {
@@ -74,6 +76,7 @@
         if (avEl) avEl.textContent = sess.avatar || '🧑‍🎓';
         document.getElementById('ssoProfileModal').classList.remove('hidden');
       } else {
+        ssoSwitchTab('login');
         document.getElementById('ssoLoginModal').classList.remove('hidden');
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -84,6 +87,46 @@
       const m2 = document.getElementById('ssoProfileModal');
       if (m1) m1.classList.add('hidden');
       if (m2) m2.classList.add('hidden');
+    }
+
+    function ssoSwitchTab(tab) {
+      const loginView = document.getElementById('ssoLoginView');
+      const regView = document.getElementById('ssoRegisterView');
+      const tabLoginBtn = document.getElementById('ssoTabLoginBtn');
+      const tabRegBtn = document.getElementById('ssoTabRegBtn');
+      const errEl = document.getElementById('ssoAlertError');
+      const succEl = document.getElementById('ssoAlertSuccess');
+      if (errEl) errEl.classList.add('hidden');
+      if (succEl) succEl.classList.add('hidden');
+
+      if (tab === 'login') {
+        if (loginView) loginView.classList.remove('hidden');
+        if (regView) regView.classList.add('hidden');
+        if (tabLoginBtn) {
+          tabLoginBtn.className = 'flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md';
+        }
+        if (tabRegBtn) {
+          tabRegBtn.className = 'flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer text-slate-400 hover:text-white';
+        }
+      } else {
+        if (loginView) loginView.classList.add('hidden');
+        if (regView) regView.classList.remove('hidden');
+        if (tabLoginBtn) {
+          tabLoginBtn.className = 'flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer text-slate-400 hover:text-white';
+        }
+        if (tabRegBtn) {
+          tabRegBtn.className = 'flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md';
+        }
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function ssoSelectAvatar(av, btn) {
+      currentRegAvatar = av;
+      document.querySelectorAll('.sso-avatar-btn').forEach(b => {
+        b.className = 'sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700';
+      });
+      btn.className = 'sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-cyan-500 text-slate-950 scale-110 shadow-md ring-2 ring-cyan-400';
     }
 
     function ssoLogin(username, grade, role = 'student') {
@@ -108,6 +151,65 @@
       updateSsoUi();
     }
 
+    function ssoRegister(fullName, username, grade, classLetter, pin, confirmPin) {
+      const errEl = document.getElementById('ssoAlertError');
+      const succEl = document.getElementById('ssoAlertSuccess');
+      const errText = document.getElementById('ssoAlertErrorText');
+      const succText = document.getElementById('ssoAlertSuccessText');
+
+      const trimmedName = (fullName || '').trim();
+      const trimmedUser = (username || '').trim();
+      if (!trimmedName) {
+        if (errText) errText.textContent = 'Zəhmət olmasa ad və soyadınızı daxil edin.';
+        if (errEl) errEl.classList.remove('hidden');
+        return;
+      }
+      if (!trimmedUser) {
+        if (errText) errText.textContent = 'Zəhmət olmasa istifadəçi adı daxil edin.';
+        if (errEl) errEl.classList.remove('hidden');
+        return;
+      }
+      if (pin && confirmPin && pin !== confirmPin) {
+        if (errText) errText.textContent = 'Daxil edilən şifrələr bir-birinə uyğun gəlmir.';
+        if (errEl) errEl.classList.remove('hidden');
+        return;
+      }
+
+      const cleanGrade = Number(grade) || 10;
+      const finalClass = cleanGrade > 0 ? `${cleanGrade}${classLetter || 'A'}` : 'Müəllim';
+      const role = cleanGrade === 0 ? 'teacher' : 'student';
+      const session = {
+        userId: 'tdv-usr-' + Date.now().toString(36),
+        username: trimmedUser,
+        fullName: trimmedName,
+        grade: cleanGrade,
+        schoolClass: finalClass,
+        role: role,
+        avatar: currentRegAvatar || (role === 'teacher' ? '👨‍🏫' : '🧑‍🎓'),
+        token: 'tdv_token_' + Math.random().toString(36).substring(2),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+
+      try {
+        const regUsersRaw = localStorage.getItem('tdv_registered_users_v1');
+        const regUsers = regUsersRaw ? JSON.parse(regUsersRaw) : [];
+        regUsers.push({ ...session, pin: pin || '' });
+        localStorage.setItem('tdv_registered_users_v1', JSON.stringify(regUsers));
+        localStorage.setItem(SSO_SESSION_KEY, JSON.stringify(session));
+
+        if (succText) succText.textContent = 'Hesabınız uğurla yaradıldı! Daxil olunur...';
+        if (succEl) succEl.classList.remove('hidden');
+        setTimeout(() => {
+          closeSsoModal();
+          updateSsoUi();
+        }, 500);
+      } catch(e) {
+        if (errText) errText.textContent = 'Qeydiyyat zamanı xəta baş verdi.';
+        if (errEl) errEl.classList.remove('hidden');
+      }
+    }
+
     function ssoLogout() {
       localStorage.removeItem(SSO_SESSION_KEY);
       closeSsoModal();
@@ -121,7 +223,6 @@
     window.addEventListener('load', () => {
       updateSsoUi();
     });
-
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
@@ -2454,63 +2555,153 @@
     }
   </script>
   <!-- ================= SSO LOGIN & PROFILE MODALS ================= -->
-  <!-- SSO Login Modal -->
-  <div id="ssoLoginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-5 relative">
-      <button onclick="closeSsoModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg">
+  <!-- ================= SSO LOGIN & REGISTRATION MODALS ================= -->
+  <!-- SSO Login & Registration Modal -->
+  <div id="ssoLoginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto font-sans">
+    <div class="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-5 relative my-auto">
+      <button onclick="closeSsoModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
       <div class="text-center space-y-2">
         <div class="inline-flex p-2.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
-          <i data-lucide="shield-check" class="w-8 h-8"></i>
+          <i data-lucide="shield-check" class="w-7 h-7"></i>
         </div>
         <h3 class="text-xl font-black text-white">TDV Community Labs Vahid Giriş</h3>
         <p class="text-xs text-slate-400">Tək hesab ilə E-School, Sports və Games portallarına birbaşa daxil olun.</p>
       </div>
 
-      <form id="ssoForm" onsubmit="event.preventDefault(); ssoLogin(document.getElementById('ssoUsernameInput').value, document.getElementById('ssoGradeInput').value);" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Ad, Soyad və ya Şagird Kodu:</label>
-          <input type="text" id="ssoUsernameInput" placeholder="Məs: Orxan Əliyev" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Sinif / Status:</label>
-          <select id="ssoGradeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-emerald-500">
-            <option value="10">10-cu Sinif Şagirdi</option>
-            <option value="11">11-ci Sinif Şagirdi</option>
-            <option value="9">9-cu Sinif Şagirdi</option>
-            <option value="8">8-ci Sinif Şagirdi</option>
-            <option value="7">7-ci Sinif Şagirdi</option>
-            <option value="6">6-cı Sinif Şagirdi</option>
-            <option value="0">Fənn Müəllimi</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Şifrə / PİN Kod:</label>
-          <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/30 transition">
-          Ekosistemə Daxil Ol
+      <!-- Segmented Tab Switcher -->
+      <div class="flex p-1 rounded-2xl bg-slate-800/80 border border-white/10">
+        <button id="ssoTabLoginBtn" type="button" onclick="ssoSwitchTab('login')" class="flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md">
+          <i data-lucide="log-in" class="w-3.5 h-3.5 mr-1"></i>
+          <span>Daxil Ol</span>
         </button>
-      </form>
+        <button id="ssoTabRegBtn" type="button" onclick="ssoSwitchTab('register')" class="flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer text-slate-400 hover:text-white">
+          <i data-lucide="user-plus" class="w-3.5 h-3.5 mr-1"></i>
+          <span>Qeydiyyatdan Keç</span>
+        </button>
+      </div>
 
-      <div class="pt-3 border-t border-white/10 space-y-2">
-        <div class="text-[11px] font-bold text-slate-400 text-center uppercase tracking-wider">1 Toxunuşla Sürətli Giriş:</div>
-        <div class="grid grid-cols-3 gap-2">
-          <button type="button" onclick="ssoLogin('Orxan Əliyev', 10)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
-            <span class="text-sm block">🧑‍🎓</span>
-            <span class="text-[10px] font-bold text-slate-300 block">10-cu Sinif</span>
+      <!-- Notification Alerts -->
+      <div id="ssoAlertError" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center space-x-2">
+        <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+        <span id="ssoAlertErrorText">Xəta baş verdi</span>
+      </div>
+      <div id="ssoAlertSuccess" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center space-x-2">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+        <span id="ssoAlertSuccessText">Uğurlu əməliyyat</span>
+      </div>
+
+      <!-- TAB 1: DAXİL OL -->
+      <div id="ssoLoginView" class="space-y-4">
+        <form id="ssoForm" onsubmit="event.preventDefault(); ssoLogin(document.getElementById('ssoUsernameInput').value, document.getElementById('ssoGradeInput').value);" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Ad, Soyad və ya Şagird Kodu:</label>
+            <input type="text" id="ssoUsernameInput" placeholder="Məs: Orxan Əliyev" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Sinif / Status:</label>
+            <select id="ssoGradeInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+              <option value="10">10-cu Sinif Şagirdi</option>
+              <option value="11">11-ci Sinif Şagirdi</option>
+              <option value="9">9-cu Sinif Şagirdi</option>
+              <option value="8">8-ci Sinif Şagirdi</option>
+              <option value="7">7-ci Sinif Şagirdi</option>
+              <option value="6">6-cı Sinif Şagirdi</option>
+              <option value="0">Fənn Müəllimi</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Şifrə / PİN Kod:</label>
+            <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" />
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/30 transition cursor-pointer">
+            Ekosistemə Daxil Ol
           </button>
-          <button type="button" onclick="ssoLogin('Murad Məmmədov', 11)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
-            <span class="text-sm block">🎒</span>
-            <span class="text-[10px] font-bold text-slate-300 block">11-ci Sinif</span>
-          </button>
-          <button type="button" onclick="ssoLogin('Aysel Müəllimə', 0, 'teacher')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition">
-            <span class="text-sm block">👨‍🏫</span>
-            <span class="text-[10px] font-bold text-slate-300 block">Müəllim</span>
-          </button>
+        </form>
+
+        <div class="pt-3 border-t border-white/10 space-y-2">
+          <div class="text-[11px] font-bold text-slate-400 text-center uppercase tracking-wider">1 Toxunuşla Sürətli Giriş:</div>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="ssoLogin('Orxan Əliyev', 10)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition cursor-pointer">
+              <span class="text-sm block">🧑‍🎓</span>
+              <span class="text-[10px] font-bold text-slate-300 block">10-cu Sinif</span>
+            </button>
+            <button type="button" onclick="ssoLogin('Murad Məmmədov', 11)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition cursor-pointer">
+              <span class="text-sm block">🎒</span>
+              <span class="text-[10px] font-bold text-slate-300 block">11-ci Sinif</span>
+            </button>
+            <button type="button" onclick="ssoLogin('Aysel Müəllimə', 0, 'teacher')" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-center transition cursor-pointer">
+              <span class="text-sm block">👨‍🏫</span>
+              <span class="text-[10px] font-bold text-slate-300 block">Müəllim</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- TAB 2: QEYDİYYATDAN KEÇ -->
+      <div id="ssoRegisterView" class="hidden space-y-3">
+        <form onsubmit="event.preventDefault(); ssoRegister(document.getElementById('ssoRegFullName').value, document.getElementById('ssoRegUsername').value, document.getElementById('ssoRegGrade').value, document.getElementById('ssoRegClassLetter').value, document.getElementById('ssoRegPin').value, document.getElementById('ssoRegConfirmPin').value);" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Ad və Soyad:</label>
+            <input type="text" id="ssoRegFullName" placeholder="Məs: Elmir Qasımov" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">İstifadəçi Adı (Giriş Kodu):</label>
+            <input type="text" id="ssoRegUsername" placeholder="Məs: elmir_10a" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Sinif:</label>
+              <select id="ssoRegGrade" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-cyan-500 cursor-pointer">
+                <option value="10">10-cu Sinif</option>
+                <option value="11">11-ci Sinif</option>
+                <option value="9">9-cu Sinif</option>
+                <option value="8">8-ci Sinif</option>
+                <option value="7">7-ci Sinif</option>
+                <option value="6">6-cı Sinif</option>
+                <option value="0">Fənn Müəllimi</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Bölmə:</label>
+              <select id="ssoRegClassLetter" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white focus:outline-none focus:border-cyan-500 cursor-pointer">
+                <option value="A">A Qrupu</option>
+                <option value="B">B Qrupu</option>
+                <option value="C">C Qrupu</option>
+                <option value="D">D Qrupu</option>
+                <option value="E">E Qrupu</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Profil Avatarı:</label>
+            <div class="flex items-center gap-2 overflow-x-auto py-1">
+              <button type="button" onclick="ssoSelectAvatar('🧑‍🎓', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-cyan-500 text-slate-950 scale-110 shadow-md ring-2 ring-cyan-400">🧑‍🎓</button>
+              <button type="button" onclick="ssoSelectAvatar('👩‍🔬', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👩‍🔬</button>
+              <button type="button" onclick="ssoSelectAvatar('👨‍💻', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👨‍💻</button>
+              <button type="button" onclick="ssoSelectAvatar('⚽', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">⚽</button>
+              <button type="button" onclick="ssoSelectAvatar('🚀', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🚀</button>
+              <button type="button" onclick="ssoSelectAvatar('🧠', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🧠</button>
+              <button type="button" onclick="ssoSelectAvatar('⭐', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">⭐</button>
+              <button type="button" onclick="ssoSelectAvatar('🏆', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🏆</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Şifrə / PİN:</label>
+              <input type="password" id="ssoRegPin" placeholder="••••••••" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Təkrarı:</label>
+              <input type="password" id="ssoRegConfirmPin" placeholder="••••••••" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500" />
+            </div>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-cyan-900/30 transition cursor-pointer mt-1">
+            Hesab Yarat və Ekosistemə Daxil Ol
+          </button>
+        </form>
       </div>
     </div>
   </div>
