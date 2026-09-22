@@ -49,7 +49,7 @@
 
       // Update outbound links with SSO ticket
       const ticket = sess ? btoa(unescape(encodeURIComponent(JSON.stringify(sess)))) : '';
-      document.querySelectorAll('a[href*="tdv-e-school.vercel.app"], a[href*="school-minifootball-tournament.vercel.app"]').forEach(link => {
+      document.querySelectorAll('a[href*="tdv-e-school.vercel.app"], a[href*="school-minifootball-tournament.vercel.app"], a[href*="tdv-games.vercel.app"], a[href*="tdv-mafia-pzvc.vercel.app"]').forEach(link => {
         const baseHref = link.getAttribute('data-base-href') || link.href.split('?')[0];
         link.setAttribute('data-base-href', baseHref);
         if (ticket) {
@@ -118,10 +118,10 @@
 
     function ssoSelectAvatar(av, btn) {
       currentRegAvatar = av;
-      document.querySelectorAll('.sso-avatar-btn').forEach(b => {
-        b.className = 'sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700';
+      document.querySelectorAll('.sso-avatar-btn cursor-pointer').forEach(b => {
+        b.className = 'sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700';
       });
-      btn.className = 'sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-purple-500 text-white scale-110 shadow-md ring-2 ring-purple-400';
+      btn.className = 'sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-purple-500 text-white scale-110 shadow-md ring-2 ring-purple-400';
     }
 
     function ssoLogin(username, grade, role = 'student') {
@@ -828,19 +828,19 @@
         <div class="inline-flex p-2.5 rounded-2xl bg-purple-500/15 border border-purple-500/30 text-purple-400">
           <i data-lucide="shield-check" class="w-7 h-7"></i>
         </div>
-        <h3 class="text-xl font-black text-white">TDV Community Labs Vahid Giriş</h3>
-        <p class="text-xs text-slate-400">Tək hesab ilə E-School, Sports və Games portallarına birbaşa daxil olun.</p>
+        <h3 class="text-xl font-black text-white">TDV Community Labs Vahid Profili</h3>
+        <p class="text-xs text-slate-400">Tək 1 profil bütün ekosistemə (E-School, Futbol, Games, Mafia) bəs edir.</p>
       </div>
 
       <!-- Segmented Tab Switcher -->
       <div class="flex p-1 rounded-2xl bg-slate-800/80 border border-white/10">
         <button id="ssoTabLoginBtn" type="button" onclick="ssoSwitchTab('login')" class="flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md">
           <i data-lucide="log-in" class="w-3.5 h-3.5 mr-1"></i>
-          <span>Daxil Ol</span>
+          <span>Vahid Giriş</span>
         </button>
         <button id="ssoTabRegBtn" type="button" onclick="ssoSwitchTab('register')" class="flex-1 py-2 rounded-xl text-xs font-black transition flex items-center justify-center space-x-1.5 cursor-pointer text-slate-400 hover:text-white">
           <i data-lucide="user-plus" class="w-3.5 h-3.5 mr-1"></i>
-          <span>Qeydiyyatdan Keç</span>
+          <span>Vahid Profil Yarat</span>
         </button>
       </div>
 
@@ -878,7 +878,7 @@
             <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500" />
           </div>
           <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition cursor-pointer">
-            Ekosistemə Daxil Ol
+            Vahid Profil ilə Daxil Ol
           </button>
         </form>
 
@@ -939,14 +939,14 @@
           <div>
             <label class="block text-xs font-bold text-slate-300 mb-1">Profil Avatarı:</label>
             <div class="flex items-center gap-2 overflow-x-auto py-1">
-              <button type="button" onclick="ssoSelectAvatar('🧑‍🎓', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-purple-500 text-white scale-110 shadow-md ring-2 ring-purple-400">🧑‍🎓</button>
-              <button type="button" onclick="ssoSelectAvatar('👩‍🔬', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👩‍🔬</button>
-              <button type="button" onclick="ssoSelectAvatar('👨‍💻', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👨‍💻</button>
-              <button type="button" onclick="ssoSelectAvatar('🎮', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🎮</button>
-              <button type="button" onclick="ssoSelectAvatar('🚀', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🚀</button>
-              <button type="button" onclick="ssoSelectAvatar('🧠', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🧠</button>
-              <button type="button" onclick="ssoSelectAvatar('⭐', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">⭐</button>
-              <button type="button" onclick="ssoSelectAvatar('🏆', this)" class="sso-avatar-btn w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🏆</button>
+              <button type="button" onclick="ssoSelectAvatar('🧑‍🎓', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-purple-500 text-white scale-110 shadow-md ring-2 ring-purple-400">🧑‍🎓</button>
+              <button type="button" onclick="ssoSelectAvatar('👩‍🔬', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👩‍🔬</button>
+              <button type="button" onclick="ssoSelectAvatar('👨‍💻', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">👨‍💻</button>
+              <button type="button" onclick="ssoSelectAvatar('🎮', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🎮</button>
+              <button type="button" onclick="ssoSelectAvatar('🚀', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🚀</button>
+              <button type="button" onclick="ssoSelectAvatar('🧠', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🧠</button>
+              <button type="button" onclick="ssoSelectAvatar('⭐', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">⭐</button>
+              <button type="button" onclick="ssoSelectAvatar('🏆', this)" class="sso-avatar-btn cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center text-base transition cursor-pointer bg-slate-800 hover:bg-slate-700">🏆</button>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -960,7 +960,7 @@
             </div>
           </div>
           <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-cyan-900/30 transition cursor-pointer mt-1">
-            Hesab Yarat və Ekosistemə Daxil Ol
+            Hesab Yarat və Vahid Profil ilə Daxil Ol
           </button>
         </form>
       </div>
