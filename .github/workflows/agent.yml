@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Python Quraşdır
-        uses: setup-python@v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -28,8 +28,8 @@ jobs:
       - name: Agent Kodu Yazır
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title || 'Manual Run' }}
+          ISSUE_BODY: ${{ github.event.issue.body || 'No description provided' }}
         run: python .github/scripts/autonomous_coder.py
 
       - name: Pull Request Yarat
@@ -37,8 +37,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "feat: agent tərəfindən həll olundu"
-          title: "🤖 Agent PR: ${{ github.event.issue.title }}"
+          title: "🤖 Agent PR: ${{ github.event.issue.title || 'Manual Optimization' }}"
           body: |
-            Bu Pull Request avtomatik olaraq **#${{ github.event.issue.number }}** nömrəli Issue əsasında həll edildi.
+            Bu Pull Request avtomatik olaraq agent tərəfindən yaradıldı.
           branch: "agent-solution-${{ github.run_id }}"
           delete-branch: true
