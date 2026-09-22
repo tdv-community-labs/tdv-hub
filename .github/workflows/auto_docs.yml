@@ -1,0 +1,43 @@
+name: Auto Documentation & Changelog
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  update-docs:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_ORG_TOKEN }}
+          fetch-depth: 2
+
+      - name: Git İstifadəçisini Quraşdır
+        run: |
+          git config user.name "tdv-doc-agent[bot]"
+          git config user.email "doc-agent@tdv-community-labs"
+
+      - name: Python Quraşdır
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Asılılıqları Quraşdır
+        run: pip install google-genai
+
+      - name: Changelog Faylını Yenilə
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python .github/scripts/doc_updater.py
+
+      - name: Dəyişiklikləri Main Budağına Push Et
+        run: |
+          git add CHANGELOG.md
+          git diff --staged --quiet || (git commit -m "docs: CHANGELOG avtomatik yeniləndi [skip ci]" && git push origin main)
