@@ -70,7 +70,10 @@ for block in blocks[1:]:
     else:
         clean_code = code_part.strip()
         
-    os.makedirs(os.path.dirname(target_file), exist_ok=True)
+    dirname = os.path.dirname(target_file)
+    if dirname:
+        os.makedirs(dirname, exist_ok=True)
+
     with open(target_file, "w", encoding="utf-8") as f:
         f.write(clean_code)
     print(f"[+] Dəyişiklik yazıldı: {target_file}")
