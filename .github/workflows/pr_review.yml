@@ -1,0 +1,43 @@
+name: Autonomous PR Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python Quraşdır
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Asılılıqları Quraşdır
+        run: pip install google-genai
+
+      - name: PR Təhlilini Apar
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python .github/scripts/pr_reviewer.py
+
+      - name: Rəyi PR-a Şərh Kimi Əlavə Et
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_ORG_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review_result.md', 'utf8');
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: review
+            });
