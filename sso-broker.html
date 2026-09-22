@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>TDV Community Labs Ecosystem SSO Broker</title>
+</head>
+<body>
+<script>
+  (function() {
+    const ALLOWED_ORIGIN_REGEX = /^(https:\/\/[a-zA-Z0-9-]+\.vercel\.app|http:\/\/localhost(:\d+)?)$/;
+    const SESSION_KEY = 'tdv_ecosystem_session_v1';
+    const USERS_KEY = 'tdv_registered_users_v1';
+
+    function isOriginAllowed(origin) {
+      return ALLOWED_ORIGIN_REGEX.test(origin);
+    }
+
+    window.addEventListener('message', function(event) {
+      if (!isOriginAllowed(event.origin)) return;
+
+      const data = event.data;
+      if (!data || !data.type) return;
+
+      try {
+        if (data.type === 'TDV_SSO_PING') {
+          event.source.postMessage({ type: 'TDV_SSO_PONG' }, event.origin);
+        } else if (data.type === 'TDV_SSO_GET') {
+          const rawSession = localStorage.getItem(SESSION_KEY);
+          const rawUsers = localStorage.getItem(USERS_KEY);
+          let session = null;
+          let users = [];
+          if (rawSession) {
+            try {
+              const parsed = JSON.parse(rawSession);
+              if (parsed && parsed.expiresAt > Date.now()) {
+                session = parsed;
+              } else {
+                localStorage.removeItem(SESSION_KEY);
+              }
+            } catch(e) {}
+          }
+          if (rawUsers) {
+            try { users = JSON.parse(rawUsers); } catch(e) {}
+          }
+          event.source.postMessage({
+            type: 'TDV_SSO_DATA',
+            session: session,
+            users: users,
+            requestId: data.requestId
+          }, event.origin);
+        } else if (data.type === 'TDV_SSO_SET') {
+          if (data.session) {
+            localStorage.setItem(SESSION_KEY, typeof data.session === 'string' ? data.session : JSON.stringify(data.session));
+          }
+          if (data.users) {
+            localStorage.setItem(USERS_KEY, typeof data.users === 'string' ? data.users : JSON.stringify(data.users));
+          }
+          event.source.postMessage({ type: 'TDV_SSO_SAVED', requestId: data.requestId }, event.origin);
+        } else if (data.type === 'TDV_SSO_LOGOUT') {
+          localStorage.removeItem(SESSION_KEY);
+          event.source.postMessage({ type: 'TDV_SSO_LOGGED_OUT', requestId: data.requestId }, event.origin);
+        }
+      } catch(err) {
+        console.warn('[SSO Broker Error]:', err);
+      }
+    });
+
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'TDV_SSO_BROKER_READY' }, '*');
+      }
+    } catch(e) {}
+  })();
+</script>
+</body>
+</html>
