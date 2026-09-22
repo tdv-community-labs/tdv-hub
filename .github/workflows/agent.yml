@@ -1,0 +1,44 @@
+name: Autonomous Developer Agent
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reponu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python Quraşdır
+        uses: setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Asılılıqları Yüklə
+        run: pip install google-genai
+
+      - name: Agent Kodu Yazır
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: python .github/scripts/autonomous_coder.py
+
+      - name: Pull Request Yarat
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: agent tərəfindən həll olundu"
+          title: "🤖 Agent PR: ${{ github.event.issue.title }}"
+          body: |
+            Bu Pull Request avtomatik olaraq **#${{ github.event.issue.number }}** nömrəli Issue əsasında həll edildi.
+          branch: "agent-solution-${{ github.run_id }}"
+          delete-branch: true
