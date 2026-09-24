@@ -4,7 +4,6 @@
   "description": "TDV Community Labs - Central Digital Campus Portal",
   "scripts": {
     "start": "npx serve .",
-    "build": "node build-check.js",
     "test": "node build-check.js"
   },
   "keywords": [
