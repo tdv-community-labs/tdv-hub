@@ -4,12 +4,15 @@
 
 TDV Community Labs məktəb icmasının bütün rəqəmsal layihələrini vahid ünvanda birləşdirən mərkəzi portal.
 
-## 🚀 Bölmələr
+## 🚀 Rəsmi Bölmələr və Ekosistem Layihələri
 
-1. **🎓 TDV E-School:** [https://tdv-e-school.vercel.app/](https://tdv-e-school.vercel.app/) — Tədris portalı və resurslar.
-2. **⚽ TDV Sports:** [https://school-minifootball-tournament-2.vercel.app/](https://school-minifootball-tournament-2.vercel.app/) — Məktəb minifutbol turniri canlı nəticələri.
-3. **🎮 TDV Games:** İnteraktiv oyun layihələri üçün rezerv bölmə (Tezliklə).
+1. **🎓 TDV E-School:** [https://tdv-e-school.vercel.app/](https://tdv-e-school.vercel.app/) — Tədris portalı, 100+ elektron dərs vəsaiti, KSQ/BSQ arxivi və 1v1 PvP arenası.
+2. **⚽ TDV Sports:** [https://school-minifootball-tournament-2.vercel.app/](https://school-minifootball-tournament-2.vercel.app/) — Məktəb daxili minifutbol turnirinin canlı nəticələri, xal cədvəli və oyunçu statistikası.
+3. **🕵️‍♂️ TDV Mafia:** [https://tdv-mafia.vercel.app/](https://tdv-mafia.vercel.app/) — Elit sosial deduksiya və strateji məntiq platforması, 15 oyun formatı, Dante's Inferno rejimi və canlı masalar.
+4. **🎮 TDV Games:** İnteraktiv təhsil oyunları və şagird kodlaşdırma layihələri üçün inkubator bölməsi (`games.html`).
 
-## ⚡ 1 Kliklə Vercel Deploy
-
-Yuxarıdakı **"Deploy with Vercel"** düyməsinə klikləməklə layihəni birbaşa Vercel üzərində canlıya ala bilərsiniz.
+## 🎨 Tətbiq Olunmuş Dizayn Standartı (Dual-Theme)
+- **Tünd Rejim (Dark Mode):** Əsas fon `zinc-950`, kartlar `zinc-900`, haşiyələr `zinc-800`.
+- **İşıqlı Rejim (Light Mode):** Əsas fon `zinc-50`, kartlar ağ `#ffffff`, haşiyələr `zinc-200`.
+- **Kontrast & Oxunaqlılıq:** WCAG AA standartlarına tam uyğundur.
+- **PWA & Offline:** Service Worker və Manifest ilə oflayn işləmə dəstəyi.

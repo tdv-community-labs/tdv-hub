@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "description": "TDV Community Labs - Central Digital Campus Portal",
   "scripts": {
-    "start": "npx serve ."
+    "start": "npx serve .",
+    "build": "node build-check.js",
+    "test": "node build-check.js"
   },
-  "keywords": ["tdv", "education", "sports", "portal", "hub"],
+  "keywords": [
+    "tdv",
+    "education",
+    "sports",
+    "portal",
+    "hub"
+  ],
   "author": "TDV Community Labs",
   "license": "MIT"
 }
