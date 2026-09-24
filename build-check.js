@@ -97,6 +97,34 @@ try {
   assert(false, `games.html validation failed: ${err.message}`);
 }
 
+// 6. Validate TDV Royal Purple Branding & Ecosystem Standards
+try {
+  const indexHtml = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  const gamesHtml = fs.readFileSync(path.join(rootDir, 'games.html'), 'utf8');
+  const readme = fs.readFileSync(path.join(rootDir, 'README.md'), 'utf8');
+
+  // Favicon & Logo assets
+  assert(fs.existsSync(path.join(rootDir, 'assets', 'tdv-logo.png')), 'Official TDV Logo crest exists in assets/tdv-logo.png');
+  assert(indexHtml.includes('assets/tdv-logo.png'), 'index.html references official TDV crest logo');
+  assert(gamesHtml.includes('assets/tdv-logo.png'), 'games.html references official TDV crest logo');
+
+  // Early FOUC Prevention
+  assert(indexHtml.includes('tdv_theme') && indexHtml.includes('prefers-color-scheme'), 'index.html contains early FOUC prevention script');
+  assert(gamesHtml.includes('tdv_theme') && gamesHtml.includes('prefers-color-scheme'), 'games.html contains early FOUC prevention script');
+
+  // TDV Royal Purple Branding (#9333ea / purple palette)
+  assert(indexHtml.includes('#9333ea') && indexHtml.includes('#7e22ce'), 'index.html defines TDV Royal Purple brand palette');
+  assert(gamesHtml.includes('#9333ea') && gamesHtml.includes('#7e22ce'), 'games.html defines TDV Royal Purple brand palette');
+
+  // No obsolete indigo or broken domain links
+  assert(!indexHtml.includes('indigo') && !gamesHtml.includes('indigo'), 'index.html and games.html have no lingering indigo accent classes');
+  assert(!indexHtml.includes('school-minifootball-tournament-2') &&
+         !gamesHtml.includes('school-minifootball-tournament-2') &&
+         !readme.includes('school-minifootball-tournament-2'), 'all tournament URLs point to canonical school-minifootball-tournament.vercel.app');
+} catch (err) {
+  assert(false, `TDV branding validation failed: ${err.message}`);
+}
+
 if (errorCount > 0) {
   console.error(`\n❌ Build verification failed with ${errorCount} error(s).`);
   process.exit(1);

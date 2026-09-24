@@ -7,7 +7,25 @@
   <meta name="description" content="TDV Community Labs — Məktəb icmasının vahid rəqəmsal ekosistemi: tədris portalı, idman turniri, canlı zəng cədvəli, KSQ/BSQ bal kalkulyatoru, tapşırıq dəftəri və düstur bankı.">
   <meta name="theme-color" content="#09090b" id="metaThemeColor">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233B82F6'/%3E%3Cstop offset='100%25' stop-color='%2322C55E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2309090b'/%3E%3Cpath d='M32 14 L48 24 L48 40 L32 50 L16 40 L16 24 Z' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%233B82F6'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/tdv-logo.png">
+
+  <!-- Early FOUC Prevention Script -->
+  <script>
+    (function() {
+      try {
+        const stored = localStorage.getItem('tdv_theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored ? stored : (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Cybersecurity: Content Security Policy & Security Meta -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';">
@@ -35,12 +53,17 @@
           },
           colors: {
             brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              200: '#c7d2fe',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
             }
           }
         }
@@ -64,9 +87,9 @@
       background-color: #09090b;
       color: #f4f4f5;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(34, 197, 94, 0.06) 0px, transparent 50%),
-        radial-gradient(at 50% 60%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 60%, rgba(126, 34, 206, 0.08) 0px, transparent 50%);
       background-attachment: fixed;
     }
 
@@ -74,8 +97,8 @@
       background-color: #fafafa;
       color: #09090b;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(34, 197, 94, 0.04) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.04) 0px, transparent 50%);
       background-attachment: fixed;
     }
 
@@ -95,13 +118,13 @@
 
     .hub-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
-      border-color: #cbd5e1;
+      box-shadow: 0 12px 24px -8px rgba(147, 51, 234, 0.12);
+      border-color: #d8b4fe;
     }
 
     html.dark .hub-card:hover {
-      box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.7);
-      border-color: #3f3f46;
+      box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(147, 51, 234, 0.15);
+      border-color: #7e22ce;
     }
 
     .pulse-dot {
@@ -141,11 +164,11 @@
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(161, 161, 170, 0.45);
+      background: rgba(147, 51, 234, 0.5);
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white antialiased font-sans">
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased font-sans">
 
   <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
   <aside aria-label="Organization Ecosystem Bar" class="bg-zinc-100 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-4 text-[11px] sticky top-0 z-50 transition-colors">
@@ -153,14 +176,14 @@
       
       <!-- Left: Org Brand & Live Ticker -->
       <div class="flex items-center gap-2.5 overflow-hidden">
-        <div class="flex items-center gap-1.5 shrink-0 font-bold text-zinc-900 dark:text-zinc-100">
-          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+        <a href="index.html" class="flex items-center gap-2 shrink-0 font-bold text-zinc-900 dark:text-zinc-100 hover:text-purple-600 dark:hover:text-purple-400 transition">
+          <img src="assets/tdv-logo.png" alt="TDV Gerb" class="w-5 h-5 rounded-md object-contain bg-white/10 p-0.5 border border-purple-500/30 shadow-sm">
           <span class="hidden sm:inline text-zinc-500 dark:text-zinc-400 font-normal">Təşkilat:</span>
           <span class="tracking-tight">TDV Community Labs</span>
-        </div>
+        </a>
         <span class="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
         <div class="flex items-center gap-2 truncate">
-          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-bold text-[9px] uppercase shrink-0 border border-indigo-500/20">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold text-[9px] uppercase shrink-0 border border-purple-500/20">
             <i data-lucide="bell" class="w-2.5 h-2.5"></i>
             Xəbər
           </span>
@@ -200,12 +223,12 @@
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3 shrink-0">
         <a href="index.html" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-600 to-emerald-500 flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition">
-            <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-700 via-purple-600 to-fuchsia-500 flex items-center justify-center shadow-md shadow-purple-500/25 group-hover:scale-105 transition p-1">
+            <img src="assets/tdv-logo.png" alt="TDV Gerb" class="w-full h-full object-contain filter drop-shadow">
           </div>
           <div>
             <span class="font-extrabold text-lg tracking-tight text-zinc-950 dark:text-white flex items-center gap-1.5">
-              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-500 dark:from-indigo-400 dark:to-emerald-400">Hub</span>
+              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-500 to-purple-600 dark:from-purple-400 dark:via-fuchsia-400 dark:to-purple-300">Hub</span>
             </span>
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400 -mt-1 font-medium">Məktəb Rəqəmsal Kampusu</span>
           </div>
@@ -214,7 +237,7 @@
 
       <!-- Ecosystem Switcher Links -->
       <nav class="hidden md:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 rounded-2xl text-xs font-medium">
-        <a href="index.html" class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
+        <a href="index.html" class="px-3 py-1.5 rounded-xl bg-purple-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
           <i data-lucide="home" class="w-3.5 h-3.5"></i>
           Mərkəz
         </a>
@@ -222,7 +245,7 @@
           <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-500"></i>
           E-School
         </a>
-        <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+        <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
           <i data-lucide="trophy" class="w-3.5 h-3.5 text-blue-500"></i>
           Sports
         </a>
@@ -281,7 +304,7 @@
     <!-- Mobile Drawer Menu -->
     <div id="mobileMenuDrawer" class="hidden md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 space-y-2">
       <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-        <a href="index.html" class="p-2.5 rounded-xl bg-indigo-600 text-white flex items-center gap-2">
+        <a href="index.html" class="p-2.5 rounded-xl bg-purple-600 text-white flex items-center gap-2">
           <i data-lucide="home" class="w-4 h-4"></i>
           <span>Mərkəz</span>
         </a>
@@ -289,7 +312,7 @@
           <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-500"></i>
           <span>E-School</span>
         </a>
-        <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800 flex items-center gap-2">
+        <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800 flex items-center gap-2">
           <i data-lucide="trophy" class="w-4 h-4 text-blue-500"></i>
           <span>Sports</span>
         </a>
@@ -323,13 +346,13 @@
   <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
     
     <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/25 text-indigo-700 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 dark:bg-purple-500/15 border border-purple-500/25 text-purple-700 dark:text-purple-300 text-xs font-bold uppercase tracking-wider mb-4">
         <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span>
         Vahid Rəqəmsal Kampus
       </div>
       <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-zinc-950 dark:text-white tracking-tight leading-tight mb-4">
         Məktəb İcması üçün <br>
-        <span class="bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-500 dark:from-indigo-400 dark:via-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">İnnovativ Rəqəmsal Mərkəz</span>
+        <span class="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 dark:from-purple-400 dark:via-fuchsia-400 dark:to-purple-300 bg-clip-text text-transparent">İnnovativ Rəqəmsal Mərkəz</span>
       </h1>
       <p class="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 font-normal">
         TDV Community Labs — tədris və sınaq materialları, minifutbol çempionatı, bal hesablayıcı, zəng rejimi, fənn kabinetləri və şagird tapşırıq dəftərini tək bir müasir platformada birləşdirir.
@@ -337,8 +360,8 @@
 
       <!-- Quick Interactive Search Bar Trigger -->
       <div class="max-w-lg mx-auto">
-        <div onclick="openSearchModal()" class="flex items-center gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-indigo-500/60 rounded-2xl px-4 py-3 cursor-pointer shadow-md shadow-zinc-200/50 dark:shadow-black/40 transition group">
-          <i data-lucide="search" class="w-4 h-4 text-indigo-500 group-hover:scale-110 transition"></i>
+        <div onclick="openSearchModal()" class="flex items-center gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/60 rounded-2xl px-4 py-3 cursor-pointer shadow-md shadow-zinc-200/50 dark:shadow-black/40 transition group">
+          <i data-lucide="search" class="w-4 h-4 text-purple-500 group-hover:scale-110 transition"></i>
           <span class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition text-left flex-grow">Fənn, sınaq, düstur, kabinet və ya matç axtarın...</span>
           <span class="px-2 py-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px] font-mono text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">Ctrl + K</span>
         </div>
@@ -360,7 +383,7 @@
         <div class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 font-medium">BSQ / KSQ Sınağı</div>
       </div>
       <div class="hub-card rounded-2xl p-4 text-center">
-        <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-0.5">99.9%</div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-purple-600 dark:text-purple-400 mb-0.5">99.9%</div>
         <div class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 font-medium">Bulud Əlçatanlığı</div>
       </div>
     </div>
@@ -436,7 +459,7 @@
         </div>
 
         <div>
-          <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-md shadow-blue-900/20 hover:shadow-blue-600/30 transition duration-300 group/btn">
+          <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-md shadow-blue-900/20 hover:shadow-blue-600/30 transition duration-300 group/btn">
             <span>Turnir Cədvəlinə Bax</span>
             <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition duration-200"></i>
           </a>
@@ -475,7 +498,7 @@
         </div>
 
         <div>
-          <a href="games.html" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-indigo-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-md shadow-purple-900/20 hover:shadow-purple-600/30 transition duration-300 group/btn">
+          <a href="games.html" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-700 via-purple-600 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-500 text-white text-sm font-bold py-3.5 px-5 rounded-2xl shadow-md shadow-purple-900/20 hover:shadow-purple-600/30 transition duration-300 group/btn">
             <span>Oyunlar Zonasına Keç (Mafia & Games)</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition duration-200"></i>
           </a>
@@ -562,7 +585,7 @@
     <div class="hub-card rounded-3xl p-6 sm:p-7 mb-12 relative overflow-hidden">
       <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
             <i data-lucide="check-square" class="w-5 h-5"></i>
           </div>
           <div>
@@ -571,7 +594,7 @@
           </div>
         </div>
         <div class="flex items-center gap-1.5 text-xs flex-wrap">
-          <button type="button" id="taskFilterAll" onclick="filterTasks('all')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-semibold flex items-center gap-1.5 cursor-pointer">
+          <button type="button" id="taskFilterAll" onclick="filterTasks('all')" class="task-filter-btn px-2.5 py-1 rounded-lg bg-purple-600 text-white font-semibold flex items-center gap-1.5 cursor-pointer">
             <span>Hamısı</span>
             <span id="taskCountAll" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-mono">0</span>
           </button>
@@ -591,7 +614,7 @@
 
       <!-- Add Task Form -->
       <form onsubmit="addStudentTask(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-4">
-        <select id="taskSubject" class="sm:col-span-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2.5 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
+        <select id="taskSubject" class="sm:col-span-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2.5 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/50">
           <option value="Riyaziyyat">📐 Riyaziyyat</option>
           <option value="Fizika">⚡ Fizika</option>
           <option value="Kimya">🧪 Kimya</option>
@@ -601,9 +624,9 @@
           <option value="Tarix">🏛️ Tarix</option>
           <option value="Digər">📌 Digər</option>
         </select>
-        <input id="taskText" type="text" required placeholder="Ev tapşırığı və ya qeyd (məs: Səh 45, çalışma 12-18)..." class="sm:col-span-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
-        <input id="taskDue" type="text" placeholder="Vaxt (məs: Sabah)" class="sm:col-span-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
-        <button type="submit" class="sm:col-span-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs py-2.5 flex items-center justify-center transition cursor-pointer shadow-sm">
+        <input id="taskText" type="text" required placeholder="Ev tapşırığı və ya qeyd (məs: Səh 45, çalışma 12-18)..." class="sm:col-span-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <input id="taskDue" type="text" placeholder="Vaxt (məs: Sabah)" class="sm:col-span-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <button type="submit" class="sm:col-span-1 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs py-2.5 flex items-center justify-center transition cursor-pointer shadow-sm">
           <i data-lucide="plus" class="w-4 h-4"></i>
         </button>
       </form>
@@ -628,7 +651,7 @@
                 <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Qrup mərhələsinin cari liderləri</p>
               </div>
             </div>
-            <a href="https://school-minifootball-tournament-2.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1.5 rounded-xl border border-blue-500/20 transition flex items-center gap-1">
+            <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1.5 rounded-xl border border-blue-500/20 transition flex items-center gap-1">
               <span>Bütün Cədvəl</span>
               <i data-lucide="arrow-right" class="w-3 h-3"></i>
             </a>
@@ -767,10 +790,10 @@
 
         <div class="mt-4 pt-3 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
           <span class="flex items-center gap-1.5">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-500"></i>
+            <i data-lucide="info" class="w-3.5 h-3.5 text-purple-500"></i>
             BSQ tarixləri yaxınlaşdıqda cədvəl yenilənir.
           </span>
-          <button type="button" onclick="openCalcModal()" class="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold cursor-pointer">Balını hesabla →</button>
+          <button type="button" onclick="openCalcModal()" class="text-purple-600 dark:text-purple-400 hover:underline font-semibold cursor-pointer">Balını hesabla →</button>
         </div>
       </div>
 
@@ -808,15 +831,15 @@
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-center text-xs">
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">1-ci Dərs</span>
             <span class="font-bold text-zinc-800 dark:text-zinc-200 font-mono">08:30 - 09:15</span>
           </div>
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">Böyük Tənəffüs</span>
             <span class="font-bold text-amber-600 dark:text-amber-400 font-mono">11:05 - 11:20</span>
           </div>
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">Dərslərin Sonu</span>
             <span class="font-bold text-zinc-800 dark:text-zinc-200 font-mono">14:50</span>
           </div>
@@ -878,7 +901,7 @@
       <div class="space-y-3">
         <!-- FAQ 1 -->
         <div class="hub-card rounded-2xl overflow-hidden">
-          <button type="button" onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition cursor-pointer">
+          <button type="button" onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition cursor-pointer">
             <span>TDV E-School-da KSQ və BSQ sınaqlarını necə işləyə bilərəm?</span>
             <i id="faqIcon-1" data-lucide="chevron-down" class="w-4 h-4 text-zinc-400 transition-transform duration-300"></i>
           </button>
@@ -889,7 +912,7 @@
 
         <!-- FAQ 2 -->
         <div class="hub-card rounded-2xl overflow-hidden">
-          <button type="button" onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition cursor-pointer">
+          <button type="button" onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition cursor-pointer">
             <span>Minifutbol turnirinin oyun nəticələri nə vaxt yenilənir?</span>
             <i id="faqIcon-2" data-lucide="chevron-down" class="w-4 h-4 text-zinc-400 transition-transform duration-300"></i>
           </button>
@@ -900,7 +923,7 @@
 
         <!-- FAQ 3 -->
         <div class="hub-card rounded-2xl overflow-hidden">
-          <button type="button" onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition cursor-pointer">
+          <button type="button" onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 flex items-center justify-between text-left font-bold text-sm text-zinc-950 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition cursor-pointer">
             <span>TDV Games bölməsində şagirdlərin hazırladığı oyunlar necə yoxlanılır?</span>
             <i id="faqIcon-3" data-lucide="chevron-down" class="w-4 h-4 text-zinc-400 transition-transform duration-300"></i>
           </button>
@@ -956,7 +979,7 @@
   <!-- ================= DIALOG 1: COMMAND PALETTE (CTRL + K) ================= -->
   <dialog id="searchModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-0 shadow-2xl max-w-lg w-full m-auto overflow-hidden">
     <div class="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
-      <i data-lucide="search" class="w-5 h-5 text-indigo-500 shrink-0"></i>
+      <i data-lucide="search" class="w-5 h-5 text-purple-500 shrink-0"></i>
       <input id="searchInput" type="text" placeholder="Fənn, sınaq, düstur, kabinet və ya alət axtarın..." oninput="handleSearch(this.value)" class="w-full bg-transparent text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none font-medium">
       <button type="button" onclick="closeSearchModal()" class="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white px-2 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-pointer">ESC</button>
     </div>
@@ -1050,7 +1073,7 @@
 
     <!-- Tabs: Bells vs Classes -->
     <div class="flex gap-2 mb-4 p-1 bg-zinc-100 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
-      <button type="button" id="tabBellBtn" onclick="switchScheduleTab('bell')" class="flex-1 py-1.5 rounded-lg font-semibold bg-indigo-600 text-white transition cursor-pointer">Zəng Saatları</button>
+      <button type="button" id="tabBellBtn" onclick="switchScheduleTab('bell')" class="flex-1 py-1.5 rounded-lg font-semibold bg-purple-600 text-white transition cursor-pointer">Zəng Saatları</button>
       <button type="button" id="tabClassBtn" onclick="switchScheduleTab('class')" class="flex-1 py-1.5 rounded-lg font-semibold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer">Sinif Cədvəli</button>
     </div>
 
@@ -1281,35 +1304,35 @@
         <rect x="18" y="73" width="9" height="9" fill="#09090b" rx="1"/>
 
         <!-- Pattern blocks -->
-        <rect x="42" y="12" width="6" height="6" fill="#4f46e5"/>
+        <rect x="42" y="12" width="6" height="6" fill="#9333ea"/>
         <rect x="52" y="12" width="6" height="6" fill="#09090b"/>
         <rect x="42" y="24" width="6" height="6" fill="#09090b"/>
         <rect x="52" y="24" width="6" height="6" fill="#22c55e"/>
 
         <rect x="12" y="44" width="6" height="6" fill="#09090b"/>
-        <rect x="24" y="44" width="6" height="6" fill="#4f46e5"/>
+        <rect x="24" y="44" width="6" height="6" fill="#9333ea"/>
         <rect x="12" y="54" width="6" height="6" fill="#22c55e"/>
 
         <rect x="42" y="42" width="16" height="16" fill="#09090b" rx="3"/>
-        <circle cx="50" cy="50" r="4" fill="#4f46e5"/>
+        <circle cx="50" cy="50" r="4" fill="#9333ea"/>
 
         <rect x="65" y="44" width="6" height="6" fill="#09090b"/>
         <rect x="75" y="44" width="6" height="6" fill="#09090b"/>
         <rect x="85" y="44" width="6" height="6" fill="#22c55e"/>
 
         <rect x="42" y="68" width="6" height="6" fill="#09090b"/>
-        <rect x="52" y="68" width="6" height="6" fill="#4f46e5"/>
+        <rect x="52" y="68" width="6" height="6" fill="#9333ea"/>
         <rect x="42" y="80" width="6" height="6" fill="#22c55e"/>
         <rect x="65" y="72" width="8" height="8" fill="#09090b"/>
         <rect x="78" y="72" width="12" height="8" fill="#09090b"/>
-        <rect x="68" y="84" width="18" height="6" fill="#4f46e5"/>
+        <rect x="68" y="84" width="18" height="6" fill="#9333ea"/>
       </svg>
     </div>
 
     <p class="text-xs text-zinc-600 dark:text-zinc-300 mb-4">Sinif yoldaşlarınla paylaş və ya telefonla skan et</p>
 
     <div class="space-y-2 text-xs">
-      <button type="button" onclick="copyShareLink()" id="copyLinkBtn" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+      <button type="button" onclick="copyShareLink()" id="copyLinkBtn" class="w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-sm">
         <i data-lucide="copy" class="w-4 h-4"></i>
         <span id="copyLinkText">Linki Kopyala</span>
       </button>
@@ -1353,7 +1376,7 @@
         Təşəkkür edirik! İdeyanız qeydə alındı. 🚀
       </div>
 
-      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold transition shadow-md shadow-purple-900/20 cursor-pointer">
+      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold transition shadow-md shadow-purple-900/20 cursor-pointer">
         İdeyanı Göndər
       </button>
     </form>
@@ -1749,12 +1772,12 @@
       if (tab === 'bell') {
         bellTab.classList.remove('hidden');
         classTab.classList.add('hidden');
-        bellBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-indigo-600 text-white transition cursor-pointer";
+        bellBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-purple-600 text-white transition cursor-pointer";
         classBtn.className = "flex-1 py-1.5 rounded-lg font-semibold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer";
       } else {
         bellTab.classList.add('hidden');
         classTab.classList.remove('hidden');
-        classBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-indigo-600 text-white transition cursor-pointer";
+        classBtn.className = "flex-1 py-1.5 rounded-lg font-semibold bg-purple-600 text-white transition cursor-pointer";
         bellBtn.className = "flex-1 py-1.5 rounded-lg font-semibold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer";
         renderClassTimetable();
       }
@@ -1797,7 +1820,7 @@
 
       list.innerHTML = lessons.map((les, i) => `
         <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
-          <span class="text-indigo-600 dark:text-indigo-400 font-bold w-16">${i + 1}-ci Dərs</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold w-16">${i + 1}-ci Dərs</span>
           <span class="text-zinc-800 dark:text-zinc-200 font-sans font-medium flex-1 text-left px-2">${les}</span>
           <span class="text-[10px] text-zinc-400 font-mono">45 dəq</span>
         </div>
@@ -2060,7 +2083,7 @@
         const btn = filterBtns[key];
         if (btn) {
           if (key === f) {
-            btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-semibold flex items-center gap-1.5 cursor-pointer";
+            btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-purple-600 text-white font-semibold flex items-center gap-1.5 cursor-pointer";
           } else {
             btn.className = "task-filter-btn px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white border border-zinc-200 dark:border-zinc-700 flex items-center gap-1.5 cursor-pointer";
           }
@@ -2115,10 +2138,10 @@
       container.innerHTML = filtered.map(t => `
         <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 ${t.completed ? 'opacity-60' : ''} hover:border-zinc-300 dark:hover:border-zinc-700 transition">
           <div class="flex items-center gap-3 overflow-hidden">
-            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete(${t.id})" class="rounded bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 text-indigo-600 focus:ring-0 cursor-pointer w-4 h-4">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete(${t.id})" class="rounded bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 text-purple-600 focus:ring-0 cursor-pointer w-4 h-4">
             <div class="overflow-hidden truncate">
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/20">${escapeHTML(t.subject)}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20">${escapeHTML(t.subject)}</span>
                 <span class="text-[10px] text-amber-700 dark:text-amber-400 font-mono">${escapeHTML(t.due)}</span>
               </div>
               <div class="text-xs font-medium text-zinc-900 dark:text-zinc-200 mt-1 truncate ${t.completed ? 'line-through text-zinc-400 dark:text-zinc-500' : ''}">${escapeHTML(t.text)}</div>
@@ -2169,9 +2192,9 @@
       { name: 'Riyaziyyat BSQ / KSQ', desc: '10-cu və 9-cu sinif Riyaziyyat imtahan arxivi', url: 'https://tdv-e-school.vercel.app/', icon: '📐' },
       { name: 'Fizika Dərsləri', desc: 'Mexanika, termodinamika və optika vəsaitləri', url: 'https://tdv-e-school.vercel.app/', icon: '⚡' },
       { name: 'PvP Bilik Arenası', desc: '1v1 sual-cavab intellektual döyüşü', url: 'https://tdv-e-school.vercel.app/', icon: '⚔️' },
-      { name: 'TDV Sports — Turnir', desc: 'Canlı minifutbol nəticələri, xal cədvəli və oyunlar', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '⚽' },
-      { name: 'Turnir Cədvəli (10A, 11H, 9C)', desc: 'Qrup mərhələsi xal vəziyyəti və qol fərqləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🏆' },
-      { name: 'Bombardirlər Siyahısı', desc: 'Turnirin ən çox qol vuran şagirdləri', url: 'https://school-minifootball-tournament-2.vercel.app/', icon: '🥇' },
+      { name: 'TDV Sports — Turnir', desc: 'Canlı minifutbol nəticələri, xal cədvəli və oyunlar', url: 'https://school-minifootball-tournament.vercel.app/', icon: '⚽' },
+      { name: 'Turnir Cədvəli (10A, 11H, 9C)', desc: 'Qrup mərhələsi xal vəziyyəti və qol fərqləri', url: 'https://school-minifootball-tournament.vercel.app/', icon: '🏆' },
+      { name: 'Bombardirlər Siyahısı', desc: 'Turnirin ən çox qol vuran şagirdləri', url: 'https://school-minifootball-tournament.vercel.app/', icon: '🥇' },
       { name: 'TDV Mafia — Deduksiya Portalı', desc: 'Canlı sosial deduksiya oyunu, 15 rejim, real-vaxt masaları', url: 'https://tdv-mafia.vercel.app/', icon: '🕵️‍♂️' },
       { name: "Dante's Inferno (TDV Mafia)", desc: '9 Dairə Əzabları xüsusi 10-14 nəfərlik mafia rejimi', url: 'https://tdv-mafia.vercel.app/', icon: '🔥' },
       { name: 'Məktəb Düstur Bankı', desc: 'Riyaziyyat, Fizika və Kimya düsturları', action: 'formula', icon: '📖' },
@@ -2207,15 +2230,15 @@
       }
 
       resultsContainer.innerHTML = currentSearchResults.map((item, idx) => `
-        <div id="search-item-${idx}" onclick="executeSearchItem(${idx})" class="search-result-item flex items-center justify-between p-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer transition group ${idx === 0 ? 'bg-zinc-100 dark:bg-zinc-800/70 border border-indigo-500/40' : 'border border-transparent'}">
+        <div id="search-item-${idx}" onclick="executeSearchItem(${idx})" class="search-result-item flex items-center justify-between p-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer transition group ${idx === 0 ? 'bg-zinc-100 dark:bg-zinc-800/70 border border-purple-500/40' : 'border border-transparent'}">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-base shrink-0">${item.icon}</div>
             <div>
-              <div class="font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 text-xs">${item.name}</div>
+              <div class="font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 text-xs">${item.name}</div>
               <div class="text-zinc-500 dark:text-zinc-400 text-[11px]">${item.desc}</div>
             </div>
           </div>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400"></i>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-400 group-hover:text-purple-600 dark:group-hover:text-purple-400"></i>
         </div>
       `).join('');
       lucide.createIcons();
@@ -2239,7 +2262,7 @@
     function updateSearchSelection() {
       document.querySelectorAll('.search-result-item').forEach((el, idx) => {
         if (idx === searchSelectedIndex) {
-          el.className = "search-result-item flex items-center justify-between p-3 rounded-xl cursor-pointer transition group bg-zinc-100 dark:bg-zinc-800 border border-indigo-500/50 shadow-sm";
+          el.className = "search-result-item flex items-center justify-between p-3 rounded-xl cursor-pointer transition group bg-zinc-100 dark:bg-zinc-800 border border-purple-500/50 shadow-sm";
           el.scrollIntoView({ block: 'nearest' });
         } else {
           el.className = "search-result-item flex items-center justify-between p-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer transition group border border-transparent";
