@@ -1,0 +1,48 @@
+name: Ecosystem Health Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Hər gün Bakı vaxtı ilə səhər 08:00-da (UTC 04:00) avtomatik işə düşür
+    - cron: '0 4 * * *'
+
+jobs:
+  check-health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python Quraşdır
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Asılılıqları Quraşdır
+        run: pip install google-genai
+
+      - name: Saytları Yoxla və Analiz Et
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python .github/scripts/health_monitor.py
+          cat health_status.env >> $GITHUB_ENV
+
+      - name: Xəta Varsa Avtomatik Issue Aç
+        if: env.HAS_FAILURES == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_ORG_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('health_report.md', 'utf8');
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "⚠️ [MONITORINQ] Canlı Layihələrdə Xəta Aşkar Edildi",
+              body: report,
+              labels: ["bug", "help wanted"]
+            });
+
+      - name: Hesabatı İcmala Əlavə Et
+        run: cat health_report.md >> $GITHUB_STEP_SUMMARY

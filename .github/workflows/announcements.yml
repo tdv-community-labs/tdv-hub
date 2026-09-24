@@ -1,0 +1,49 @@
+name: Campus Announcements Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Elanın Mövzusu (Məs: Minifutbol 3-cü tur nəticələri və ya Yeni Şahmat oyunu)'
+        required: true
+        default: 'Həftəlik Kampus Yenilikləri'
+      details:
+        description: 'Təfərrüatlar (nəticələr, qaliblər, saatlar və ya layihə haqqında qeydlər)'
+        required: true
+        default: 'Bu həftə keçirilən matçlarda maraqlı hesablar qeydə alındı. Bütün şagirdləri növbəti oyunlara dəvət edirik.'
+
+jobs:
+  create-announcement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python Quraşdır
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Asılılıqları Quraşdır
+        run: pip install google-genai
+
+      - name: Gemini ilə Elanı Yarat
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TOPIC: ${{ inputs.topic }}
+          RAW_DETAILS: ${{ inputs.details }}
+        run: python .github/scripts/announcement_generator.py
+
+      - name: Elanı PR kimi Təqdim Et
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_ORG_TOKEN }}
+          commit-message: "news: yeni kampus elanı əlavə edildi"
+          title: "📢 Yeni Kampus Elanı: ${{ inputs.topic }}"
+          body: |
+            Bu elan və bülleten **tdv-hub** AI Məzmun Ajanı tərəfindən avtomatik tərtib edilmişdir.
+            
+            **Mövzu:** ${{ inputs.topic }}
+            **Tarix:** Avtomatik qeyd edildi
+          branch: "announcement-${{ github.run_id }}"
+          delete-branch: true
