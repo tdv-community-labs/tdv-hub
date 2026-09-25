@@ -50,10 +50,19 @@ FILE: faylin/nisbi/yolu.ext
 Heç bir əlavə giriş, çıxış və ya izahat mətni yazma.
 """
 
-response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=prompt,
-)
+response = None
+for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+    try:
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+        )
+        if response and response.text:
+            break
+    except Exception as e:
+        if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+            continue
+        raise
 
 content = response.text
 blocks = content.split("FILE: ")

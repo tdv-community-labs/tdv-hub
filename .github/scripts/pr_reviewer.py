@@ -40,11 +40,20 @@ TƏHLİL QAYDALARI:
 
 Cavabı səliqəli Markdown formatında (başlıqlar və bullet point-lər ilə) tərtib et.
 """
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
-    review_comment = response.text
+    response = None
+    for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception as e:
+            if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+                continue
+            raise
+    review_comment = response.text if response else ""
 
 # Nəticəni sonrakı addımda şərh yazmaq üçün fayla çıxar
 with open("review_result.md", "w", encoding="utf-8") as f:
