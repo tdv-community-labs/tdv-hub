@@ -118,7 +118,7 @@
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3 shrink-0">
         <a href="games.html" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-600 flex items-center justify-center shadow-md shadow-purple-500/25 group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-[8px] bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-600 flex items-center justify-center shadow-md shadow-purple-500/25 group-hover:scale-105 transition">
             <i data-lucide="gamepad-2" class="w-5 h-5 text-white"></i>
           </div>
           <div>
@@ -131,20 +131,20 @@
       </div>
 
       <!-- Ecosystem Switcher Links -->
-      <nav class="hidden md:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 rounded-2xl text-xs font-medium">
-        <a href="index.html" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+      <nav class="hidden md:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 rounded-[20px] text-xs font-medium">
+        <a href="index.html" class="px-3 py-1.5 rounded-[8px] text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
           <i data-lucide="home" class="w-3.5 h-3.5 text-purple-500"></i>
           Mərkəz
         </a>
-        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-[8px] text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
           <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-500"></i>
           E-School
         </a>
-        <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+        <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-[8px] text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
           <i data-lucide="trophy" class="w-3.5 h-3.5 text-blue-500"></i>
           Sports
         </a>
-        <a href="games.html" class="px-3 py-1.5 rounded-xl bg-purple-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
+        <a href="games.html" class="px-3 py-1.5 rounded-[8px] bg-purple-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
           <i data-lucide="gamepad-2" class="w-3.5 h-3.5"></i>
           Games
           <span class="text-[9px] px-1 py-0.2 rounded bg-white/20 text-white font-bold">Aktiv</span>
@@ -154,19 +154,19 @@
       <!-- Action Buttons: Auth & Launch Mafia -->
       <div class="flex items-center gap-2">
         <div id="tdvAuthTriggerContainer" class="flex items-center">
-          <button type="button" id="tdvLoginBtn" onclick="openAuthModal('login')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-sm shadow-purple-600/25 transition cursor-pointer">
+          <button type="button" id="tdvLoginBtn" onclick="openAuthModal('login')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-sm shadow-purple-600/25 transition cursor-pointer">
             <i data-lucide="user" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Daxil Ol / Qeydiyyat</span>
             <span class="sm:hidden text-xs">Giriş</span>
           </button>
-          <div id="tdvUserBadgeContainer" onclick="openAuthModal()" class="hidden items-center gap-2 px-2.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/25 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs font-bold transition shadow-sm cursor-pointer select-none" title="Profil parametrləri və çıxış">
+          <div id="tdvUserBadgeContainer" onclick="openAuthModal()" class="hidden items-center gap-2 px-2.5 py-1.5 rounded-[8px] bg-purple-500/10 border border-purple-500/25 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs font-bold transition shadow-sm cursor-pointer select-none" title="Profil parametrləri və çıxış">
             <span id="tdvUserAvatar">👤</span>
             <span id="tdvUserName" class="hidden sm:inline">İstifadəçi</span>
             <span id="tdvUserRoleBadge" class="text-[9px] px-1.5 py-0.2 rounded bg-purple-600 text-white font-black ml-0.5">10A</span>
           </div>
         </div>
 
-        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-3.5 py-2 rounded-xl shadow-md shadow-rose-900/20 transition cursor-pointer">
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-3.5 py-2 rounded-[8px] shadow-md shadow-rose-900/20 transition cursor-pointer">
           <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
           <span>Mafia-ya Başla</span>
         </a>
@@ -192,11 +192,11 @@
       </p>
 
       <div class="flex items-center justify-center gap-3 flex-wrap">
-        <a href="#tdv-mafia" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-sm shadow-md shadow-rose-900/20 transition cursor-pointer">
+        <a href="#tdv-mafia" class="inline-flex items-center gap-2 px-5 py-3 rounded-[20px] bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-sm shadow-md shadow-rose-900/20 transition cursor-pointer">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
           <span>TDV Mafia (15 Format)</span>
         </a>
-        <a href="#upcoming-games" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">
+        <a href="#upcoming-games" class="inline-flex items-center gap-2 px-5 py-3 rounded-[20px] bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">
           <i data-lucide="sparkles" class="w-4 h-4 text-purple-500"></i>
           <span>Digər Oyunlar & İdeyalar</span>
         </a>
@@ -215,7 +215,7 @@
           
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
             <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-600 via-purple-600 to-rose-700 border border-rose-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-rose-600/30 shrink-0">
+              <div class="w-16 h-16 rounded-[20px] bg-gradient-to-tr from-rose-600 via-purple-600 to-rose-700 border border-rose-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-rose-600/30 shrink-0">
                 🎭
               </div>
               <div>
@@ -234,15 +234,15 @@
 
             <!-- Action buttons & Quick Room Code Join -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <form onsubmit="joinMafiaByCode(event)" class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1.5 rounded-2xl shadow-inner">
+              <form onsubmit="joinMafiaByCode(event)" class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1.5 rounded-[20px] shadow-inner">
                 <input id="mafiaRoomInput" type="text" placeholder="Otaq Kodu (məs: 8821)" required class="bg-transparent border-0 px-3 py-1.5 text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase focus:outline-none w-36 sm:w-44" />
-                <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shrink-0 transition shadow-sm cursor-pointer">
+                <button type="submit" class="px-3.5 py-1.5 rounded-[8px] bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shrink-0 transition shadow-sm cursor-pointer">
                   Masaya Keç
                 </button>
               </form>
 
               <!-- Direct Launch Button -->
-              <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-extrabold py-2.5 px-5 rounded-2xl shadow-lg shadow-rose-900/30 hover:scale-[1.02] transition duration-200 text-xs sm:text-sm cursor-pointer shrink-0">
+              <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-extrabold py-2.5 px-5 rounded-[20px] shadow-lg shadow-rose-900/30 hover:scale-[1.02] transition duration-200 text-xs sm:text-sm cursor-pointer shrink-0">
                 <span>Masaya Qoşul</span>
                 <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
               </a>
@@ -252,7 +252,7 @@
           <!-- Feature Description -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             
-            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+            <div class="p-4 rounded-[20px] bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-sm mb-1.5">
                 <i data-lucide="layers" class="w-4 h-4"></i>
                 <span>15 Oyun Formatı</span>
@@ -262,7 +262,7 @@
               </p>
             </div>
 
-            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+            <div class="p-4 rounded-[20px] bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-sm mb-1.5">
                 <i data-lucide="lock" class="w-4 h-4"></i>
                 <span>Zero-Knowledge Gizlilik</span>
@@ -272,7 +272,7 @@
               </p>
             </div>
 
-            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+            <div class="p-4 rounded-[20px] bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold text-sm mb-1.5">
                 <i data-lucide="shield" class="w-4 h-4"></i>
                 <span>İkili Kilid İdarəetməsi</span>
@@ -293,7 +293,7 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-rose-500/25 hover:border-rose-500/50 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-rose-500/25 hover:border-rose-500/50 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">👑</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Don (Boss)</div>
@@ -302,7 +302,7 @@
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-blue-500/25 hover:border-blue-500/50 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-blue-500/25 hover:border-blue-500/50 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">🕵️</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Komissar Katani</div>
@@ -311,7 +311,7 @@
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-emerald-500/25 hover:border-emerald-500/50 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-emerald-500/25 hover:border-emerald-500/50 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">💉</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Həkim (Doktor)</div>
@@ -320,7 +320,7 @@
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-purple-500/25 hover:border-purple-500/50 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-purple-500/25 hover:border-purple-500/50 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">💃</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Məşuqə</div>
@@ -329,7 +329,7 @@
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">🎭</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Deduksiyaçı</div>
@@ -338,7 +338,7 @@
                 </div>
               </div>
 
-              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-amber-500/25 hover:border-amber-500/50 transition flex flex-col justify-between">
+              <div class="p-3.5 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-amber-500/25 hover:border-amber-500/50 transition flex flex-col justify-between">
                 <div>
                   <div class="text-2xl mb-1.5">💣</div>
                   <div class="font-bold text-zinc-950 dark:text-white text-xs">Kamikadze</div>
@@ -359,37 +359,37 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-center">
               
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-rose-500/20 hover:border-rose-500/40 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-rose-500/20 hover:border-rose-500/40 transition">
                 <div class="text-lg mb-1">🔥</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">Dante's Inferno</div>
                 <div class="text-[10px] text-rose-600 dark:text-rose-400">9 Dairə Əzabları</div>
               </div>
 
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="text-lg mb-1">⚔️</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">Operation Valkyrie</div>
                 <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Taktiki Sui-qəsd</div>
               </div>
 
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="text-lg mb-1">🏢</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">Stanford Prison</div>
                 <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Sosial Eksperiment</div>
               </div>
 
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="text-lg mb-1">🛡️</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">Catenaccio</div>
                 <div class="text-[10px] text-zinc-500 dark:text-zinc-400">İtalyan Müdafiəsi</div>
               </div>
 
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="text-lg mb-1">👥</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">All-In Heyət</div>
                 <div class="text-[10px] text-zinc-500 dark:text-zinc-400">40-50 Nəfərlik</div>
               </div>
 
-              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+              <div class="p-3 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
                 <div class="text-lg mb-1">🏙️</div>
                 <div class="font-bold text-zinc-950 dark:text-white text-xs">Klassik Şəhər</div>
                 <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Mülki vs Mafiya</div>
@@ -427,7 +427,7 @@
           </h2>
           <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">Hazırlıq mərhələsində olan interaktiv təhsil layihələri</p>
         </div>
-        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-2 rounded-xl border border-purple-500/25 transition cursor-pointer">
+        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-2 rounded-[8px] border border-purple-500/25 transition cursor-pointer">
           <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
           <span>Oyun İdeyası Təklif Et</span>
         </button>
@@ -439,7 +439,7 @@
         <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-[8px] bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
                 🧠
               </div>
               <span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 text-[10px] font-bold">
@@ -461,7 +461,7 @@
         <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-[8px] bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
                 ♟️
               </div>
               <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-[10px] font-bold">
@@ -483,7 +483,7 @@
         <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+              <div class="w-12 h-12 rounded-[8px] bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
                 ⚡
               </div>
               <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 text-[10px] font-bold">
@@ -496,7 +496,7 @@
             </p>
           </div>
           <div>
-            <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold transition cursor-pointer">
+            <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-[8px] bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold transition cursor-pointer">
               <span>Arenaya Get</span>
               <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
             </a>
@@ -510,14 +510,14 @@
     <!-- ================= SECTION 3: IDEA SUBMISSION BOX ================= -->
     <section class="mb-12">
       <div class="hub-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 text-center max-w-2xl mx-auto">
-        <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mx-auto mb-3">
+        <div class="w-12 h-12 rounded-[20px] bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mx-auto mb-3">
           💡
         </div>
         <h3 class="text-xl font-bold text-zinc-950 dark:text-white mb-2">Öz Oyununu Təklif Et!</h3>
         <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed mb-5 font-normal">
           Məktəb portalında hansı oyunların yer almasını istərdin? İdeyalarını və ya kodlaşdırdığın mini-veb layihəni bizimlə bölüş.
         </p>
-        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-md shadow-purple-900/20 transition cursor-pointer">
+        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-2 px-5 py-3 rounded-[20px] bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-md shadow-purple-900/20 transition cursor-pointer">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
           <span>İdeya Formunu Aç</span>
         </button>
@@ -551,7 +551,7 @@
   <dialog id="ideaModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 shadow-md max-w-md w-[calc(100vw-2rem)] m-auto max-h-[90dvh] overflow-y-auto">
     <div class="flex items-center justify-between mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-3">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">💡</div>
+        <div class="w-9 h-9 rounded-[8px] bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">💡</div>
         <div>
           <h3 class="font-bold text-zinc-950 dark:text-white text-base">Oyun İdeyanı Təklif Et</h3>
           <p class="text-[11px] text-zinc-500 dark:text-zinc-400">TDV Games bölməsində hansı oyunu görmək istərdin?</p>
@@ -565,21 +565,21 @@
     <form id="ideaForm" onsubmit="submitIdea(event)" class="space-y-4 text-xs">
       <div>
         <label class="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Adın və Sinfin:</label>
-        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
       </div>
       <div>
         <div class="flex items-center justify-between mb-1">
           <label class="text-zinc-700 dark:text-zinc-300 font-semibold">Oyunun İdeyası / Qaydaları:</label>
           <span id="ideaCharCount" class="text-[10px] text-zinc-400 font-mono">0 / 300</span>
         </div>
-        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"></textarea>
+        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"></textarea>
       </div>
 
-      <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center font-medium">
+      <div id="ideaFeedback" class="hidden p-3 rounded-[8px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center font-medium">
         Təşəkkür edirik! İdeyanız qeydə alındı. 🚀
       </div>
 
-      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold transition shadow-md shadow-purple-900/20 cursor-pointer">
+      <button type="submit" class="w-full py-3 px-4 rounded-[8px] bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold transition shadow-md shadow-purple-900/20 cursor-pointer">
         İdeyanı Göndər
       </button>
     </form>
@@ -589,7 +589,7 @@
   <dialog id="authModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-5 sm:p-7 shadow-md max-w-md w-[calc(100vw-2rem)] m-auto max-h-[90dvh] overflow-y-auto backdrop:bg-black/60 backdrop:backdrop-blur-sm">
     <div class="flex items-center justify-between mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-3">
       <div class="flex items-center gap-2.5">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-fuchsia-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30">
+        <div class="w-10 h-10 rounded-[20px] bg-gradient-to-tr from-purple-700 via-purple-600 to-fuchsia-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30">
           <i data-lucide="shield-check" class="w-5 h-5"></i>
         </div>
         <div>
@@ -597,15 +597,15 @@
           <p class="text-[11px] text-zinc-500 dark:text-zinc-400">1 Hesab = Bütün Ekosistem Portalları</p>
         </div>
       </div>
-      <button type="button" onclick="closeAuthModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer" aria-label="Bağla">
+      <button type="button" onclick="closeAuthModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1 rounded-[8px] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer" aria-label="Bağla">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
 
     <!-- Logged in state view -->
     <div id="authLoggedInView" class="hidden space-y-4">
-      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
-        <div id="authModalAvatar" class="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-2xl shrink-0">
+      <div class="p-4 rounded-[20px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
+        <div id="authModalAvatar" class="w-12 h-12 rounded-[20px] bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-2xl shrink-0">
           👤
         </div>
         <div class="min-w-0 flex-1">
@@ -617,15 +617,15 @@
         </div>
       </div>
 
-      <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-700 dark:text-purple-300">
+      <div class="p-3 rounded-[8px] bg-purple-500/10 border border-purple-500/20 text-xs text-purple-700 dark:text-purple-300">
         ✨ Bu vahid profilinizlə E-School, Minifutbol, TDV Mafia və TDV Games portallarına avtomatik daxil olursunuz.
       </div>
 
       <div class="flex items-center gap-2 pt-2">
-        <button type="button" onclick="switchAuthTab('login')" class="flex-1 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition cursor-pointer">
+        <button type="button" onclick="switchAuthTab('login')" class="flex-1 py-2.5 px-3 rounded-[8px] bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition cursor-pointer">
           Hesabı Dəyiş
         </button>
-        <button type="button" onclick="logoutEcosystemUser()" class="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+        <button type="button" onclick="logoutEcosystemUser()" class="py-2.5 px-4 rounded-[8px] bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
           <i data-lucide="log-out" class="w-4 h-4"></i>
           <span>Çıxış</span>
         </button>
@@ -635,30 +635,30 @@
     <!-- Guest state view (Login / Register Tabs) -->
     <div id="authGuestView" class="space-y-4">
       <!-- Segmented Tab Switcher -->
-      <div class="grid grid-cols-2 p-1 rounded-2xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
-        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer">
+      <div class="grid grid-cols-2 p-1 rounded-[20px] bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
+        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-[8px] transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer">
           Daxil Ol
         </button>
-        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer">
+        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-[8px] transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer">
           Qeydiyyat
         </button>
       </div>
 
       <!-- Error / Success Alert -->
-      <div id="authFeedback" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
+      <div id="authFeedback" class="hidden p-3 rounded-[8px] text-xs font-medium border"></div>
 
       <!-- 1. LOGIN FORM -->
       <form id="authLoginForm" onsubmit="handleAuthLoginSubmit(event)" class="space-y-3.5">
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı və ya Tam Ad</label>
-          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə (Əgər təyin edilibsə)</label>
-          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
 
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+        <button type="submit" class="w-full py-2.5 rounded-[8px] bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
           <i data-lucide="log-in" class="w-4 h-4"></i>
           <span>Daxil Ol</span>
         </button>
@@ -667,13 +667,13 @@
         <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
           <span class="block text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 mb-2">Sürətli Test Girişi:</span>
           <div class="grid grid-cols-3 gap-2">
-            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               👨‍🎓 Orxan (10A)
             </button>
-            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               ⚽ Məşqçi Elvin
             </button>
-            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-[8px] bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               🛡️ Admin
             </button>
           </div>
@@ -684,16 +684,16 @@
       <form id="authRegisterForm" onsubmit="handleAuthRegisterSubmit(event)" class="hidden space-y-3">
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Ad və Soyad</label>
-          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı (Nick)</label>
-          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Sinif / Status</label>
-            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
               <option value="10A">10-A Sinfi</option>
               <option value="10B">10-B Sinfi</option>
               <option value="10C">10-C Sinfi</option>
@@ -712,7 +712,7 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Avatar İkonu</label>
-            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
               <option value="🎓">🎓 Məktəbli</option>
               <option value="⚽">⚽ Futbolçu</option>
               <option value="🎭">🎭 Mafioz</option>
@@ -726,15 +726,15 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə</label>
-            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
           </div>
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Təkrar PIN</label>
-            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
           </div>
         </div>
 
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+        <button type="submit" class="w-full py-2.5 rounded-[8px] bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
           <i data-lucide="user-plus" class="w-4 h-4"></i>
           <span>Qeydiyyatdan Keç və Vahid Giriş Et</span>
         </button>
@@ -894,7 +894,7 @@
       }
       const fb = document.getElementById('authFeedback');
       if (fb) {
-        fb.className = 'hidden p-3 rounded-xl text-xs font-medium border';
+        fb.className = 'hidden p-3 rounded-[8px] text-xs font-medium border';
         fb.textContent = '';
       }
     }
@@ -915,19 +915,19 @@
 
       if (tab === 'register') {
         if (loginBtn) {
-          loginBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+          loginBtn.className = 'py-2 rounded-[8px] transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
         }
         if (regBtn) {
-          regBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+          regBtn.className = 'py-2 rounded-[8px] transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
         }
         if (loginForm) loginForm.classList.add('hidden');
         if (regForm) regForm.classList.remove('hidden');
       } else {
         if (loginBtn) {
-          loginBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+          loginBtn.className = 'py-2 rounded-[8px] transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
         }
         if (regBtn) {
-          regBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+          regBtn.className = 'py-2 rounded-[8px] transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
         }
         if (loginForm) loginForm.classList.remove('hidden');
         if (regForm) regForm.classList.add('hidden');
@@ -991,9 +991,9 @@
       if (!fb) return;
       fb.classList.remove('hidden');
       if (isSuccess) {
-        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center';
+        fb.className = 'p-3 rounded-[8px] text-xs font-semibold bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center';
       } else {
-        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-center';
+        fb.className = 'p-3 rounded-[8px] text-xs font-semibold bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-center';
       }
       fb.textContent = msg;
     }
