@@ -234,9 +234,21 @@
         </a>
       </nav>
 
-      <!-- Action Button: Launch Mafia Directly -->
+      <!-- Action Buttons: Auth & Launch Mafia -->
       <div class="flex items-center gap-2">
-        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-4 py-2 rounded-xl shadow-md shadow-rose-900/20 transition cursor-pointer">
+        <div id="tdvAuthTriggerContainer" class="flex items-center">
+          <button type="button" id="tdvLoginBtn" onclick="openAuthModal('login')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-sm shadow-purple-600/25 transition cursor-pointer">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i>
+            <span>Daxil Ol / Qeydiyyat</span>
+          </button>
+          <div id="tdvUserBadgeContainer" onclick="openAuthModal()" class="hidden items-center gap-2 px-2.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/25 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs font-bold transition shadow-sm cursor-pointer select-none" title="Profil parametrləri və çıxış">
+            <span id="tdvUserAvatar">👤</span>
+            <span id="tdvUserName" class="hidden sm:inline">İstifadəçi</span>
+            <span id="tdvUserRoleBadge" class="text-[9px] px-1.5 py-0.2 rounded bg-purple-600 text-white font-black ml-0.5">10A</span>
+          </div>
+        </div>
+
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-3.5 py-2 rounded-xl shadow-md shadow-rose-900/20 transition cursor-pointer">
           <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
           <span>Mafia-ya Başla</span>
         </a>
@@ -655,6 +667,163 @@
     </form>
   </dialog>
 
+  <!-- ================= DIALOG 2: UNIFIED AUTH & REGISTRATION MODAL ================= -->
+  <dialog id="authModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-6 sm:p-7 shadow-2xl max-w-md w-full m-auto backdrop:bg-black/60 backdrop:backdrop-blur-sm">
+    <div class="flex items-center justify-between mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-fuchsia-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-zinc-950 dark:text-white text-base tracking-tight">TDV Vahid Profil</h3>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">1 Hesab = Bütün Ekosistem Portalları</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeAuthModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer" aria-label="Bağla">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Logged in state view -->
+    <div id="authLoggedInView" class="hidden space-y-4">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
+        <div id="authModalAvatar" class="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-2xl shrink-0">
+          👤
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2">
+            <h4 id="authModalFullName" class="font-extrabold text-zinc-950 dark:text-white text-sm truncate">Ad Soyad</h4>
+            <span id="authModalRoleBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/25 shrink-0">10A</span>
+          </div>
+          <p id="authModalUsername" class="text-xs text-zinc-500 dark:text-zinc-400 font-mono truncate">@username</p>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-700 dark:text-purple-300">
+        ✨ Bu vahid profilinizlə E-School, Minifutbol, TDV Mafia və TDV Games portallarına avtomatik daxil olursunuz.
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button type="button" onclick="switchAuthTab('login')" class="flex-1 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition cursor-pointer">
+          Hesabı Dəyiş
+        </button>
+        <button type="button" onclick="logoutEcosystemUser()" class="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Çıxış</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Guest state view (Login / Register Tabs) -->
+    <div id="authGuestView" class="space-y-4">
+      <!-- Segmented Tab Switcher -->
+      <div class="grid grid-cols-2 p-1 rounded-2xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
+        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer">
+          Daxil Ol
+        </button>
+        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer">
+          Qeydiyyat
+        </button>
+      </div>
+
+      <!-- Error / Success Alert -->
+      <div id="authFeedback" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
+
+      <!-- 1. LOGIN FORM -->
+      <form id="authLoginForm" onsubmit="handleAuthLoginSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı və ya Tam Ad</label>
+          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə (Əgər təyin edilibsə)</label>
+          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Daxil Ol</span>
+        </button>
+
+        <!-- Quick Demo Profiles -->
+        <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+          <span class="block text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 mb-2">Sürətli Test Girişi:</span>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              👨‍🎓 Orxan (10A)
+            </button>
+            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              ⚽ Məşqçi Elvin
+            </button>
+            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              🛡️ Admin
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 2. REGISTER FORM -->
+      <form id="authRegisterForm" onsubmit="handleAuthRegisterSubmit(event)" class="hidden space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Ad və Soyad</label>
+          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı (Nick)</label>
+          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Sinif / Status</label>
+            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+              <option value="10A">10-A Sinfi</option>
+              <option value="10B">10-B Sinfi</option>
+              <option value="10C">10-C Sinfi</option>
+              <option value="11A">11-A Sinfi</option>
+              <option value="11B">11-B Sinfi</option>
+              <option value="11C">11-C Sinfi</option>
+              <option value="11D">11-D Sinfi</option>
+              <option value="9A">9-A Sinfi</option>
+              <option value="9B">9-B Sinfi</option>
+              <option value="8A">8-A Sinfi</option>
+              <option value="7A">7-A Sinfi</option>
+              <option value="Məşqçi">Məşqçi / İdman</option>
+              <option value="Müəllim">Müəllim / Fənn</option>
+              <option value="Məzun">Məzun / Klub</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Avatar İkonu</label>
+            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+              <option value="🎓">🎓 Məktəbli</option>
+              <option value="⚽">⚽ Futbolçu</option>
+              <option value="🎭">🎭 Mafioz</option>
+              <option value="🔬">🔬 Alim</option>
+              <option value="👑">👑 Lider</option>
+              <option value="⚡">⚡ Taktik</option>
+              <option value="🦁">🦁 Çempion</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə</label>
+            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Təkrar PIN</label>
+            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Qeydiyyatdan Keç və Vahid Giriş Et</span>
+        </button>
+      </form>
+    </div>
+  </dialog>
+
   <!-- ================= CLIENT JAVASCRIPT ================= -->
   <script>
     // Initialize Lucide Icons
@@ -756,8 +925,293 @@
     }
   </script>
 
-  <!-- ================= TDV ECOSYSTEM SSO CLIENT & LINK SYNCHRONIZATION ================= -->
+  <!-- ================= TDV ECOSYSTEM SSO CLIENT & AUTH SYSTEM ================= -->
   <script>
+    // ================= UNIFIED AUTH & PROFILE LOGIC =================
+    function openAuthModal(tab) {
+      const modal = document.getElementById('authModal');
+      if (!modal) return;
+      const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+      let activeSession = null;
+      if (raw) {
+        try { activeSession = JSON.parse(raw); } catch (e) {}
+      }
+
+      const loggedInView = document.getElementById('authLoggedInView');
+      const guestView = document.getElementById('authGuestView');
+
+      if (activeSession && (activeSession.username || activeSession.fullName)) {
+        if (loggedInView) loggedInView.classList.remove('hidden');
+        if (guestView) guestView.classList.add('hidden');
+        const nameEl = document.getElementById('authModalFullName');
+        const userEl = document.getElementById('authModalUsername');
+        const avatarEl = document.getElementById('authModalAvatar');
+        const roleEl = document.getElementById('authModalRoleBadge');
+        if (nameEl) nameEl.textContent = activeSession.fullName || activeSession.username;
+        if (userEl) userEl.textContent = '@' + (activeSession.username || 'user');
+        if (avatarEl) avatarEl.textContent = activeSession.avatar || '👤';
+        if (roleEl) roleEl.textContent = activeSession.schoolClass || (activeSession.grade ? activeSession.grade + 'A' : 'Profil');
+      } else {
+        if (loggedInView) loggedInView.classList.add('hidden');
+        if (guestView) guestView.classList.remove('hidden');
+        switchAuthTab(tab || 'login');
+      }
+
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.setAttribute('open', '');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+    window.openAuthModal = openAuthModal;
+
+    function closeAuthModal() {
+      const modal = document.getElementById('authModal');
+      if (!modal) return;
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.removeAttribute('open');
+      }
+      const fb = document.getElementById('authFeedback');
+      if (fb) {
+        fb.className = 'hidden p-3 rounded-xl text-xs font-medium border';
+        fb.textContent = '';
+      }
+    }
+    window.closeAuthModal = closeAuthModal;
+
+    function switchAuthTab(tab) {
+      const loggedInView = document.getElementById('authLoggedInView');
+      const guestView = document.getElementById('authGuestView');
+      if (loggedInView) loggedInView.classList.add('hidden');
+      if (guestView) guestView.classList.remove('hidden');
+
+      const loginBtn = document.getElementById('authTabLoginBtn');
+      const regBtn = document.getElementById('authTabRegisterBtn');
+      const loginForm = document.getElementById('authLoginForm');
+      const regForm = document.getElementById('authRegisterForm');
+      const fb = document.getElementById('authFeedback');
+      if (fb) fb.classList.add('hidden');
+
+      if (tab === 'register') {
+        if (loginBtn) {
+          loginBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+        }
+        if (regBtn) {
+          regBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+        }
+        if (loginForm) loginForm.classList.add('hidden');
+        if (regForm) regForm.classList.remove('hidden');
+      } else {
+        if (loginBtn) {
+          loginBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+        }
+        if (regBtn) {
+          regBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+        }
+        if (loginForm) loginForm.classList.remove('hidden');
+        if (regForm) regForm.classList.add('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+    window.switchAuthTab = switchAuthTab;
+
+    function quickFillLogin(username, pin) {
+      switchAuthTab('login');
+      const u = document.getElementById('loginInputUsername');
+      const p = document.getElementById('loginInputPin');
+      if (u) u.value = username;
+      if (p) p.value = pin;
+    }
+    window.quickFillLogin = quickFillLogin;
+
+    function getRegisteredEcosystemUsers() {
+      const DEFAULT_USERS = [
+        { userId: 'u_orxan', username: 'orxan', fullName: 'Orxan Əliyev', schoolClass: '10A', grade: 10, pin: '1000', role: 'student', avatar: '👨‍🎓' },
+        { userId: 'u_elvin', username: 'elvin_coach', fullName: 'Elvin Müəllim', schoolClass: 'Məşqçi', grade: 0, pin: '2026', role: 'coach', avatar: '⚽' },
+        { userId: 'u_admin', username: 'admin', fullName: 'TDV İnzibatçı', schoolClass: 'Rəhbərlik', grade: 0, pin: 'admin2026', role: 'admin', avatar: '🛡️' }
+      ];
+      try {
+        const raw = localStorage.getItem('tdv_registered_users_v1');
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length > 0) return list;
+        }
+      } catch (e) {}
+      try {
+        localStorage.setItem('tdv_registered_users_v1', JSON.stringify(DEFAULT_USERS));
+      } catch (e) {}
+      return DEFAULT_USERS;
+    }
+
+    function dispatchSSOBrokerState(session, users) {
+      try {
+        const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+        let iframe = document.getElementById('tdv_sso_broker_bridge');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.id = 'tdv_sso_broker_bridge';
+          iframe.src = BROKER_URL;
+          iframe.style.display = 'none';
+          iframe.setAttribute('aria-hidden', 'true');
+          iframe.onload = function() {
+            try {
+              iframe.contentWindow.postMessage({ type: 'TDV_SSO_SET', session: session, users: users }, '*');
+            } catch (err) {}
+          };
+          document.body.appendChild(iframe);
+        } else {
+          iframe.contentWindow.postMessage({ type: 'TDV_SSO_SET', session: session, users: users }, '*');
+        }
+      } catch (e) {}
+    }
+
+    function showAuthFeedback(msg, isSuccess) {
+      const fb = document.getElementById('authFeedback');
+      if (!fb) return;
+      fb.classList.remove('hidden');
+      if (isSuccess) {
+        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center';
+      } else {
+        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-center';
+      }
+      fb.textContent = msg;
+    }
+
+    function handleAuthLoginSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const userIn = (document.getElementById('loginInputUsername')?.value || '').trim();
+      const pinIn = (document.getElementById('loginInputPin')?.value || '').trim();
+      if (!userIn) {
+        showAuthFeedback('Zəhmət olmasa istifadəçi adı daxil edin.', false);
+        return;
+      }
+
+      const users = getRegisteredEcosystemUsers();
+      const matched = users.find(u =>
+        (u.username && u.username.toLowerCase() === userIn.toLowerCase()) ||
+        (u.fullName && u.fullName.toLowerCase() === userIn.toLowerCase())
+      );
+
+      if (!matched) {
+        showAuthFeedback("⚠️ '" + userIn + "' istifadəçi adı qeydiyyatda tapılmadı! Zəhmət olmasa 'Qeydiyyat' sekmesindən yeni vahid profil açın.", false);
+        return;
+      }
+
+      if (matched.pin && String(matched.pin).trim() !== '') {
+        if (!pinIn || pinIn !== String(matched.pin).trim()) {
+          showAuthFeedback('❌ Daxil edilən PIN kod və ya şifrə yanlışdır!', false);
+          return;
+        }
+      }
+
+      const session = {
+        userId: matched.userId || 'usr_' + Date.now().toString(36),
+        username: matched.username,
+        fullName: matched.fullName || matched.username,
+        role: matched.role || (matched.schoolClass === 'Məşqçi' ? 'coach' : 'student'),
+        schoolClass: matched.schoolClass || '10A',
+        grade: matched.grade || 10,
+        avatar: matched.avatar || '🎓',
+        token: 'tdv_sec_' + Math.random().toString(36).slice(2) + Date.now().toString(36),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+
+      localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(session));
+      dispatchSSOBrokerState(session, users);
+      showAuthFeedback('✓ Uğurla daxil oldunuz! Ekosistem sinxronlaşdırılır...', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 500);
+    }
+    window.handleAuthLoginSubmit = handleAuthLoginSubmit;
+
+    function handleAuthRegisterSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const fullName = (document.getElementById('regInputFullName')?.value || '').trim();
+      const username = (document.getElementById('regInputUsername')?.value || '').trim();
+      const schoolClass = document.getElementById('regInputClass')?.value || '10A';
+      const avatar = document.getElementById('regInputAvatar')?.value || '🎓';
+      const pin = (document.getElementById('regInputPin')?.value || '').trim();
+      const confirmPin = (document.getElementById('regInputConfirmPin')?.value || '').trim();
+
+      if (!fullName) {
+        showAuthFeedback('Zəhmət olmasa ad və soyadınızı daxil edin.', false);
+        return;
+      }
+      if (!username) {
+        showAuthFeedback('Zəhmət olmasa istifadəçi adı seçin.', false);
+        return;
+      }
+      if (pin && confirmPin && pin !== confirmPin) {
+        showAuthFeedback('Daxil edilən şifrələr bir-birinə uyğun gəlmir.', false);
+        return;
+      }
+
+      const users = getRegisteredEcosystemUsers();
+      const exists = users.some(u => u.username && u.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        showAuthFeedback("⚠️ '" + username + "' istifadəçi adı artıq tutulub! Zəhmət olmasa başqa ad seçin.", false);
+        return;
+      }
+
+      const parsedGrade = parseInt(schoolClass) || 10;
+      const newUser = {
+        userId: 'usr_' + Date.now().toString(36),
+        fullName: fullName,
+        username: username,
+        schoolClass: schoolClass,
+        grade: parsedGrade,
+        role: schoolClass === 'Məşqçi' ? 'coach' : schoolClass === 'Müəllim' ? 'teacher' : 'student',
+        avatar: avatar,
+        pin: pin,
+        createdAt: Date.now()
+      };
+
+      users.push(newUser);
+      localStorage.setItem('tdv_registered_users_v1', JSON.stringify(users));
+
+      const session = {
+        userId: newUser.userId,
+        username: newUser.username,
+        fullName: newUser.fullName,
+        role: newUser.role,
+        schoolClass: newUser.schoolClass,
+        grade: newUser.grade,
+        avatar: newUser.avatar,
+        token: 'tdv_sec_' + Math.random().toString(36).slice(2) + Date.now().toString(36),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+
+      localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(session));
+      dispatchSSOBrokerState(session, users);
+      showAuthFeedback('✨ Vahid profiliniz uğurla yaradıldı! Giriş edilir...', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 500);
+    }
+    window.handleAuthRegisterSubmit = handleAuthRegisterSubmit;
+
+    function logoutEcosystemUser() {
+      localStorage.removeItem('tdv_ecosystem_session_v1');
+      dispatchSSOBrokerState(null, getRegisteredEcosystemUsers());
+      showAuthFeedback('Çıxış edildi.', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 400);
+    }
+    window.logoutEcosystemUser = logoutEcosystemUser;
+
     // Quick Room Code Join for TDV Mafia
     function joinMafiaByCode(e) {
       if (e && e.preventDefault) e.preventDefault();
@@ -778,6 +1232,46 @@
       window.open(targetUrl, '_blank', 'noopener,noreferrer');
     }
     window.joinMafiaByCode = joinMafiaByCode;
+
+    function renderUserSessionBadge() {
+      try {
+        const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+        const loginBtn = document.getElementById('tdvLoginBtn');
+        const badge = document.getElementById('tdvUserBadgeContainer');
+        const nameEl = document.getElementById('tdvUserName');
+        const avatarEl = document.getElementById('tdvUserAvatar');
+        const roleEl = document.getElementById('tdvUserRoleBadge');
+
+        if (!raw) {
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        const sess = JSON.parse(raw);
+        if (!sess || (!sess.username && !sess.fullName)) {
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        // Ghost check against registered users
+        const users = getRegisteredEcosystemUsers();
+        const valid = users.some(u => u && u.username && u.username.toLowerCase() === sess.username?.toLowerCase());
+        if (!valid) {
+          localStorage.removeItem('tdv_ecosystem_session_v1');
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        if (nameEl) nameEl.textContent = sess.fullName || sess.username;
+        if (avatarEl) avatarEl.textContent = sess.avatar || '👤';
+        if (roleEl) roleEl.textContent = sess.schoolClass || (sess.grade ? sess.grade + 'A' : 'Profil');
+        if (loginBtn) { loginBtn.classList.add('hidden'); loginBtn.classList.remove('inline-flex'); }
+        if (badge) { badge.classList.remove('hidden'); badge.classList.add('inline-flex'); }
+      } catch (err) {}
+    }
 
     (function initTDVEcosystemSSO() {
       const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
@@ -875,6 +1369,7 @@
 
               if (shouldUpdate) {
                 localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(e.data.session));
+                renderUserSessionBadge();
                 decorateEcosystemLinks();
               }
             } else {
@@ -885,6 +1380,7 @@
                   const exists = e.data.users.some(u => u && u.username && u.username.toLowerCase() === currentObj.username?.toLowerCase());
                   if (!exists) {
                     localStorage.removeItem('tdv_ecosystem_session_v1');
+                    renderUserSessionBadge();
                   }
                 } catch(err) {}
               }
@@ -902,10 +1398,12 @@
 
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
+          renderUserSessionBadge();
           decorateEcosystemLinks();
           syncFromBroker();
         });
       } else {
+        renderUserSessionBadge();
         decorateEcosystemLinks();
         syncFromBroker();
       }
