@@ -293,6 +293,12 @@
           <kbd class="hidden lg:inline px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-[10px] font-mono text-zinc-500 dark:text-zinc-400">Ctrl K</kbd>
         </button>
 
+        <!-- SSO Active User Indicator -->
+        <div id="tdvUserBadgeContainer" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-purple-700 dark:text-purple-300 text-xs font-bold transition shadow-sm">
+          <span id="tdvUserAvatar">👤</span>
+          <span id="tdvUserName" class="hidden sm:inline">İstifadəçi</span>
+        </div>
+
         <!-- Mobile Menu Toggle Button -->
         <button type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Mobil menyu" class="md:hidden p-2 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200">
           <i id="mobileMenuIcon" data-lucide="menu" class="w-4 h-4"></i>
@@ -2344,6 +2350,131 @@
         if (countEl) countEl.textContent = '0 / 300';
       }, 1400);
     }
+  </script>
+
+  <!-- ================= TDV ECOSYSTEM SSO CLIENT & LINK SYNCHRONIZATION ================= -->
+  <script>
+    (function initTDVEcosystemSSO() {
+      const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+      const ECO_DOMAINS = [
+        'school-minifootball-tournament.vercel.app',
+        'tdv-e-school.vercel.app',
+        'tdv-games.vercel.app',
+        'tdv-mafia.vercel.app',
+        'tdv-community-hubs.vercel.app'
+      ];
+
+      // 1. Extract sso_ticket from URL parameter if arrived from another portal
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ticket = urlParams.get('sso_ticket');
+        if (ticket) {
+          const sessionData = JSON.parse(decodeURIComponent(escape(atob(ticket))));
+          if (sessionData && (sessionData.username || sessionData.fullName)) {
+            localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(sessionData));
+            urlParams.delete('sso_ticket');
+            const cleanSearch = urlParams.toString();
+            const cleanUrl = window.location.pathname + (cleanSearch ? '?' + cleanSearch : '') + window.location.hash;
+            window.history.replaceState({}, document.title, cleanUrl);
+          }
+        }
+      } catch (err) {
+        console.warn('[SSO] Ticket parse error:', err);
+      }
+
+      // 2. Decorate all outbound links pointing to TDV ecosystem domains
+      function decorateEcosystemLinks() {
+        try {
+          const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+          if (!raw) return;
+          const session = JSON.parse(raw);
+          if (!session || (!session.username && !session.fullName)) return;
+          const ticket = btoa(unescape(encodeURIComponent(JSON.stringify(session))));
+
+          document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+            const isEco = ECO_DOMAINS.some(domain => href.includes(domain)) || href.endsWith('games.html');
+            if (isEco && !href.includes('sso_ticket=')) {
+              const sep = href.includes('?') ? '&' : '?';
+              link.setAttribute('href', `${href}${sep}sso_ticket=${encodeURIComponent(ticket)}`);
+            }
+          });
+        } catch (e) {
+          console.warn('[SSO] Link decoration error:', e);
+        }
+      }
+
+      // 3. Render User Badge if active session exists
+      function renderUserSessionBadge() {
+        try {
+          const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+          if (!raw) return;
+          const sess = JSON.parse(raw);
+          if (!sess || (!sess.username && !sess.fullName)) return;
+
+          const badge = document.getElementById('tdvUserBadgeContainer');
+          const nameEl = document.getElementById('tdvUserName');
+          const avatarEl = document.getElementById('tdvUserAvatar');
+          if (badge && nameEl) {
+            nameEl.textContent = sess.fullName || sess.username;
+            if (avatarEl) avatarEl.textContent = sess.avatar || '👤';
+            badge.classList.remove('hidden');
+            badge.classList.add('inline-flex');
+          }
+        } catch {}
+      }
+
+      // 4. Background broker sync if on external domain or testing
+      function syncFromBroker() {
+        if (window.location.pathname.endsWith('sso-broker.html')) return;
+        try {
+          const iframe = document.createElement('iframe');
+          iframe.src = BROKER_URL;
+          iframe.style.display = 'none';
+          iframe.setAttribute('aria-hidden', 'true');
+          iframe.setAttribute('tabindex', '-1');
+
+          window.addEventListener('message', function onBrokerMsg(e) {
+            if (!e.data || e.data.type !== 'TDV_SSO_STATE') return;
+            if (e.data.session) {
+              localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(e.data.session));
+              renderUserSessionBadge();
+              decorateEcosystemLinks();
+            }
+            if (e.data.users && Array.isArray(e.data.users)) {
+              try {
+                const existing = JSON.parse(localStorage.getItem('tdv_registered_users_v1') || '[]');
+                const map = new Map();
+                existing.forEach(u => u && u.username && map.set(u.username.toLowerCase(), u));
+                e.data.users.forEach(u => u && u.username && map.set(u.username.toLowerCase(), u));
+                localStorage.setItem('tdv_registered_users_v1', JSON.stringify(Array.from(map.values())));
+              } catch {}
+            }
+          });
+
+          iframe.onload = function() {
+            try {
+              iframe.contentWindow.postMessage({ type: 'TDV_SSO_GET' }, '*');
+            } catch {}
+          };
+          document.body.appendChild(iframe);
+        } catch {}
+      }
+
+      // Run on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          renderUserSessionBadge();
+          decorateEcosystemLinks();
+          syncFromBroker();
+        });
+      } else {
+        renderUserSessionBadge();
+        decorateEcosystemLinks();
+        syncFromBroker();
+      }
+    })();
   </script>
 </body>
 </html>
