@@ -285,8 +285,8 @@
           
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
             <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-600 to-red-800 border border-rose-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-rose-600/30 shrink-0">
-                M
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-600 via-purple-600 to-rose-700 border border-rose-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-rose-600/30 shrink-0">
+                🎭
               </div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap mb-1">
@@ -302,11 +302,21 @@
               </div>
             </div>
 
-            <!-- Direct Launch Button -->
-            <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg shadow-rose-900/30 hover:scale-[1.02] transition duration-200 text-sm cursor-pointer">
-              <span>Masaya Qoşul / Portala Daxil Ol</span>
-              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-            </a>
+            <!-- Action buttons & Quick Room Code Join -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <form onsubmit="joinMafiaByCode(event)" class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1.5 rounded-2xl shadow-inner">
+                <input id="mafiaRoomInput" type="text" placeholder="Otaq Kodu (məs: 8821)" required class="bg-transparent border-0 px-3 py-1.5 text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase focus:outline-none w-36 sm:w-44" />
+                <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shrink-0 transition shadow-sm cursor-pointer">
+                  Masaya Keç
+                </button>
+              </form>
+
+              <!-- Direct Launch Button -->
+              <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-extrabold py-2.5 px-5 rounded-2xl shadow-lg shadow-rose-900/30 hover:scale-[1.02] transition duration-200 text-xs sm:text-sm cursor-pointer shrink-0">
+                <span>Masaya Qoşul</span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </a>
+            </div>
           </div>
 
           <!-- Feature Description -->
@@ -342,6 +352,72 @@
               </p>
             </div>
 
+          </div>
+
+          <!-- Featured Roles Roster (6 Visual Cards) -->
+          <div class="mb-8">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 flex items-center gap-2">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-rose-500"></i>
+              Əsas Rollar və Taktiki Qabiliyyətlər
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-rose-500/25 hover:border-rose-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">👑</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Don (Boss)</div>
+                  <span class="text-[9px] font-black uppercase text-rose-600 dark:text-rose-400">Mafiya</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Komissarı axtarır və gecə qətlinə əmr verir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-blue-500/25 hover:border-blue-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">🕵️</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Komissar Katani</div>
+                  <span class="text-[9px] font-black uppercase text-blue-600 dark:text-blue-400">Mülki</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Gecə şübhəliləri yoxlayır, gündüz ifşa edir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-emerald-500/25 hover:border-emerald-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💉</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Həkim (Doktor)</div>
+                  <span class="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400">Şəfaçı</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Yaralanmış vətəndaşı ölümdən xilas edir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-purple-500/25 hover:border-purple-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💃</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Məşuqə</div>
+                  <span class="text-[9px] font-black uppercase text-purple-600 dark:text-purple-400">Neytral</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Gecə istədiyi şəxsin xüsusi rolunu bloklayır.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">🎭</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Deduksiyaçı</div>
+                  <span class="text-[9px] font-black uppercase text-zinc-500 dark:text-zinc-400">Mülki</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Məntiqlə yalanları tutub səsvermədə qələbə qazanır.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-amber-500/25 hover:border-amber-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💣</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Kamikadze</div>
+                  <span class="text-[9px] font-black uppercase text-amber-600 dark:text-amber-400">Xaos</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Asıldıqda özü ilə bir başqa oyunçunu da aparır.</p>
+                </div>
+              </div>
+
+            </div>
           </div>
 
           <!-- Format Roster Showcase Strip -->
@@ -682,6 +758,27 @@
 
   <!-- ================= TDV ECOSYSTEM SSO CLIENT & LINK SYNCHRONIZATION ================= -->
   <script>
+    // Quick Room Code Join for TDV Mafia
+    function joinMafiaByCode(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const input = document.getElementById('mafiaRoomInput');
+      const code = (input ? input.value : '').trim().toUpperCase();
+      if (!code) return;
+      let targetUrl = 'https://tdv-mafia.vercel.app/lobby/' + encodeURIComponent(code);
+      try {
+        const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+        if (raw) {
+          const sess = JSON.parse(raw);
+          if (sess && (sess.username || sess.fullName)) {
+            const ticket = btoa(unescape(encodeURIComponent(JSON.stringify(sess))));
+            targetUrl += '?sso_ticket=' + encodeURIComponent(ticket);
+          }
+        }
+      } catch (err) {}
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    }
+    window.joinMafiaByCode = joinMafiaByCode;
+
     (function initTDVEcosystemSSO() {
       const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
       const ECO_DOMAINS = [
@@ -745,10 +842,6 @@
 
           window.addEventListener('message', function onBrokerMsg(e) {
             if (!e.data || e.data.type !== 'TDV_SSO_STATE') return;
-            if (e.data.session) {
-              localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(e.data.session));
-              decorateEcosystemLinks();
-            }
             if (e.data.users && Array.isArray(e.data.users)) {
               try {
                 const existing = JSON.parse(localStorage.getItem('tdv_registered_users_v1') || '[]');
@@ -757,6 +850,44 @@
                 e.data.users.forEach(u => u && u.username && map.set(u.username.toLowerCase(), u));
                 localStorage.setItem('tdv_registered_users_v1', JSON.stringify(Array.from(map.values())));
               } catch {}
+            }
+            if (e.data.session) {
+              const currentRaw = localStorage.getItem('tdv_ecosystem_session_v1');
+              let shouldUpdate = false;
+              if (!currentRaw) {
+                shouldUpdate = true;
+              } else {
+                try {
+                  const currentObj = JSON.parse(currentRaw);
+                  const users = e.data.users || [];
+                  const currentValid = users.some(u => u && u.username && u.username.toLowerCase() === currentObj.username?.toLowerCase());
+                  if (!currentValid) {
+                    shouldUpdate = true;
+                  } else if (currentObj.username !== e.data.session.username) {
+                    if (e.data.session.createdAt && (!currentObj.createdAt || e.data.session.createdAt >= currentObj.createdAt)) {
+                      shouldUpdate = true;
+                    }
+                  }
+                } catch(err) {
+                  shouldUpdate = true;
+                }
+              }
+
+              if (shouldUpdate) {
+                localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(e.data.session));
+                decorateEcosystemLinks();
+              }
+            } else {
+              const currentRaw = localStorage.getItem('tdv_ecosystem_session_v1');
+              if (currentRaw && e.data.users) {
+                try {
+                  const currentObj = JSON.parse(currentRaw);
+                  const exists = e.data.users.some(u => u && u.username && u.username.toLowerCase() === currentObj.username?.toLowerCase());
+                  if (!exists) {
+                    localStorage.removeItem('tdv_ecosystem_session_v1');
+                  }
+                } catch(err) {}
+              }
             }
           });
 

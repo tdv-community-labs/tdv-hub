@@ -87,7 +87,13 @@
             try {
               const parsed = JSON.parse(rawSession);
               if (parsed && parsed.expiresAt > Date.now()) {
-                session = parsed;
+                const userMatch = users.find(u => u && u.username && u.username.toLowerCase() === (parsed.username || '').toLowerCase());
+                if (userMatch) {
+                  session = parsed;
+                } else {
+                  console.warn('[Broker] Ghost session purged:', parsed.username);
+                  localStorage.removeItem(SESSION_KEY);
+                }
               } else {
                 localStorage.removeItem(SESSION_KEY);
               }
