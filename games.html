@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="az" class="dark">
+<html lang="az" class="dark max-w-[100vw] overflow-x-clip">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TDV Games — Məktəb İcması Oyun & Deduksiya Portalı</title>
   <meta name="description" content="TDV Community Labs rəsmi oyunlar və sosial deduksiya portalı: TDV Mafia, 15 oyun formatı, Dante's Inferno və tələbə oyun laboratoriyası.">
   <meta name="theme-color" content="#09090b" id="metaThemeColor">
@@ -71,6 +71,12 @@
   <style>
     :root {
       color-scheme: dark;
+    }
+    html, body {
+      max-width: 100vw;
+      overflow-x: clip;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
     }
     html.light {
       color-scheme: light;
@@ -153,7 +159,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased font-sans">
+<body class="min-h-[100dvh] max-w-[100vw] overflow-x-clip flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased font-sans pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
 
   <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
   <aside aria-label="Organization Ecosystem Bar" class="bg-zinc-100 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-4 text-[11px] sticky top-0 z-50 transition-colors">
@@ -258,7 +264,7 @@
   </header>
 
   <!-- ================= MAIN HERO ================= -->
-  <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
+  <main class="flex-grow min-w-0 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full overflow-x-clip">
 
     <div class="text-center max-w-3xl mx-auto mb-12">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 dark:bg-purple-500/15 border border-purple-500/25 text-purple-700 dark:text-purple-300 text-xs font-bold uppercase tracking-wider mb-4">
