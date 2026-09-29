@@ -6,5 +6,90 @@
 </head>
 <body>
 <script src="scripts/sso.js"></script>
+
+  <!-- Modern Premium Custom Cursor -->
+  <style>
+    /* Hide native cursor for a premium feel */
+    @media (pointer: fine) {
+      body, a, button, input, select, textarea { cursor: none !important; }
+    }
+    
+    #tdv-custom-cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background-color: #a855f7;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999999;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    #tdv-custom-cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      background-color: transparent;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.1);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    
+    body.cursor-hover #tdv-custom-cursor-dot {
+      background-color: #10b981;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    body.cursor-hover #tdv-custom-cursor-ring {
+      width: 50px; height: 50px;
+      border-color: rgba(16, 185, 129, 0.6);
+      background-color: rgba(16, 185, 129, 0.05);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+    }
+  </style>
+  <div id="tdv-custom-cursor-dot"></div>
+  <div id="tdv-custom-cursor-ring"></div>
+  <script>
+    (function() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      
+      const dot = document.getElementById('tdv-custom-cursor-dot');
+      const ring = document.getElementById('tdv-custom-cursor-ring');
+      
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+      
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      
+      document.body.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, input, [role="button"]')) {
+          document.body.classList.add('cursor-hover');
+        }
+      });
+      document.body.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, input, [role="button"]')) {
+          document.body.classList.remove('cursor-hover');
+        }
+      });
+    })();
+  </script>
 </body>
+
 </html>

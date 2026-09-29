@@ -76,7 +76,7 @@
 <body class="min-h-[100dvh] max-w-[100vw] overflow-x-clip flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased font-sans pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
 
   <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
-  <aside aria-label="Organization Ecosystem Bar" class="bg-zinc-100 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-4 text-[11px] sticky top-0 z-50 transition-colors">
+  <aside aria-label="Organization Ecosystem Bar" class="bg-white/80 dark:bg-[#070707]/70 backdrop-blur-3xl border-b border-zinc-200 dark:border-white/5 py-2 px-4 text-[11px] sticky top-0 z-50 transition-colors shadow-md">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
       
       <!-- Left: Org Brand & Live Ticker -->
@@ -122,7 +122,7 @@
   </aside>
 
   <!-- ================= MAIN NAVIGATION HEADER ================= -->
-  <header class="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md sticky top-[33px] z-40 transition-colors">
+  <header class="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-[#030303]/90 backdrop-blur-md sticky top-[33px] z-40 transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       
       <!-- Brand Logo -->
@@ -226,7 +226,7 @@
     </div>
 
     <!-- Mobile Drawer Menu -->
-    <div id="mobileMenuDrawer" class="hidden md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 space-y-2">
+    <div id="mobileMenuDrawer" class="hidden md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#030303] p-4 space-y-2">
       <!-- Mobile Auth Button -->
       <div class="pb-2 mb-2 border-b border-zinc-200 dark:border-zinc-800">
         <button type="button" onclick="openAuthModal(); toggleMobileMenu();" class="w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
@@ -286,7 +286,7 @@
   </header>
 
   <!-- ================= MOBILE DEDICATED TOOLS STRIP ================= -->
-  <aside aria-label="Mobil Alətlər Zolağı" class="md:hidden border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md px-3 py-2 overflow-x-auto [scrollbar-width:none] [-webkit-overflow-scrolling:touch] flex items-center gap-2 sticky top-[80px] z-30 shadow-xs">
+  <aside aria-label="Mobil Alətlər Zolağı" class="md:hidden border-b border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-[#030303]/95 backdrop-blur-md px-3 py-2 overflow-x-auto [scrollbar-width:none] [-webkit-overflow-scrolling:touch] flex items-center gap-2 sticky top-[80px] z-30 shadow-xs">
     <button type="button" onclick="openCampusModal()" class="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-1.5 rounded-xl border border-purple-500/25 transition shadow-2xs cursor-pointer">
       <i data-lucide="map-pin" class="w-3.5 h-3.5 text-purple-500"></i>
       <span>Kabinetlər</span>
@@ -619,7 +619,7 @@
 
       <!-- Add Task Form -->
       <form onsubmit="addStudentTask(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-4">
-        <select id="taskSubject" class="sm:col-span-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2.5 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <select id="taskSubject" class="sm:col-span-3 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2.5 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/50">
           <option value="Riyaziyyat">📐 Riyaziyyat</option>
           <option value="Fizika">⚡ Fizika</option>
           <option value="Kimya">🧪 Kimya</option>
@@ -629,8 +629,8 @@
           <option value="Tarix">🏛️ Tarix</option>
           <option value="Digər">📌 Digər</option>
         </select>
-        <input id="taskText" type="text" required placeholder="Ev tapşırığı və ya qeyd (məs: Səh 45, çalışma 12-18)..." class="sm:col-span-6 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
-        <input id="taskDue" type="text" placeholder="Vaxt (məs: Sabah)" class="sm:col-span-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <input id="taskText" type="text" required placeholder="Ev tapşırığı və ya qeyd (məs: Səh 45, çalışma 12-18)..." class="sm:col-span-6 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <input id="taskDue" type="text" placeholder="Vaxt (məs: Sabah)" class="sm:col-span-2 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/50">
         <button type="submit" class="sm:col-span-1 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs py-2.5 flex items-center justify-center transition cursor-pointer shadow-sm">
           <i data-lucide="plus" class="w-4 h-4"></i>
         </button>
@@ -836,15 +836,15 @@
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-center text-xs">
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">1-ci Dərs</span>
             <span class="font-bold text-zinc-800 dark:text-zinc-200 font-mono">08:30 - 09:15</span>
           </div>
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">Böyük Tənəffüs</span>
             <span class="font-bold text-amber-600 dark:text-amber-400 font-mono">11:05 - 11:20</span>
           </div>
-          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+          <div class="p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
             <span class="block text-[10px] text-zinc-500 dark:text-zinc-400">Dərslərin Sonu</span>
             <span class="font-bold text-zinc-800 dark:text-zinc-200 font-mono">14:50</span>
           </div>
@@ -953,7 +953,7 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="w-full border-t border-zinc-200 dark:border-zinc-800 py-8 bg-zinc-100 dark:bg-zinc-950 transition-colors">
+  <footer class="w-full border-t border-zinc-200 dark:border-zinc-800 py-8 bg-zinc-100 dark:bg-[#030303] transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
       <div class="flex items-center gap-2">
         <span class="font-bold text-zinc-800 dark:text-zinc-200">TDV Community Labs</span>
@@ -1015,10 +1015,10 @@
           <label class="text-zinc-700 dark:text-zinc-300 font-semibold">KSQ Ballarının Ortalaması (0 - 100):</label>
           <span id="ksqShareBadge" class="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-semibold hidden">Pay: 0 bal</span>
         </div>
-        <input id="calcKsq" type="number" min="0" max="100" step="0.1" required placeholder="Məs: 80" oninput="liveCalculateGrade()" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-mono text-sm">
+        <input id="calcKsq" type="number" min="0" max="100" step="0.1" required placeholder="Məs: 80" oninput="liveCalculateGrade()" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-mono text-sm">
       </div>
 
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <div class="flex items-center gap-2">
           <input type="checkbox" id="hasBsq" checked onchange="toggleBsqInput(this.checked)" class="rounded bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 text-amber-500 focus:ring-0 cursor-pointer w-4 h-4">
           <label for="hasBsq" class="text-zinc-700 dark:text-zinc-300 select-none cursor-pointer font-medium">Fənn üzrə BSQ imtahanı keçirilir</label>
@@ -1031,11 +1031,11 @@
           <label class="text-zinc-700 dark:text-zinc-300 font-semibold">BSQ Balı (0 - 100):</label>
           <span id="bsqShareBadge" class="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-semibold hidden">Pay: 0 bal</span>
         </div>
-        <input id="calcBsq" type="number" min="0" max="100" step="0.1" placeholder="Məs: 85" oninput="liveCalculateGrade()" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-mono text-sm">
+        <input id="calcBsq" type="number" min="0" max="100" step="0.1" placeholder="Məs: 85" oninput="liveCalculateGrade()" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-mono text-sm">
       </div>
 
       <!-- Result Display -->
-      <div id="calcResult" class="hidden p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-center space-y-1.5 transition-all">
+      <div id="calcResult" class="hidden p-4 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-center space-y-1.5 transition-all">
         <div class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">Yekun Yarımillik Qiymətiniz:</div>
         <div id="calcFinalScore" class="text-3xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">--</div>
         <div id="calcGradeBadge" class="inline-block px-3.5 py-1 rounded-full text-xs font-bold mt-1">--</div>
@@ -1077,14 +1077,14 @@
     </div>
 
     <!-- Tabs: Bells vs Classes -->
-    <div class="flex gap-2 mb-4 p-1 bg-zinc-100 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+    <div class="flex gap-2 mb-4 p-1 bg-zinc-100 dark:bg-[#030303] rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
       <button type="button" id="tabBellBtn" onclick="switchScheduleTab('bell')" class="flex-1 py-1.5 rounded-lg font-semibold bg-purple-600 text-white transition cursor-pointer">Zəng Saatları</button>
       <button type="button" id="tabClassBtn" onclick="switchScheduleTab('class')" class="flex-1 py-1.5 rounded-lg font-semibold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer">Sinif Cədvəli</button>
     </div>
 
     <!-- Tab 1: Bell Schedule -->
     <div id="bellTabContent" class="space-y-1.5 text-xs font-mono max-h-80 overflow-y-auto pr-1">
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">1-ci Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">08:30 — 09:15</span>
       </div>
@@ -1092,7 +1092,7 @@
         <span>Tənəffüs</span>
         <span>09:15 — 09:25 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">2-ci Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">09:25 — 10:10</span>
       </div>
@@ -1100,7 +1100,7 @@
         <span>Tənəffüs</span>
         <span>10:10 — 10:20 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">3-cü Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">10:20 — 11:05</span>
       </div>
@@ -1108,7 +1108,7 @@
         <span class="font-sans font-bold">🍽️ Böyük Tənəffüs (Nahar)</span>
         <span>11:05 — 11:20 (15 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">4-cü Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">11:20 — 12:05</span>
       </div>
@@ -1116,7 +1116,7 @@
         <span>Tənəffüs</span>
         <span>12:05 — 12:15 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">5-ci Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">12:15 — 13:00</span>
       </div>
@@ -1124,7 +1124,7 @@
         <span>Tənəffüs</span>
         <span>13:00 — 13:10 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">6-cı Dərs</span>
         <span class="text-blue-600 dark:text-blue-400 font-bold">13:10 — 13:55</span>
       </div>
@@ -1132,7 +1132,7 @@
         <span>Tənəffüs</span>
         <span>13:55 — 14:05 (10 dəq)</span>
       </div>
-      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
         <span class="text-zinc-800 dark:text-zinc-200 font-sans font-semibold">7-ci Dərs (Dərslərin Sonu)</span>
         <span class="text-emerald-600 dark:text-emerald-400 font-bold">14:05 — 14:50</span>
       </div>
@@ -1141,12 +1141,12 @@
     <!-- Tab 2: Class Timetable -->
     <div id="classTabContent" class="hidden space-y-3 text-xs">
       <div class="flex gap-2">
-        <select id="classSelector" onchange="renderClassTimetable()" class="flex-1 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none">
+        <select id="classSelector" onchange="renderClassTimetable()" class="flex-1 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none">
           <option value="10A">10-A Sinfi (Dəqiq Fənlər)</option>
           <option value="11H">11-H Sinfi (Buraxılış & Blok)</option>
           <option value="9C">9-C Sinfi (Əsas Təhsil)</option>
         </select>
-        <select id="daySelector" onchange="renderClassTimetable()" class="flex-1 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none">
+        <select id="daySelector" onchange="renderClassTimetable()" class="flex-1 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-zinc-900 dark:text-white text-xs font-semibold focus:outline-none">
           <option value="1">Bazar ertəsi</option>
           <option value="2">Çərşənbə axşamı</option>
           <option value="3">Çərşənbə</option>
@@ -1178,7 +1178,7 @@
 
     <!-- Search Box -->
     <div class="mb-3">
-      <div class="flex items-center gap-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus-within:border-emerald-500 rounded-xl px-3 py-2 text-xs transition">
+      <div class="flex items-center gap-2 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 focus-within:border-emerald-500 rounded-xl px-3 py-2 text-xs transition">
         <i data-lucide="search" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
         <input id="formulaSearchInput" type="text" placeholder="Düstur adı və ya açar söz axtar (məs: Nyuton, Om, Pifaqor, enerji)..." oninput="searchFormulas(this.value)" class="w-full bg-transparent text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none font-medium text-xs">
         <button type="button" onclick="clearFormulaSearch()" id="clearFormulaSearchBtn" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white hidden text-[10px] cursor-pointer">✕</button>
@@ -1215,7 +1215,7 @@
 
     <!-- Campus Search Input -->
     <div class="mb-3">
-      <div class="flex items-center gap-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus-within:border-purple-500 rounded-xl px-3 py-2 text-xs transition">
+      <div class="flex items-center gap-2 bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 focus-within:border-purple-500 rounded-xl px-3 py-2 text-xs transition">
         <i data-lucide="search" class="w-3.5 h-3.5 text-purple-500 shrink-0"></i>
         <input id="campusSearchInput" type="text" placeholder="Kabinet adı, otaq nömrəsi və ya korpus axtar (məs: STEAM, 204, Kimya)..." oninput="filterCampusRooms(this.value)" class="w-full bg-transparent text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none font-medium text-xs">
         <button type="button" onclick="clearCampusSearch()" id="clearCampusSearchBtn" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white hidden text-[10px] cursor-pointer" title="Təmizlə">✕</button>
@@ -1223,7 +1223,7 @@
     </div>
 
     <div id="campusRoomsContainer" class="space-y-2.5 max-h-80 overflow-y-auto pr-1 text-xs">
-      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="fizika kimya laboratoriya laboratoriyalar korpus a otaq 204 reaktiv">
+      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="fizika kimya laboratoriya laboratoriyalar korpus a otaq 204 reaktiv">
         <div>
           <div class="font-bold text-zinc-950 dark:text-white flex items-center gap-1.5">
             <span>🔬</span>
@@ -1234,7 +1234,7 @@
         <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 font-mono font-bold border border-zinc-200 dark:border-zinc-800 shrink-0 ml-2">Korpus A • Otaq 204</span>
       </div>
 
-      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="steam kompüter kompyuter informatika robototexnika 3d printer korpus b otaq 108">
+      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="steam kompüter kompyuter informatika robototexnika 3d printer korpus b otaq 108">
         <div>
           <div class="font-bold text-zinc-950 dark:text-white flex items-center gap-1.5">
             <span>💻</span>
@@ -1245,7 +1245,7 @@
         <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-blue-600 dark:text-blue-400 font-mono font-bold border border-zinc-200 dark:border-zinc-800 shrink-0 ml-2">Korpus B • Otaq 108</span>
       </div>
 
-      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="kitabxana oxu zalı ensiklopediya dərslik korpus a mərtəbə 3 mertebe">
+      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="kitabxana oxu zalı ensiklopediya dərslik korpus a mərtəbə 3 mertebe">
         <div>
           <div class="font-bold text-zinc-950 dark:text-white flex items-center gap-1.5">
             <span>📚</span>
@@ -1256,7 +1256,7 @@
         <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-amber-600 dark:text-amber-400 font-mono font-bold border border-zinc-200 dark:border-zinc-800 shrink-0 ml-2">Korpus A • Mərtəbə 3</span>
       </div>
 
-      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="qapalı idman kompleksi stadion minifutbol futbol voleybol həyət heyet">
+      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="qapalı idman kompleksi stadion minifutbol futbol voleybol həyət heyet">
         <div>
           <div class="font-bold text-zinc-950 dark:text-white flex items-center gap-1.5">
             <span>⚽</span>
@@ -1267,7 +1267,7 @@
         <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-purple-600 dark:text-purple-400 font-mono font-bold border border-zinc-200 dark:border-zinc-800 shrink-0 ml-2">Həyət Sahəsi</span>
       </div>
 
-      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="tibb məntəqəsi psixoloq psixoloji ilk yardım həkim hekim korpus a otaq 102">
+      <div class="campus-room-card p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between transition" data-room-search="tibb məntəqəsi psixoloq psixoloji ilk yardım həkim hekim korpus a otaq 102">
         <div>
           <div class="font-bold text-zinc-950 dark:text-white flex items-center gap-1.5">
             <span>🩺</span>
@@ -1278,7 +1278,7 @@
         <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-rose-600 dark:text-rose-400 font-mono font-bold border border-zinc-200 dark:border-zinc-800 shrink-0 ml-2">Korpus A • Otaq 102</span>
       </div>
 
-      <div id="noCampusRoomsMsg" class="hidden p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-center text-zinc-400 text-xs">
+      <div id="noCampusRoomsMsg" class="hidden p-6 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-center text-zinc-400 text-xs">
         Axtarışa uyğun kabinet və ya otaq tapılmadı.
       </div>
     </div>
@@ -1367,14 +1367,14 @@
     <form id="ideaForm" onsubmit="submitIdea(event)" class="space-y-4 text-xs">
       <div>
         <label class="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Adın və Sinfin:</label>
-        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
       </div>
       <div>
         <div class="flex items-center justify-between mb-1">
           <label class="text-zinc-700 dark:text-zinc-300 font-semibold">Oyunun İdeyası / Qaydaları:</label>
           <span id="ideaCharCount" class="text-[10px] text-zinc-400 font-mono">0 / 300</span>
         </div>
-        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"></textarea>
+        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"></textarea>
       </div>
 
       <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center font-medium">
@@ -1406,7 +1406,7 @@
 
     <!-- Logged in state view -->
     <div id="authLoggedInView" class="hidden space-y-4">
-      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
         <div id="authModalAvatar" class="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-2xl shrink-0">
           👤
         </div>
@@ -1437,7 +1437,7 @@
     <!-- Guest state view (Login / Register Tabs) -->
     <div id="authGuestView" class="space-y-4">
       <!-- Segmented Tab Switcher -->
-      <div class="grid grid-cols-2 p-1 rounded-2xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
+      <div class="grid grid-cols-2 p-1 rounded-2xl bg-zinc-100 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
         <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer">
           Daxil Ol
         </button>
@@ -1453,11 +1453,11 @@
       <form id="authLoginForm" onsubmit="handleAuthLoginSubmit(event)" class="space-y-3.5">
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı və ya Tam Ad</label>
-          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə (Əgər təyin edilibsə)</label>
-          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
 
         <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
@@ -1469,13 +1469,13 @@
         <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
           <span class="block text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 mb-2">Sürətli Test Girişi:</span>
           <div class="grid grid-cols-3 gap-2">
-            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               👨‍🎓 Orxan (10A)
             </button>
-            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               ⚽ Məşqçi Elvin
             </button>
-            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
               🛡️ Admin
             </button>
           </div>
@@ -1486,16 +1486,16 @@
       <form id="authRegisterForm" onsubmit="handleAuthRegisterSubmit(event)" class="hidden space-y-3">
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Ad və Soyad</label>
-          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div>
           <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı (Nick)</label>
-          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Sinif / Status</label>
-            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
               <option value="10A">10-A Sinfi</option>
               <option value="10B">10-B Sinfi</option>
               <option value="10C">10-C Sinfi</option>
@@ -1514,7 +1514,7 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Avatar İkonu</label>
-            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
               <option value="🎓">🎓 Məktəbli</option>
               <option value="⚽">⚽ Futbolçu</option>
               <option value="🎭">🎭 Mafioz</option>
@@ -1528,11 +1528,11 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə</label>
-            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
           </div>
           <div>
             <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Təkrar PIN</label>
-            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
           </div>
         </div>
 
@@ -1981,7 +1981,7 @@
       const lessons = (classSchedules[cls] && classSchedules[cls][day]) || [];
 
       list.innerHTML = lessons.map((les, i) => `
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800">
           <span class="text-purple-600 dark:text-purple-400 font-bold w-16">${i + 1}-ci Dərs</span>
           <span class="text-zinc-800 dark:text-zinc-200 font-sans font-medium flex-1 text-left px-2">${les}</span>
           <span class="text-[10px] text-zinc-400 font-mono">45 dəq</span>
@@ -2073,7 +2073,7 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-center text-zinc-500 dark:text-zinc-400 space-y-2">
+          <div class="col-span-full p-8 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-center text-zinc-500 dark:text-zinc-400 space-y-2">
             <i data-lucide="search-x" class="w-8 h-8 text-zinc-400 mx-auto"></i>
             <div class="font-semibold text-zinc-800 dark:text-zinc-200">Axtarışa uyğun düstur tapılmadı</div>
             <p class="text-xs text-zinc-400">Açar sözü dəyişərək yenidən yoxlayın və ya kateqoriyanı "Bütün" seçin.</p>
@@ -2088,7 +2088,7 @@
         const catColor = f.cat === 'math' ? 'text-blue-600 dark:text-blue-400' : f.cat === 'phys' ? 'text-amber-600 dark:text-amber-400' : 'text-purple-600 dark:text-purple-400';
         const safeFormula = f.formula.replace(/"/g, '&quot;');
         return `
-          <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 transition group">
+          <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 transition group">
             <div class="flex items-center justify-between mb-1.5">
               <span class="font-bold text-zinc-900 dark:text-zinc-100 text-xs">${f.title}</span>
               <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 ${catColor}">${catLabel}</span>
@@ -2293,12 +2293,12 @@
         const emptyMsg = currentTaskFilter === 'completed' ? 'Heç bir tamamlanmış tapşırıq yoxdur.' :
                          currentTaskFilter === 'active' ? 'Bütün tapşırıqlar tamamlanıb! 🎉' :
                          'Hələ heç bir tapşırıq əlavə edilməyib.';
-        container.innerHTML = `<div class="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-center text-zinc-400 font-medium">${emptyMsg}</div>`;
+        container.innerHTML = `<div class="p-6 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-center text-zinc-400 font-medium">${emptyMsg}</div>`;
         return;
       }
 
       container.innerHTML = filtered.map(t => `
-        <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 ${t.completed ? 'opacity-60' : ''} hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+        <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3 ${t.completed ? 'opacity-60' : ''} hover:border-zinc-300 dark:hover:border-zinc-700 transition">
           <div class="flex items-center gap-3 overflow-hidden">
             <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskComplete(${t.id})" class="rounded bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 text-purple-600 focus:ring-0 cursor-pointer w-4 h-4">
             <div class="overflow-hidden truncate">
@@ -2944,5 +2944,90 @@
     })();
   </script>
   <script src="scripts/hub-ui.js" defer></script>
+
+  <!-- Modern Premium Custom Cursor -->
+  <style>
+    /* Hide native cursor for a premium feel */
+    @media (pointer: fine) {
+      body, a, button, input, select, textarea { cursor: none !important; }
+    }
+    
+    #tdv-custom-cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background-color: #a855f7;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999999;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    #tdv-custom-cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      background-color: transparent;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.1);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    
+    body.cursor-hover #tdv-custom-cursor-dot {
+      background-color: #10b981;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    body.cursor-hover #tdv-custom-cursor-ring {
+      width: 50px; height: 50px;
+      border-color: rgba(16, 185, 129, 0.6);
+      background-color: rgba(16, 185, 129, 0.05);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+    }
+  </style>
+  <div id="tdv-custom-cursor-dot"></div>
+  <div id="tdv-custom-cursor-ring"></div>
+  <script>
+    (function() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      
+      const dot = document.getElementById('tdv-custom-cursor-dot');
+      const ring = document.getElementById('tdv-custom-cursor-ring');
+      
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+      
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      
+      document.body.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, input, [role="button"]')) {
+          document.body.classList.add('cursor-hover');
+        }
+      });
+      document.body.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, input, [role="button"]')) {
+          document.body.classList.remove('cursor-hover');
+        }
+      });
+    })();
+  </script>
 </body>
+
 </html>
