@@ -7,52 +7,37 @@
 <body>
 <script src="scripts/sso.js"></script>
 
-  <!-- Modern Premium Custom Cursor -->
-  <style>
-    /* Hide native cursor for a premium feel */
-    @media (pointer: fine) {
-      body, a, button, input, select, textarea { cursor: none !important; }
-    }
-    
+  
+  
+  
+
+  <!-- Global Particle System -->
+  
+  <!-- Premium Custom Cursor -->
+  <style id="tdv-premium-cursor-style">
+    @media (pointer: fine) { body, a, button, input, select, textarea { cursor: none !important; } }
     #tdv-custom-cursor-dot {
-      position: fixed;
-      top: 0; left: 0;
-      width: 6px; height: 6px;
-      background-color: #a855f7;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 999999;
-      transform: translate(-50%, -50%);
-      transition: background-color 0.2s ease, transform 0.1s ease;
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px; background-color: #fff; border-radius: 50%;
+      pointer-events: none; z-index: 999999;
+      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      will-change: transform, width, height;
     }
     #tdv-custom-cursor-ring {
-      position: fixed;
-      top: 0; left: 0;
-      width: 32px; height: 32px;
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      background-color: transparent;
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.1);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 999998;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1.5px solid rgba(255, 255, 255, 0.8);
+      background-color: transparent; border-radius: 50%;
+      pointer-events: none; z-index: 999998;
+      mix-blend-mode: difference;
+      transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, border 0.3s ease;
+      will-change: transform, width, height, background-color, border;
     }
-    
-    body.cursor-hover #tdv-custom-cursor-dot {
-      background-color: #10b981;
-      transform: translate(-50%, -50%) scale(0.5);
-    }
-    body.cursor-hover #tdv-custom-cursor-ring {
-      width: 50px; height: 50px;
-      border-color: rgba(16, 185, 129, 0.6);
-      background-color: rgba(16, 185, 129, 0.05);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
-    }
+    body.cursor-hover #tdv-custom-cursor-dot { opacity: 0; width: 0; height: 0; }
+    body.cursor-hover #tdv-custom-cursor-ring { width: 64px; height: 64px; border: none; background-color: #fff; }
   </style>
   <div id="tdv-custom-cursor-dot"></div>
   <div id="tdv-custom-cursor-ring"></div>
-  <script>
+  
+  <script id="tdv-premium-cursor-script">
     (function() {
       if (window.matchMedia('(pointer: coarse)').matches) return;
       
@@ -71,27 +56,26 @@
       });
       
       function animateRing() {
-        ringX += (mouseX - ringX) * 0.15;
-        ringY += (mouseY - ringY) * 0.15;
+        ringX += (mouseX - ringX) * 0.2;
+        ringY += (mouseY - ringY) * 0.2;
         ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
         requestAnimationFrame(animateRing);
       }
       animateRing();
       
       document.body.addEventListener('mouseover', (e) => {
-        if (e.target.closest('a, button, input, [role="button"]')) {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
           document.body.classList.add('cursor-hover');
         }
       });
       document.body.addEventListener('mouseout', (e) => {
-        if (e.target.closest('a, button, input, [role="button"]')) {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
           document.body.classList.remove('cursor-hover');
         }
       });
     })();
   </script>
 
-  <!-- Global Particle System -->
   <canvas id="tdv-particles-bg" class="fixed inset-0 pointer-events-none z-[-1] opacity-60"></canvas>
   <script>
     (function() {
