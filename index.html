@@ -4653,6 +4653,97 @@
     })();
   </script>
 
+
+  <!-- TDV Konami Code (Matrix Easter Egg) -->
+  <script id="tdv-konami-engine">
+    (function() {
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let konamiIndex = 0;
+      let activated = false;
+
+      window.addEventListener('keydown', (e) => {
+        if (activated) return;
+        if (e.key === konamiCode[konamiIndex] || e.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            activated = true;
+            activateMatrix();
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+
+      function activateMatrix() {
+        // Sound
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const actx = new AudioContextClass();
+          const osc = actx.createOscillator();
+          const gain = actx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(50, actx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, actx.currentTime + 2);
+          gain.gain.setValueAtTime(0, actx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.5, actx.currentTime + 1);
+          gain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 3);
+          osc.connect(gain); gain.connect(actx.destination);
+          osc.start(); osc.stop(actx.currentTime + 3);
+        }
+
+        // Achievement
+        if (window.unlockAchievement) {
+          window.unlockAchievement('matrix_hacker', 'Konami Hacker: Matrisə Xoş Gəldin', '💊', 'legendary');
+        }
+
+        // Canvas
+        const c = document.createElement('canvas');
+        c.style.position = 'fixed';
+        c.style.top = '0'; c.style.left = '0';
+        c.style.width = '100vw'; c.style.height = '100vh';
+        c.style.zIndex = '9999990';
+        c.style.pointerEvents = 'none';
+        c.style.opacity = '0';
+        c.style.transition = 'opacity 2s ease';
+        document.body.appendChild(c);
+        
+        setTimeout(() => c.style.opacity = '0.7', 100);
+
+        const ctx = c.getContext('2d');
+        c.width = window.innerWidth;
+        c.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = c.width / fontSize;
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+
+        function draw() {
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+          ctx.fillRect(0, 0, c.width, c.height);
+
+          ctx.fillStyle = '#0F0';
+          ctx.font = fontSize + 'px monospace';
+
+          for(let i = 0; i < drops.length; i++) {
+            const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if(drops[i] * fontSize > c.height && Math.random() > 0.975)
+              drops[i] = 0;
+            drops[i]++;
+          }
+        }
+        setInterval(draw, 30);
+      }
+    })();
+  </script>
+
 </body>
 
 </html>
