@@ -1463,6 +1463,189 @@
     })();
   </script>
 
+
+  <!-- TDV Global Radio (Web Audio Synth) -->
+  <style id="tdv-radio-styles">
+    #tdv-radio-widget {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      z-index: 9999995;
+      background: rgba(9, 9, 11, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 40px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(168, 85, 247, 0.1);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: all;
+    }
+    
+    #tdv-radio-widget.active {
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .radio-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #d8b4fe;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    
+    .radio-btn:hover {
+      background: #a855f7; color: #fff;
+      box-shadow: 0 0 15px #a855f7;
+      transform: scale(1.1);
+    }
+    
+    .visualizer {
+      display: flex; align-items: flex-end; gap: 3px; height: 20px;
+    }
+    
+    .visualizer-bar {
+      width: 4px; background: #a855f7; border-radius: 2px;
+      transition: height 0.1s ease;
+      box-shadow: 0 0 5px #a855f7;
+    }
+    
+    .track-info {
+      font-size: 11px; font-weight: 700; color: #e9d5ff;
+      letter-spacing: 0.5px; white-space: nowrap;
+    }
+    
+    /* Reveal Trigger */
+    #tdv-radio-trigger {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 150px; height: 10px; z-index: 9999994; cursor: pointer;
+    }
+  </style>
+
+  <div id="tdv-radio-trigger"></div>
+  <div id="tdv-radio-widget">
+    <button class="radio-btn" id="radio-toggle">▶</button>
+    <div class="visualizer" id="radio-visualizer">
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+    </div>
+    <div class="track-info">TDV FM - Synthwave</div>
+  </div>
+
+  <script id="tdv-radio-engine">
+    (function() {
+      const widget = document.getElementById('tdv-radio-widget');
+      const trigger = document.getElementById('tdv-radio-trigger');
+      const toggleBtn = document.getElementById('radio-toggle');
+      const bars = document.querySelectorAll('.visualizer-bar');
+      
+      let isPlaying = false;
+      let actx = null;
+      let osc1, osc2, lfo, filter, gainNode;
+      let visualizerInterval;
+      let widgetTimeout;
+
+      // Show widget on mouse near bottom
+      trigger.addEventListener('mouseenter', () => {
+        widget.classList.add('active');
+        clearTimeout(widgetTimeout);
+      });
+      
+      widget.addEventListener('mouseenter', () => clearTimeout(widgetTimeout));
+      widget.addEventListener('mouseleave', () => {
+        if (!isPlaying) {
+          widgetTimeout = setTimeout(() => widget.classList.remove('active'), 2000);
+        }
+      });
+      
+      // Auto-hide initially
+      setTimeout(() => { if (!isPlaying) widget.classList.remove('active'); }, 3000);
+      widget.classList.add('active'); // show on boot
+
+      function startSynth() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        
+        actx = new AudioContextClass();
+        
+        // Lo-fi Cyberpunk Drone Generator
+        osc1 = actx.createOscillator();
+        osc2 = actx.createOscillator();
+        lfo = actx.createOscillator();
+        filter = actx.createBiquadFilter();
+        gainNode = actx.createGain();
+        
+        osc1.type = 'sawtooth';
+        osc1.frequency.value = 55; // A1
+        
+        osc2.type = 'square';
+        osc2.frequency.value = 55.5; // slight detune
+        
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.2; // slow modulation
+        
+        const lfoGain = actx.createGain();
+        lfoGain.gain.value = 300;
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.detune);
+        
+        filter.type = 'lowpass';
+        filter.frequency.value = 400;
+        filter.Q.value = 5;
+        
+        gainNode.gain.value = 0.05; // low volume background
+        
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(actx.destination);
+        
+        osc1.start();
+        osc2.start();
+        lfo.start();
+        
+        // Animate Visualizer
+        visualizerInterval = setInterval(() => {
+          bars.forEach(bar => {
+            const h = Math.random() * 16 + 4;
+            bar.style.height = `${h}px`;
+          });
+        }, 150);
+      }
+
+      function stopSynth() {
+        if (osc1) osc1.stop();
+        if (osc2) osc2.stop();
+        if (lfo) lfo.stop();
+        if (actx) actx.close();
+        clearInterval(visualizerInterval);
+        bars.forEach(bar => bar.style.height = '4px');
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          toggleBtn.innerText = '⏸';
+          startSynth();
+          if (window.unlockAchievement) {
+            window.unlockAchievement('audiophile', 'Vibe Check (Radio Kəşfi)', '🎧', 'common');
+          }
+        } else {
+          toggleBtn.innerText = '▶';
+          stopSynth();
+        }
+      });
+    })();
+  </script>
+
 </body>
 
 </html>
