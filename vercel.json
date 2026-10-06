@@ -1,6 +1,8 @@
 {
   "version": 2,
-  "name": "tdv-hub",
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
   "cleanUrls": true,
   "rewrites": [
     { "source": "/games", "destination": "/games.html" }
