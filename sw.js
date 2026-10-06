@@ -6,7 +6,6 @@ const STATIC_ASSETS = [
   './games.html',
   './manifest.json',
   './scripts/hub-ui.js',
-  './scripts/games-catalog.js',
   './scripts/sso.js',
   './styles/hub-main.css',
   './styles/games-catalog.css'
