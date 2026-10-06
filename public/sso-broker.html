@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>TDV Community Labs Ecosystem SSO Broker</title>
+</head>
+<body>
+<script src="scripts/sso.js"></script>
+
+  
+  
+  
+
+  <!-- Global Particle System -->
+  
+  <!-- Premium Custom Cursor -->
+  <style id="tdv-premium-cursor-style">
+    @media (pointer: fine) { body, a, button, input, select, textarea { cursor: none !important; } }
+    #tdv-custom-cursor-dot {
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px; background-color: #fff; border-radius: 50%;
+      pointer-events: none; z-index: 999999;
+      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      will-change: transform, width, height;
+    }
+    #tdv-custom-cursor-ring {
+      position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1.5px solid rgba(255, 255, 255, 0.8);
+      background-color: transparent; border-radius: 50%;
+      pointer-events: none; z-index: 999998;
+      mix-blend-mode: difference;
+      transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, border 0.3s ease;
+      will-change: transform, width, height, background-color, border;
+    }
+    body.cursor-hover #tdv-custom-cursor-dot { opacity: 0; width: 0; height: 0; }
+    body.cursor-hover #tdv-custom-cursor-ring { width: 64px; height: 64px; border: none; background-color: #fff; }
+  </style>
+  <div id="tdv-custom-cursor-dot"></div>
+  <div id="tdv-custom-cursor-ring"></div>
+  
+  <script id="tdv-premium-cursor-script">
+    (function() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      
+      const dot = document.getElementById('tdv-custom-cursor-dot');
+      const ring = document.getElementById('tdv-custom-cursor-ring');
+      
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+      
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.2;
+        ringY += (mouseY - ringY) * 0.2;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      
+      document.body.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
+          document.body.classList.add('cursor-hover');
+        }
+      });
+      document.body.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
+          document.body.classList.remove('cursor-hover');
+        }
+      });
+    })();
+  </script>
+
+  <canvas id="tdv-particles-bg" class="fixed inset-0 pointer-events-none z-[-1] opacity-60"></canvas>
+  <script>
+    (function() {
+      const canvas = document.getElementById('tdv-particles-bg');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particlesArray = [];
+      let animationFrameId;
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.1;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x > canvas.width) this.x = 0;
+          else if (this.x < 0) this.x = canvas.width;
+          if (this.y > canvas.height) this.y = 0;
+          else if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        particlesArray = [];
+        const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
+        for (let i = 0; i < numberOfParticles; i++) {
+          particlesArray.push(new Particle());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+        }
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      init();
+      animate();
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+      });
+    })();
+  </script>
+
+</body>
+
+</html>
