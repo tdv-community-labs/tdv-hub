@@ -1,0 +1,25 @@
+// Prisma Schema for TDV Campus Hub
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model HubApp {
+  id          String   @id @db.VarChar(50)
+  title       String
+  category    String
+  description String?
+  url         String
+  icon        String?
+  color       String?
+  badge       String?
+  orderNum    Int      @default(1) @map("order_num")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("hub_apps")
+}

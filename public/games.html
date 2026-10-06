@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="az" class="dark max-w-[100vw] overflow-x-clip">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TDV Games — Məktəb İcması Oyun & Deduksiya Portalı</title>
+  <meta name="description" content="TDV Community Labs rəsmi oyunlar və sosial deduksiya portalı: TDV Mafia, 15 oyun formatı, Dante's Inferno və tələbə oyun laboratoriyası.">
+  <meta name="theme-color" content="#09090b" id="metaThemeColor">
+
+  <!-- Favicon & PWA Manifest -->
+  <link rel="icon" type="image/png" href="assets/tdv-logo.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Early FOUC Prevention Script -->
+  <script>
+    (function() {
+      try {
+        const stored = localStorage.getItem('tdv_theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored ? stored : (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles/games-catalog.css">
+</head>
+<body class="min-h-[100dvh] max-w-[100vw] overflow-x-clip flex flex-col justify-between selection:bg-purple-600 selection:text-white antialiased font-sans pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+
+  <!-- ================= TOP UNIFIED ORGANIZATION ECOSYSTEM BAR ================= -->
+  <aside aria-label="Organization Ecosystem Bar" class="bg-white/80 dark:bg-[#070707]/70 backdrop-blur-3xl border-b border-zinc-200 dark:border-white/5 py-2 px-4 text-[11px] sticky top-0 z-50 transition-colors shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Left: Org Brand & Live Ticker -->
+      <div class="flex items-center gap-2.5 overflow-hidden">
+        <div class="flex items-center gap-2 shrink-0 font-bold text-zinc-900 dark:text-zinc-100">
+          <img src="assets/tdv-logo.png" alt="TDV Gerb" class="w-5 h-5 rounded-md object-contain bg-white/10 p-0.5 border border-purple-500/30 shadow-sm">
+          <span class="hidden sm:inline text-zinc-500 dark:text-zinc-400 font-normal">Təşkilat:</span>
+          <a href="index.html" class="tracking-tight hover:text-purple-600 dark:hover:text-purple-400 transition">TDV Community Labs</a>
+        </div>
+        <span class="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
+        <div class="flex items-center gap-2 truncate">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-bold text-[9px] uppercase shrink-0 border border-rose-500/20">
+            <i data-lucide="shield-alert" class="w-2.5 h-2.5"></i>
+            Mafia Canlı
+          </span>
+          <span id="tickerText" class="text-zinc-600 dark:text-zinc-300 text-[11px] truncate">
+            🕵️‍♂️ TDV Mafia: 15 fərqli oyun rejimi və canlı oyun masaları aktivdir!
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Direct Link to Hub & Theme Toggle -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a href="index.html" class="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold text-purple-700 dark:text-purple-300 hover:text-purple-800 dark:hover:text-purple-200 bg-purple-500/10 hover:bg-purple-500/20 px-2.5 py-1 rounded-lg border border-purple-500/20 transition cursor-pointer">
+          <i data-lucide="arrow-left" class="w-3 h-3"></i>
+          <span>Mərkəzə Qayıt</span>
+        </a>
+
+        <!-- Theme Toggle Button -->
+        <button type="button" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Mövzunu dəyiş" class="p-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 transition flex items-center justify-center cursor-pointer shadow-sm">
+          <i id="themeIcon" data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ================= MAIN NAVIGATION HEADER ================= -->
+  <header class="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-[#030303]/90 backdrop-blur-md sticky top-[33px] z-40 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <a href="https://tdv-games.vercel.app/" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-600 to-rose-600 flex items-center justify-center shadow-md shadow-purple-500/25 group-hover:scale-105 transition">
+            <i data-lucide="gamepad-2" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-lg tracking-tight text-zinc-950 dark:text-white flex items-center gap-1.5">
+              TDV <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-rose-600 dark:from-purple-400 dark:to-rose-400">Games</span>
+            </span>
+            <span class="block text-[10px] text-zinc-500 dark:text-zinc-400 -mt-1 font-medium">Oyun & Sosial Deduksiya Zonası</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Ecosystem Switcher Links -->
+      <nav class="hidden md:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 rounded-2xl text-xs font-medium">
+        <a href="index.html" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+          <i data-lucide="home" class="w-3.5 h-3.5 text-purple-500"></i>
+          Mərkəz
+        </a>
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-500"></i>
+          E-School
+        </a>
+        <a href="https://school-minifootball-tournament.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-blue-500"></i>
+          Sports
+        </a>
+        <a href="https://tdv-games.vercel.app/" class="px-3 py-1.5 rounded-xl bg-purple-600 text-white font-semibold shadow-sm flex items-center gap-1.5">
+          <i data-lucide="gamepad-2" class="w-3.5 h-3.5"></i>
+          Games
+          <span class="text-[9px] px-1 py-0.2 rounded bg-white/20 text-white font-bold">Aktiv</span>
+        </a>
+      </nav>
+
+      <!-- Action Buttons: Auth & Launch Mafia -->
+      <div class="flex items-center gap-2">
+        <div id="tdvAuthTriggerContainer" class="flex items-center">
+          <button type="button" id="tdvLoginBtn" onclick="openAuthModal('login')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-sm shadow-purple-600/25 transition cursor-pointer">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Daxil Ol / Qeydiyyat</span>
+            <span class="sm:hidden text-xs">Giriş</span>
+          </button>
+          <div id="tdvUserBadgeContainer" onclick="openAuthModal()" class="hidden items-center gap-2 px-2.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/25 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs font-bold transition shadow-sm cursor-pointer select-none" title="Profil parametrləri və çıxış">
+            <span id="tdvUserAvatar">👤</span>
+            <span id="tdvUserName" class="hidden sm:inline">İstifadəçi</span>
+            <span id="tdvUserRoleBadge" class="text-[9px] px-1.5 py-0.2 rounded bg-purple-600 text-white font-black ml-0.5">10A</span>
+          </div>
+        </div>
+
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-3.5 py-2 rounded-xl shadow-md shadow-rose-900/20 transition cursor-pointer">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          <span>Mafia-ya Başla</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN HERO ================= -->
+  <main class="flex-grow min-w-0 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full overflow-x-clip">
+
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 dark:bg-purple-500/15 border border-purple-500/25 text-purple-700 dark:text-purple-300 text-xs font-bold uppercase tracking-wider mb-4">
+        <span class="w-2 h-2 rounded-full bg-rose-500 pulse-dot"></span>
+        Məktəb Oyun & Deduksiya Mərkəzi
+      </div>
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-zinc-950 dark:text-white tracking-tight leading-tight mb-4">
+        Strateji Məntiq, Deduksiya və <br>
+        <span class="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">İnteraktiv Əyləncə Zonası</span>
+      </h1>
+      <p class="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 font-normal">
+        TDV Games — məktəb şagirdlərinin birgə intellektual vaxt keçirməsi, sosial deduksiya masalarında strategiya qurması və yeni oyun layihələri üçün nəzərdə tutulmuş rəsmi əyləncə qanadıdır.
+      </p>
+
+      <div class="flex items-center justify-center gap-3 flex-wrap">
+        <a href="#tdv-mafia" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-sm shadow-md shadow-rose-900/20 transition cursor-pointer">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          <span>TDV Mafia (15 Format)</span>
+        </a>
+        <a href="#upcoming-games" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">
+          <i data-lucide="sparkles" class="w-4 h-4 text-purple-500"></i>
+          <span>Digər Oyunlar & İdeyalar</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================= FEATURED SHOWCASE: TDV MAFIA ================= -->
+    <section id="tdv-mafia" class="mb-14 scroll-mt-20">
+      
+      <div class="hub-card rounded-3xl p-6 sm:p-10 border border-rose-500/30 relative overflow-hidden shadow-sm">
+        <!-- Glow accents -->
+        <div class="absolute -top-24 -right-24 w-80 h-80 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+          
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-600 via-purple-600 to-rose-700 border border-rose-400/40 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-rose-600/30 shrink-0">
+                🎭
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h2 class="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white">TDV Mafia</h2>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-500/25">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 pulse-dot"></span>
+                    Canlı & Aktiv Platforma
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                  Enterprise Mafia / Zero-Knowledge Soket Mühərriki və İkili Admin Nəzarəti
+                </p>
+              </div>
+            </div>
+
+            <!-- Action buttons & Quick Room Code Join -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <form onsubmit="joinMafiaByCode(event)" class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1.5 rounded-2xl shadow-inner">
+                <input id="mafiaRoomInput" type="text" placeholder="Otaq Kodu (məs: 8821)" required class="bg-transparent border-0 px-3 py-1.5 text-xs font-mono font-bold text-zinc-900 dark:text-white uppercase focus:outline-none w-36 sm:w-44" />
+                <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shrink-0 transition shadow-sm cursor-pointer">
+                  Masaya Keç
+                </button>
+              </form>
+
+              <!-- Direct Launch Button -->
+              <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-500 hover:to-red-500 text-white font-extrabold py-2.5 px-5 rounded-2xl shadow-lg shadow-rose-900/30 hover:scale-[1.02] transition duration-200 text-xs sm:text-sm cursor-pointer shrink-0">
+                <span>Masaya Qoşul</span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Feature Description -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            
+            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-sm mb-1.5">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span>15 Oyun Formatı</span>
+              </div>
+              <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                Dante's Inferno, Stanford Prison, Operation Valkyrie, Catenaccio və 40-50 nəfərlik All-In daxil olmaqla hər ölçülü heyət üçün unikal rejimlər.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-sm mb-1.5">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span>Zero-Knowledge Gizlilik</span>
+              </div>
+              <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                Oyunçu rolları və gecə hərəkətləri serverless soket səviyyəsində qorunur; heç bir mülki digərinin rolunu öncədən öyrənə bilməz.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold text-sm mb-1.5">
+                <i data-lucide="shield" class="w-4 h-4"></i>
+                <span>İkili Kilid İdarəetməsi</span>
+              </div>
+              <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                Bailiff Console (masa nizamı və səsvermə) və Architect Console (mühərrik sazlamaları) ilə tam ədalətli oyun mühiti.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Featured Roles Roster (6 Visual Cards) -->
+          <div class="mb-8">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 flex items-center gap-2">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-rose-500"></i>
+              Əsas Rollar və Taktiki Qabiliyyətlər
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-rose-500/25 hover:border-rose-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">👑</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Don (Boss)</div>
+                  <span class="text-[9px] font-black uppercase text-rose-600 dark:text-rose-400">Mafiya</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Komissarı axtarır və gecə qətlinə əmr verir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-blue-500/25 hover:border-blue-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">🕵️</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Komissar Katani</div>
+                  <span class="text-[9px] font-black uppercase text-blue-600 dark:text-blue-400">Mülki</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Gecə şübhəliləri yoxlayır, gündüz ifşa edir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-emerald-500/25 hover:border-emerald-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💉</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Həkim (Doktor)</div>
+                  <span class="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400">Şəfaçı</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Yaralanmış vətəndaşı ölümdən xilas edir.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-purple-500/25 hover:border-purple-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💃</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Məşuqə</div>
+                  <span class="text-[9px] font-black uppercase text-purple-600 dark:text-purple-400">Neytral</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Gecə istədiyi şəxsin xüsusi rolunu bloklayır.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">🎭</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Deduksiyaçı</div>
+                  <span class="text-[9px] font-black uppercase text-zinc-500 dark:text-zinc-400">Mülki</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Məntiqlə yalanları tutub səsvermədə qələbə qazanır.</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-amber-500/25 hover:border-amber-500/50 transition flex flex-col justify-between">
+                <div>
+                  <div class="text-2xl mb-1.5">💣</div>
+                  <div class="font-bold text-zinc-950 dark:text-white text-xs">Kamikadze</div>
+                  <span class="text-[9px] font-black uppercase text-amber-600 dark:text-amber-400">Xaos</span>
+                  <p class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Asıldıqda özü ilə bir başqa oyunçunu da aparır.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Format Roster Showcase Strip -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-500"></i>
+              Populyar Formatlar Kataloqu
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-center">
+              
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-rose-500/20 hover:border-rose-500/40 transition">
+                <div class="text-lg mb-1">🔥</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">Dante's Inferno</div>
+                <div class="text-[10px] text-rose-600 dark:text-rose-400">9 Dairə Əzabları</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="text-lg mb-1">⚔️</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">Operation Valkyrie</div>
+                <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Taktiki Sui-qəsd</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="text-lg mb-1">🏢</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">Stanford Prison</div>
+                <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Sosial Eksperiment</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="text-lg mb-1">🛡️</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">Catenaccio</div>
+                <div class="text-[10px] text-zinc-500 dark:text-zinc-400">İtalyan Müdafiəsi</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="text-lg mb-1">👥</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">All-In Heyət</div>
+                <div class="text-[10px] text-zinc-500 dark:text-zinc-400">40-50 Nəfərlik</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition">
+                <div class="text-lg mb-1">🏙️</div>
+                <div class="font-bold text-zinc-950 dark:text-white text-xs">Klassik Şəhər</div>
+                <div class="text-[10px] text-zinc-500 dark:text-zinc-400">Mülki vs Mafiya</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom CTA inside Mafia Card -->
+          <div class="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+              <i data-lucide="info" class="w-4 h-4 text-rose-500"></i>
+              <span>Otaq kodu ilə dostunun masasına qoşulmaq birbaşa portal daxilində mümkündür.</span>
+            </div>
+            <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 transition">
+              <span>tdv-mafia.vercel.app ünvanına get</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 2: UPCOMING GAMES & INCUBATOR ================= -->
+    <section id="upcoming-games" class="mb-14">
+      
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-purple-500"></i>
+            <span>İnkubator & Rezerv Oyunlar</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">Hazırlıq mərhələsində olan interaktiv təhsil layihələri</p>
+        </div>
+        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-2 rounded-xl border border-purple-500/25 transition cursor-pointer">
+          <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+          <span>Oyun İdeyası Təklif Et</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <!-- Upcoming Game 1 -->
+        <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+                🧠
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 text-[10px] font-bold">
+                Hazırlanır
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-zinc-950 dark:text-white mb-2">Məntiq Labirinti</h3>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
+              Riyazi paradokslar, alqoritmik tapmacalar və addım-addım məntiqi təfəkkürü inkişaf etdirən interaktiv zəka oyunu.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+            <span>Məntiq & Riyaziyyat</span>
+            <span class="text-purple-600 dark:text-purple-400 font-semibold">Tezliklə</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Game 2 -->
+        <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                ♟️
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-[10px] font-bold">
+                Hazırlanır
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-zinc-950 dark:text-white mb-2">Şahmat & Dama Klubu</h3>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
+              Məktəb daxili onlayn şahmat və dama lövhəsi; sinif yoldaşları arasında real-vaxt turnir və reytinq xalları.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+            <span>Strateji & Taktika</span>
+            <span class="text-emerald-600 dark:text-emerald-400 font-semibold">Tezliklə</span>
+          </div>
+        </div>
+
+        <!-- Upcoming Game 3 -->
+        <div class="hub-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                ⚡
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 text-[10px] font-bold">
+                E-School İnteqrasiyası
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-zinc-950 dark:text-white mb-2">PvP Bilik Arenası</h3>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
+              TDV E-School portalında artıq aktiv olan 1v1 sürətli bilik dueli: fənlər üzrə sual-cavab döyüşü və liderlik cədvəli.
+            </p>
+          </div>
+          <div>
+            <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold transition cursor-pointer">
+              <span>Arenaya Get</span>
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 3: IDEA SUBMISSION BOX ================= -->
+    <section class="mb-12">
+      <div class="hub-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 text-center max-w-2xl mx-auto">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mx-auto mb-3">
+          💡
+        </div>
+        <h3 class="text-xl font-bold text-zinc-950 dark:text-white mb-2">Öz Oyununu Təklif Et!</h3>
+        <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed mb-5 font-normal">
+          Məktəb portalında hansı oyunların yer almasını istərdin? İdeyalarını və ya kodlaşdırdığın mini-veb layihəni bizimlə bölüş.
+        </p>
+        <button type="button" onclick="openIdeaModal()" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-md shadow-purple-900/20 transition cursor-pointer">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>İdeya Formunu Aç</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="w-full border-t border-zinc-200 dark:border-zinc-800 py-8 bg-zinc-100 dark:bg-[#030303] transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-zinc-800 dark:text-zinc-200">TDV Community Labs</span>
+        <span>•</span>
+        <span>© 2026 Məktəb Oyunlar Portalı</span>
+      </div>
+      <div class="flex items-center gap-4 flex-wrap justify-center">
+        <a href="index.html" class="hover:text-zinc-950 dark:hover:text-white transition">Mərkəzi Kampus</a>
+        <span>•</span>
+        <a href="https://tdv-mafia.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-rose-600 dark:hover:text-rose-400 text-rose-500 font-medium transition flex items-center gap-1">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+          <span>TDV Mafia</span>
+        </a>
+        <span>•</span>
+        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-950 dark:hover:text-white transition">GitHub Repozitoriyası</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= DIALOG: GAME IDEA MODAL ================= -->
+  <dialog id="ideaModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 shadow-md max-w-md w-[calc(100vw-2rem)] m-auto max-h-[90dvh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">💡</div>
+        <div>
+          <h3 class="font-bold text-zinc-950 dark:text-white text-base">Oyun İdeyanı Təklif Et</h3>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">TDV Games bölməsində hansı oyunu görmək istərdin?</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeIdeaModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <form id="ideaForm" onsubmit="submitIdea(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block text-zinc-700 dark:text-zinc-300 font-semibold mb-1">Adın və Sinfin:</label>
+        <input id="ideaAuthor" type="text" required placeholder="Məs: Əli (10A)" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-zinc-700 dark:text-zinc-300 font-semibold">Oyunun İdeyası / Qaydaları:</label>
+          <span id="ideaCharCount" class="text-[10px] text-zinc-400 font-mono">0 / 300</span>
+        </div>
+        <textarea id="ideaText" rows="4" maxlength="300" oninput="updateIdeaCharCount(this)" required placeholder="Oyun nə haqqında olsun? Məntiq, yarış, yoxsa intellektual viktorina?" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"></textarea>
+      </div>
+
+      <div id="ideaFeedback" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center font-medium">
+        Təşəkkür edirik! İdeyanız qeydə alındı. 🚀
+      </div>
+
+      <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold transition shadow-md shadow-purple-900/20 cursor-pointer">
+        İdeyanı Göndər
+      </button>
+    </form>
+  </dialog>
+
+  <!-- ================= DIALOG 2: UNIFIED AUTH & REGISTRATION MODAL ================= -->
+  <dialog id="authModal" class="rounded-3xl bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white border border-zinc-200 dark:border-zinc-800 p-5 sm:p-7 shadow-md max-w-md w-[calc(100vw-2rem)] m-auto max-h-[90dvh] overflow-y-auto backdrop:bg-black/60 backdrop:backdrop-blur-sm">
+    <div class="flex items-center justify-between mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-fuchsia-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-zinc-950 dark:text-white text-base tracking-tight">TDV Vahid Profil</h3>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">1 Hesab = Bütün Ekosistem Portalları</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeAuthModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer" aria-label="Bağla">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Logged in state view -->
+    <div id="authLoggedInView" class="hidden space-y-4">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 flex items-center gap-3.5">
+        <div id="authModalAvatar" class="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-2xl shrink-0">
+          👤
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2">
+            <h4 id="authModalFullName" class="font-extrabold text-zinc-950 dark:text-white text-sm truncate">Ad Soyad</h4>
+            <span id="authModalRoleBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/25 shrink-0">10A</span>
+          </div>
+          <p id="authModalUsername" class="text-xs text-zinc-500 dark:text-zinc-400 font-mono truncate">@username</p>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-700 dark:text-purple-300">
+        ✨ Bu vahid profilinizlə E-School, Minifutbol, TDV Mafia və TDV Games portallarına avtomatik daxil olursunuz.
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button type="button" onclick="switchAuthTab('login')" class="flex-1 py-2.5 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition cursor-pointer">
+          Hesabı Dəyiş
+        </button>
+        <button type="button" onclick="logoutEcosystemUser()" class="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Çıxış</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Guest state view (Login / Register Tabs) -->
+    <div id="authGuestView" class="space-y-4">
+      <!-- Segmented Tab Switcher -->
+      <div class="grid grid-cols-2 p-1 rounded-2xl bg-zinc-100 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 text-xs font-bold">
+        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer">
+          Daxil Ol
+        </button>
+        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer">
+          Qeydiyyat
+        </button>
+      </div>
+
+      <!-- Error / Success Alert -->
+      <div id="authFeedback" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
+
+      <!-- 1. LOGIN FORM -->
+      <form id="authLoginForm" onsubmit="handleAuthLoginSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı və ya Tam Ad</label>
+          <input id="loginInputUsername" type="text" placeholder="Məs: orxan və ya Orxan Əliyev" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə (Əgər təyin edilibsə)</label>
+          <input id="loginInputPin" type="password" placeholder="Şifrəniz (əgər varsa)" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Daxil Ol</span>
+        </button>
+
+        <!-- Quick Demo Profiles -->
+        <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+          <span class="block text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 mb-2">Sürətli Test Girişi:</span>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="quickFillLogin('orxan', '1000')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              👨‍🎓 Orxan (10A)
+            </button>
+            <button type="button" onclick="quickFillLogin('elvin_coach', '2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              ⚽ Məşqçi Elvin
+            </button>
+            <button type="button" onclick="quickFillLogin('admin', 'admin2026')" class="p-2 rounded-xl bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 text-center transition cursor-pointer">
+              🛡️ Admin
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 2. REGISTER FORM -->
+      <form id="authRegisterForm" onsubmit="handleAuthRegisterSubmit(event)" class="hidden space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Ad və Soyad</label>
+          <input id="regInputFullName" type="text" placeholder="Məs: Cəmil Həsənli" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">İstifadəçi Adı (Nick)</label>
+          <input id="regInputUsername" type="text" placeholder="Məs: cemil2026" required class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Sinif / Status</label>
+            <select id="regInputClass" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+              <option value="10A">10-A Sinfi</option>
+              <option value="10B">10-B Sinfi</option>
+              <option value="10C">10-C Sinfi</option>
+              <option value="11A">11-A Sinfi</option>
+              <option value="11B">11-B Sinfi</option>
+              <option value="11C">11-C Sinfi</option>
+              <option value="11D">11-D Sinfi</option>
+              <option value="9A">9-A Sinfi</option>
+              <option value="9B">9-B Sinfi</option>
+              <option value="8A">8-A Sinfi</option>
+              <option value="7A">7-A Sinfi</option>
+              <option value="Məşqçi">Məşqçi / İdman</option>
+              <option value="Müəllim">Müəllim / Fənn</option>
+              <option value="Məzun">Məzun / Klub</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Avatar İkonu</label>
+            <select id="regInputAvatar" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none">
+              <option value="🎓">🎓 Məktəbli</option>
+              <option value="⚽">⚽ Futbolçu</option>
+              <option value="🎭">🎭 Mafioz</option>
+              <option value="🔬">🔬 Alim</option>
+              <option value="👑">👑 Lider</option>
+              <option value="⚡">⚡ Taktik</option>
+              <option value="🦁">🦁 Çempion</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">PIN / Şifrə</label>
+            <input id="regInputPin" type="password" placeholder="Məs: 1234" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1">Təkrar PIN</label>
+            <input id="regInputConfirmPin" type="password" placeholder="Təkrar" class="w-full bg-zinc-50 dark:bg-[#030303] border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none" />
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-extrabold text-xs shadow-md shadow-purple-600/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Qeydiyyatdan Keç və Vahid Giriş Et</span>
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= CLIENT JAVASCRIPT ================= -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Dual-Theme Management
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const metaTheme = document.getElementById('metaThemeColor');
+
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        if (icon) icon.setAttribute('data-lucide', 'moon');
+        if (metaTheme) metaTheme.setAttribute('content', '#fafafa');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        if (icon) icon.setAttribute('data-lucide', 'sun');
+        if (metaTheme) metaTheme.setAttribute('content', '#09090b');
+      }
+      lucide.createIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      localStorage.setItem('tdv_theme', newTheme);
+      applyTheme(newTheme);
+    }
+
+    // Auto-detect theme
+    const storedTheme = localStorage.getItem('tdv_theme');
+    if (storedTheme) {
+      applyTheme(storedTheme);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('tdv_theme')) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+
+    // Idea Modal Handling
+    const ideaModal = document.getElementById('ideaModal');
+    let lastIdeaSubmitTime = 0;
+
+    function openIdeaModal() {
+      ideaModal.showModal();
+      const authorInput = document.getElementById('ideaAuthor');
+      if (authorInput) setTimeout(() => authorInput.focus(), 80);
+    }
+    function closeIdeaModal() {
+      ideaModal.close();
+      document.getElementById('ideaFeedback').classList.add('hidden');
+    }
+    ideaModal.addEventListener('click', (e) => { if (e.target === ideaModal) closeIdeaModal(); });
+
+    function updateIdeaCharCount(el) {
+      const countEl = document.getElementById('ideaCharCount');
+      if (countEl) countEl.textContent = `${el.value.length} / 300`;
+    }
+
+    function submitIdea(e) {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastIdeaSubmitTime < 5000) {
+        alert('Zəhmət olmasa yeni təklif göndərməzdən əvvəl bir neçə saniyə gözləyin.');
+        return;
+      }
+
+      const author = String(document.getElementById('ideaAuthor').value || '').trim().slice(0, 50);
+      const text = String(document.getElementById('ideaText').value || '').trim().slice(0, 300);
+      if (!author || !text) return;
+
+      lastIdeaSubmitTime = now;
+      let ideas = [];
+      try {
+        ideas = JSON.parse(localStorage.getItem('tdv_game_ideas') || '[]');
+      } catch (err) {
+        ideas = [];
+      }
+      ideas.push({ author, text, date: new Date().toISOString() });
+      localStorage.setItem('tdv_game_ideas', JSON.stringify(ideas));
+
+      document.getElementById('ideaFeedback').classList.remove('hidden');
+      setTimeout(() => {
+        closeIdeaModal();
+        document.getElementById('ideaForm').reset();
+        const countEl = document.getElementById('ideaCharCount');
+        if (countEl) countEl.textContent = '0 / 300';
+      }, 1400);
+    }
+  </script>
+
+  <!-- ================= TDV ECOSYSTEM SSO CLIENT & AUTH SYSTEM ================= -->
+  <script>
+    // ================= UNIFIED AUTH & PROFILE LOGIC =================
+    function openAuthModal(tab) {
+      const modal = document.getElementById('authModal');
+      if (!modal) return;
+      const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+      let activeSession = null;
+      if (raw) {
+        try { activeSession = JSON.parse(raw); } catch (e) {}
+      }
+
+      const loggedInView = document.getElementById('authLoggedInView');
+      const guestView = document.getElementById('authGuestView');
+
+      if (activeSession && (activeSession.username || activeSession.fullName)) {
+        if (loggedInView) loggedInView.classList.remove('hidden');
+        if (guestView) guestView.classList.add('hidden');
+        const nameEl = document.getElementById('authModalFullName');
+        const userEl = document.getElementById('authModalUsername');
+        const avatarEl = document.getElementById('authModalAvatar');
+        const roleEl = document.getElementById('authModalRoleBadge');
+        if (nameEl) nameEl.textContent = activeSession.fullName || activeSession.username;
+        if (userEl) userEl.textContent = '@' + (activeSession.username || 'user');
+        if (avatarEl) avatarEl.textContent = activeSession.avatar || '👤';
+        if (roleEl) roleEl.textContent = activeSession.schoolClass || (activeSession.grade ? activeSession.grade + 'A' : 'Profil');
+      } else {
+        if (loggedInView) loggedInView.classList.add('hidden');
+        if (guestView) guestView.classList.remove('hidden');
+        switchAuthTab(tab || 'login');
+      }
+
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.setAttribute('open', '');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+    window.openAuthModal = openAuthModal;
+
+    function closeAuthModal() {
+      const modal = document.getElementById('authModal');
+      if (!modal) return;
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.removeAttribute('open');
+      }
+      const fb = document.getElementById('authFeedback');
+      if (fb) {
+        fb.className = 'hidden p-3 rounded-xl text-xs font-medium border';
+        fb.textContent = '';
+      }
+    }
+    window.closeAuthModal = closeAuthModal;
+
+    function switchAuthTab(tab) {
+      const loggedInView = document.getElementById('authLoggedInView');
+      const guestView = document.getElementById('authGuestView');
+      if (loggedInView) loggedInView.classList.add('hidden');
+      if (guestView) guestView.classList.remove('hidden');
+
+      const loginBtn = document.getElementById('authTabLoginBtn');
+      const regBtn = document.getElementById('authTabRegisterBtn');
+      const loginForm = document.getElementById('authLoginForm');
+      const regForm = document.getElementById('authRegisterForm');
+      const fb = document.getElementById('authFeedback');
+      if (fb) fb.classList.add('hidden');
+
+      if (tab === 'register') {
+        if (loginBtn) {
+          loginBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+        }
+        if (regBtn) {
+          regBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+        }
+        if (loginForm) loginForm.classList.add('hidden');
+        if (regForm) regForm.classList.remove('hidden');
+      } else {
+        if (loginBtn) {
+          loginBtn.className = 'py-2 rounded-xl transition bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs cursor-pointer';
+        }
+        if (regBtn) {
+          regBtn.className = 'py-2 rounded-xl transition text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white cursor-pointer';
+        }
+        if (loginForm) loginForm.classList.remove('hidden');
+        if (regForm) regForm.classList.add('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+    window.switchAuthTab = switchAuthTab;
+
+    function quickFillLogin(username, pin) {
+      switchAuthTab('login');
+      const u = document.getElementById('loginInputUsername');
+      const p = document.getElementById('loginInputPin');
+      if (u) u.value = username;
+      if (p) p.value = pin;
+    }
+    window.quickFillLogin = quickFillLogin;
+
+    function getRegisteredEcosystemUsers() {
+      const DEFAULT_USERS = [
+        { userId: 'u_orxan', username: 'orxan', fullName: 'Orxan Əliyev', schoolClass: '10A', grade: 10, pin: '1000', role: 'student', avatar: '👨‍🎓' },
+        { userId: 'u_elvin', username: 'elvin_coach', fullName: 'Elvin Müəllim', schoolClass: 'Məşqçi', grade: 0, pin: '2026', role: 'coach', avatar: '⚽' },
+        { userId: 'u_admin', username: 'admin', fullName: 'TDV İnzibatçı', schoolClass: 'Rəhbərlik', grade: 0, pin: 'admin2026', role: 'admin', avatar: '🛡️' }
+      ];
+      try {
+        const raw = localStorage.getItem('tdv_registered_users_v1');
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length > 0) return list;
+        }
+      } catch (e) {}
+      try {
+        localStorage.setItem('tdv_registered_users_v1', JSON.stringify(DEFAULT_USERS));
+      } catch (e) {}
+      return DEFAULT_USERS;
+    }
+
+    function dispatchSSOBrokerState(session, users) {
+      try {
+        const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+        let iframe = document.getElementById('tdv_sso_broker_bridge');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.id = 'tdv_sso_broker_bridge';
+          iframe.src = BROKER_URL;
+          iframe.style.display = 'none';
+          iframe.setAttribute('aria-hidden', 'true');
+          iframe.onload = function() {
+            try {
+              iframe.contentWindow.postMessage({ type: 'TDV_SSO_SET', session: session, users: users }, '*');
+            } catch (err) {}
+          };
+          document.body.appendChild(iframe);
+        } else {
+          iframe.contentWindow.postMessage({ type: 'TDV_SSO_SET', session: session, users: users }, '*');
+        }
+      } catch (e) {}
+    }
+
+    function showAuthFeedback(msg, isSuccess) {
+      const fb = document.getElementById('authFeedback');
+      if (!fb) return;
+      fb.classList.remove('hidden');
+      if (isSuccess) {
+        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-center';
+      } else {
+        fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-center';
+      }
+      fb.textContent = msg;
+    }
+
+    function handleAuthLoginSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const userIn = (document.getElementById('loginInputUsername')?.value || '').trim();
+      const pinIn = (document.getElementById('loginInputPin')?.value || '').trim();
+      if (!userIn) {
+        showAuthFeedback('Zəhmət olmasa istifadəçi adı daxil edin.', false);
+        return;
+      }
+
+      const users = getRegisteredEcosystemUsers();
+      const matched = users.find(u =>
+        (u.username && u.username.toLowerCase() === userIn.toLowerCase()) ||
+        (u.fullName && u.fullName.toLowerCase() === userIn.toLowerCase())
+      );
+
+      if (!matched) {
+        showAuthFeedback("⚠️ '" + userIn + "' istifadəçi adı qeydiyyatda tapılmadı! Zəhmət olmasa 'Qeydiyyat' sekmesindən yeni vahid profil açın.", false);
+        return;
+      }
+
+      if (matched.pin && String(matched.pin).trim() !== '') {
+        if (!pinIn || pinIn !== String(matched.pin).trim()) {
+          showAuthFeedback('❌ Daxil edilən PIN kod və ya şifrə yanlışdır!', false);
+          return;
+        }
+      }
+
+      const session = {
+        userId: matched.userId || 'usr_' + Date.now().toString(36),
+        username: matched.username,
+        fullName: matched.fullName || matched.username,
+        role: matched.role || (matched.schoolClass === 'Məşqçi' ? 'coach' : 'student'),
+        schoolClass: matched.schoolClass || '10A',
+        grade: matched.grade || 10,
+        avatar: matched.avatar || '🎓',
+        token: 'tdv_sec_' + Math.random().toString(36).slice(2) + Date.now().toString(36),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+
+      localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(session));
+      dispatchSSOBrokerState(session, users);
+      showAuthFeedback('✓ Uğurla daxil oldunuz! Ekosistem sinxronlaşdırılır...', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 500);
+    }
+    window.handleAuthLoginSubmit = handleAuthLoginSubmit;
+
+    function handleAuthRegisterSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const fullName = (document.getElementById('regInputFullName')?.value || '').trim();
+      const username = (document.getElementById('regInputUsername')?.value || '').trim();
+      const schoolClass = document.getElementById('regInputClass')?.value || '10A';
+      const avatar = document.getElementById('regInputAvatar')?.value || '🎓';
+      const pin = (document.getElementById('regInputPin')?.value || '').trim();
+      const confirmPin = (document.getElementById('regInputConfirmPin')?.value || '').trim();
+
+      if (!fullName) {
+        showAuthFeedback('Zəhmət olmasa ad və soyadınızı daxil edin.', false);
+        return;
+      }
+      if (!username) {
+        showAuthFeedback('Zəhmət olmasa istifadəçi adı seçin.', false);
+        return;
+      }
+      if (pin && confirmPin && pin !== confirmPin) {
+        showAuthFeedback('Daxil edilən şifrələr bir-birinə uyğun gəlmir.', false);
+        return;
+      }
+
+      const users = getRegisteredEcosystemUsers();
+      const exists = users.some(u => u.username && u.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        showAuthFeedback("⚠️ '" + username + "' istifadəçi adı artıq tutulub! Zəhmət olmasa başqa ad seçin.", false);
+        return;
+      }
+
+      const parsedGrade = parseInt(schoolClass) || 10;
+      const newUser = {
+        userId: 'usr_' + Date.now().toString(36),
+        fullName: fullName,
+        username: username,
+        schoolClass: schoolClass,
+        grade: parsedGrade,
+        role: schoolClass === 'Məşqçi' ? 'coach' : schoolClass === 'Müəllim' ? 'teacher' : 'student',
+        avatar: avatar,
+        pin: pin,
+        createdAt: Date.now()
+      };
+
+      users.push(newUser);
+      localStorage.setItem('tdv_registered_users_v1', JSON.stringify(users));
+
+      const session = {
+        userId: newUser.userId,
+        username: newUser.username,
+        fullName: newUser.fullName,
+        role: newUser.role,
+        schoolClass: newUser.schoolClass,
+        grade: newUser.grade,
+        avatar: newUser.avatar,
+        token: 'tdv_sec_' + Math.random().toString(36).slice(2) + Date.now().toString(36),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+      };
+
+      localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(session));
+      dispatchSSOBrokerState(session, users);
+      showAuthFeedback('✨ Vahid profiliniz uğurla yaradıldı! Giriş edilir...', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 500);
+    }
+    window.handleAuthRegisterSubmit = handleAuthRegisterSubmit;
+
+    function logoutEcosystemUser() {
+      localStorage.removeItem('tdv_ecosystem_session_v1');
+      dispatchSSOBrokerState(null, getRegisteredEcosystemUsers());
+      showAuthFeedback('Çıxış edildi.', true);
+      setTimeout(() => {
+        closeAuthModal();
+        if (typeof renderUserSessionBadge === 'function') renderUserSessionBadge();
+        if (typeof decorateEcosystemLinks === 'function') decorateEcosystemLinks();
+      }, 400);
+    }
+    window.logoutEcosystemUser = logoutEcosystemUser;
+
+    // Quick Room Code Join for TDV Mafia
+    function joinMafiaByCode(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const input = document.getElementById('mafiaRoomInput');
+      const code = (input ? input.value : '').trim().toUpperCase();
+      if (!code) return;
+      let targetUrl = 'https://tdv-mafia.vercel.app/lobby/' + encodeURIComponent(code);
+      try {
+        const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+        if (raw) {
+          const sess = JSON.parse(raw);
+          if (sess && (sess.username || sess.fullName)) {
+            const ticket = btoa(unescape(encodeURIComponent(JSON.stringify(sess))));
+            targetUrl += '?sso_ticket=' + encodeURIComponent(ticket);
+          }
+        }
+      } catch (err) {}
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    }
+    window.joinMafiaByCode = joinMafiaByCode;
+
+    function renderUserSessionBadge() {
+      try {
+        const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+        const loginBtn = document.getElementById('tdvLoginBtn');
+        const badge = document.getElementById('tdvUserBadgeContainer');
+        const nameEl = document.getElementById('tdvUserName');
+        const avatarEl = document.getElementById('tdvUserAvatar');
+        const roleEl = document.getElementById('tdvUserRoleBadge');
+
+        if (!raw) {
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        const sess = JSON.parse(raw);
+        if (!sess || (!sess.username && !sess.fullName)) {
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        // Ghost check against registered users
+        const users = getRegisteredEcosystemUsers();
+        const valid = users.some(u => u && u.username && u.username.toLowerCase() === sess.username?.toLowerCase());
+        if (!valid) {
+          localStorage.removeItem('tdv_ecosystem_session_v1');
+          if (badge) { badge.classList.add('hidden'); badge.classList.remove('inline-flex'); }
+          if (loginBtn) { loginBtn.classList.remove('hidden'); loginBtn.classList.add('inline-flex'); }
+          return;
+        }
+
+        if (nameEl) nameEl.textContent = sess.fullName || sess.username;
+        if (avatarEl) avatarEl.textContent = sess.avatar || '👤';
+        if (roleEl) roleEl.textContent = sess.schoolClass || (sess.grade ? sess.grade + 'A' : 'Profil');
+        if (loginBtn) { loginBtn.classList.add('hidden'); loginBtn.classList.remove('inline-flex'); }
+        if (badge) { badge.classList.remove('hidden'); badge.classList.add('inline-flex'); }
+      } catch (err) {}
+    }
+
+    (function initTDVEcosystemSSO() {
+      const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+      const ECO_DOMAINS = [
+        'school-minifootball-tournament.vercel.app',
+        'tdv-e-school.vercel.app',
+        'tdv-games.vercel.app',
+        'tdv-mafia.vercel.app',
+        'tdv-community-hubs.vercel.app'
+      ];
+
+      // 1. Extract sso_ticket from URL parameter if arrived from another portal
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ticket = urlParams.get('sso_ticket');
+        if (ticket) {
+          const sessionData = JSON.parse(decodeURIComponent(escape(atob(ticket))));
+          if (sessionData && (sessionData.username || sessionData.fullName)) {
+            localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(sessionData));
+            urlParams.delete('sso_ticket');
+            const cleanSearch = urlParams.toString();
+            const cleanUrl = window.location.pathname + (cleanSearch ? '?' + cleanSearch : '') + window.location.hash;
+            window.history.replaceState({}, document.title, cleanUrl);
+          }
+        }
+      } catch (err) {
+        console.warn('[SSO] Ticket parse error:', err);
+      }
+
+      // 2. Decorate all outbound links pointing to TDV ecosystem domains
+      function decorateEcosystemLinks() {
+        try {
+          const raw = localStorage.getItem('tdv_ecosystem_session_v1');
+          if (!raw) return;
+          const session = JSON.parse(raw);
+          if (!session || (!session.username && !session.fullName)) return;
+          const ticket = btoa(unescape(encodeURIComponent(JSON.stringify(session))));
+
+          document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+            const isEco = ECO_DOMAINS.some(domain => href.includes(domain)) || href.endsWith('index.html');
+            if (isEco && !href.includes('sso_ticket=')) {
+              const sep = href.includes('?') ? '&' : '?';
+              link.setAttribute('href', `${href}${sep}sso_ticket=${encodeURIComponent(ticket)}`);
+            }
+          });
+        } catch (e) {
+          console.warn('[SSO] Link decoration error:', e);
+        }
+      }
+
+      // 3. Background broker sync
+      function syncFromBroker() {
+        if (window.location.pathname.endsWith('sso-broker.html')) return;
+        try {
+          const iframe = document.createElement('iframe');
+          iframe.src = BROKER_URL;
+          iframe.style.display = 'none';
+          iframe.setAttribute('aria-hidden', 'true');
+          iframe.setAttribute('tabindex', '-1');
+
+          window.addEventListener('message', function onBrokerMsg(e) {
+            if (!e.data || e.data.type !== 'TDV_SSO_STATE') return;
+            if (e.data.users && Array.isArray(e.data.users)) {
+              try {
+                const existing = JSON.parse(localStorage.getItem('tdv_registered_users_v1') || '[]');
+                const map = new Map();
+                existing.forEach(u => u && u.username && map.set(u.username.toLowerCase(), u));
+                e.data.users.forEach(u => u && u.username && map.set(u.username.toLowerCase(), u));
+                localStorage.setItem('tdv_registered_users_v1', JSON.stringify(Array.from(map.values())));
+              } catch {}
+            }
+            if (e.data.session) {
+              const currentRaw = localStorage.getItem('tdv_ecosystem_session_v1');
+              let shouldUpdate = false;
+              if (!currentRaw) {
+                shouldUpdate = true;
+              } else {
+                try {
+                  const currentObj = JSON.parse(currentRaw);
+                  const users = e.data.users || [];
+                  const currentValid = users.some(u => u && u.username && u.username.toLowerCase() === currentObj.username?.toLowerCase());
+                  if (!currentValid) {
+                    shouldUpdate = true;
+                  } else if (currentObj.username !== e.data.session.username) {
+                    if (e.data.session.createdAt && (!currentObj.createdAt || e.data.session.createdAt >= currentObj.createdAt)) {
+                      shouldUpdate = true;
+                    }
+                  }
+                } catch(err) {
+                  shouldUpdate = true;
+                }
+              }
+
+              if (shouldUpdate) {
+                localStorage.setItem('tdv_ecosystem_session_v1', JSON.stringify(e.data.session));
+                renderUserSessionBadge();
+                decorateEcosystemLinks();
+              }
+            } else {
+              const currentRaw = localStorage.getItem('tdv_ecosystem_session_v1');
+              if (currentRaw && e.data.users) {
+                try {
+                  const currentObj = JSON.parse(currentRaw);
+                  const exists = e.data.users.some(u => u && u.username && u.username.toLowerCase() === currentObj.username?.toLowerCase());
+                  if (!exists) {
+                    localStorage.removeItem('tdv_ecosystem_session_v1');
+                    renderUserSessionBadge();
+                  }
+                } catch(err) {}
+              }
+            }
+          });
+
+          iframe.onload = function() {
+            try {
+              iframe.contentWindow.postMessage({ type: 'TDV_SSO_GET' }, '*');
+            } catch {}
+          };
+          document.body.appendChild(iframe);
+        } catch {}
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          renderUserSessionBadge();
+          decorateEcosystemLinks();
+          syncFromBroker();
+        });
+      } else {
+        renderUserSessionBadge();
+        decorateEcosystemLinks();
+        syncFromBroker();
+      }
+    })();
+  </script>
+  <script src="scripts/games-catalog.js" defer></script>
+
+  
+  
+  
+
+  <!-- Global Particle System -->
+  
+  <!-- Premium Custom Cursor -->
+  <style id="tdv-premium-cursor-style">
+    @media (pointer: fine) { body, a, button, input, select, textarea { cursor: none !important; } }
+    #tdv-custom-cursor-dot {
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px; background-color: #fff; border-radius: 50%;
+      pointer-events: none; z-index: 999999;
+      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      will-change: transform, width, height;
+    }
+    #tdv-custom-cursor-ring {
+      position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1.5px solid rgba(255, 255, 255, 0.8);
+      background-color: transparent; border-radius: 50%;
+      pointer-events: none; z-index: 999998;
+      mix-blend-mode: difference;
+      transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, border 0.3s ease;
+      will-change: transform, width, height, background-color, border;
+    }
+    body.cursor-hover #tdv-custom-cursor-dot { opacity: 0; width: 0; height: 0; }
+    body.cursor-hover #tdv-custom-cursor-ring { width: 64px; height: 64px; border: none; background-color: #fff; }
+  </style>
+  <div id="tdv-custom-cursor-dot"></div>
+  <div id="tdv-custom-cursor-ring"></div>
+  
+  <script id="tdv-premium-cursor-script">
+    (function() {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
+      
+      const dot = document.getElementById('tdv-custom-cursor-dot');
+      const ring = document.getElementById('tdv-custom-cursor-ring');
+      
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+      
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      });
+      
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.2;
+        ringY += (mouseY - ringY) * 0.2;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      
+      document.body.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
+          document.body.classList.add('cursor-hover');
+        }
+      });
+      document.body.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, input, textarea, select, [role="button"]')) {
+          document.body.classList.remove('cursor-hover');
+        }
+      });
+    })();
+  </script>
+
+  <canvas id="tdv-particles-bg" class="fixed inset-0 pointer-events-none z-[-1] opacity-60"></canvas>
+  <script>
+    (function() {
+      const canvas = document.getElementById('tdv-particles-bg');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particlesArray = [];
+      let animationFrameId;
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.1;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x > canvas.width) this.x = 0;
+          else if (this.x < 0) this.x = canvas.width;
+          if (this.y > canvas.height) this.y = 0;
+          else if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        particlesArray = [];
+        const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
+        for (let i = 0; i < numberOfParticles; i++) {
+          particlesArray.push(new Particle());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+        }
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      init();
+      animate();
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+      });
+    })();
+  </script>
+
+
+  <!-- TDV Global Radio (Web Audio Synth) -->
+  <style id="tdv-radio-styles">
+    #tdv-radio-widget {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      z-index: 9999995;
+      background: rgba(9, 9, 11, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 40px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(168, 85, 247, 0.1);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: all;
+    }
+    
+    #tdv-radio-widget.active {
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .radio-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #d8b4fe;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    
+    .radio-btn:hover {
+      background: #a855f7; color: #fff;
+      box-shadow: 0 0 15px #a855f7;
+      transform: scale(1.1);
+    }
+    
+    .visualizer {
+      display: flex; align-items: flex-end; gap: 3px; height: 20px;
+    }
+    
+    .visualizer-bar {
+      width: 4px; background: #a855f7; border-radius: 2px;
+      transition: height 0.1s ease;
+      box-shadow: 0 0 5px #a855f7;
+    }
+    
+    .track-info {
+      font-size: 11px; font-weight: 700; color: #e9d5ff;
+      letter-spacing: 0.5px; white-space: nowrap;
+    }
+    
+    /* Reveal Trigger */
+    #tdv-radio-trigger {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 150px; height: 10px; z-index: 9999994; cursor: pointer;
+    }
+  </style>
+
+  <div id="tdv-radio-trigger"></div>
+  <div id="tdv-radio-widget">
+    <button class="radio-btn" id="radio-toggle">▶</button>
+    <div class="visualizer" id="radio-visualizer">
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+      <div class="visualizer-bar" style="height: 4px;"></div>
+    </div>
+    <div class="track-info">TDV FM - Synthwave</div>
+  </div>
+
+  <script id="tdv-radio-engine">
+    (function() {
+      const widget = document.getElementById('tdv-radio-widget');
+      const trigger = document.getElementById('tdv-radio-trigger');
+      const toggleBtn = document.getElementById('radio-toggle');
+      const bars = document.querySelectorAll('.visualizer-bar');
+      
+      let isPlaying = false;
+      let actx = null;
+      let osc1, osc2, lfo, filter, gainNode;
+      let visualizerInterval;
+      let widgetTimeout;
+
+      // Show widget on mouse near bottom
+      trigger.addEventListener('mouseenter', () => {
+        widget.classList.add('active');
+        clearTimeout(widgetTimeout);
+      });
+      
+      widget.addEventListener('mouseenter', () => clearTimeout(widgetTimeout));
+      widget.addEventListener('mouseleave', () => {
+        if (!isPlaying) {
+          widgetTimeout = setTimeout(() => widget.classList.remove('active'), 2000);
+        }
+      });
+      
+      // Auto-hide initially
+      setTimeout(() => { if (!isPlaying) widget.classList.remove('active'); }, 3000);
+      widget.classList.add('active'); // show on boot
+
+      function startSynth() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        
+        actx = new AudioContextClass();
+        
+        // Lo-fi Cyberpunk Drone Generator
+        osc1 = actx.createOscillator();
+        osc2 = actx.createOscillator();
+        lfo = actx.createOscillator();
+        filter = actx.createBiquadFilter();
+        gainNode = actx.createGain();
+        
+        osc1.type = 'sawtooth';
+        osc1.frequency.value = 55; // A1
+        
+        osc2.type = 'square';
+        osc2.frequency.value = 55.5; // slight detune
+        
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.2; // slow modulation
+        
+        const lfoGain = actx.createGain();
+        lfoGain.gain.value = 300;
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.detune);
+        
+        filter.type = 'lowpass';
+        filter.frequency.value = 400;
+        filter.Q.value = 5;
+        
+        gainNode.gain.value = 0.05; // low volume background
+        
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(actx.destination);
+        
+        osc1.start();
+        osc2.start();
+        lfo.start();
+        
+        // Animate Visualizer
+        visualizerInterval = setInterval(() => {
+          bars.forEach(bar => {
+            const h = Math.random() * 16 + 4;
+            bar.style.height = `${h}px`;
+          });
+        }, 150);
+      }
+
+      function stopSynth() {
+        if (osc1) osc1.stop();
+        if (osc2) osc2.stop();
+        if (lfo) lfo.stop();
+        if (actx) actx.close();
+        clearInterval(visualizerInterval);
+        bars.forEach(bar => bar.style.height = '4px');
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          toggleBtn.innerText = '⏸';
+          startSynth();
+          if (window.unlockAchievement) {
+            window.unlockAchievement('audiophile', 'Vibe Check (Radio Kəşfi)', '🎧', 'common');
+          }
+        } else {
+          toggleBtn.innerText = '▶';
+          stopSynth();
+        }
+      });
+    })();
+  </script>
+
+
+  <!-- TDV Advanced UI/UX (Ripple & Glitch) -->
+  <style id="tdv-advanced-ux-styles">
+    /* RIPPLE EFFECT */
+    .tdv-ripple-container {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; pointer-events: none; border-radius: inherit; z-index: 0;
+    }
+    .tdv-ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: tdvRippleAnim 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+    @keyframes tdvRippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+    
+    /* GLITCH EFFECT */
+        .tdv-glitch-text { 
+      text-shadow: 0 0 15px rgba(168, 85, 247, 0.5), 0 0 30px rgba(168, 85, 247, 0.3);
+      animation: tdvNeonPulse 2s infinite alternate ease-in-out;
+      position: relative; display: inline-block;
+    }
+    .tdv-glitch-text::before, .tdv-glitch-text::after { display: none; }
+    @keyframes tdvNeonPulse {
+      0% { text-shadow: 0 0 5px rgba(168, 85, 247, 0.2), 0 0 10px rgba(168, 85, 247, 0.1); }
+      100% { text-shadow: 0 0 15px rgba(168, 85, 247, 0.7), 0 0 30px rgba(168, 85, 247, 0.4), 0 0 45px rgba(168, 85, 247, 0.2); }
+    }
+      5% { clip: rect(12px, 9999px, 53px, 0); }
+      10% { clip: rect(81px, 9999px, 6px, 0); }
+      15% { clip: rect(2px, 9999px, 45px, 0); }
+      20% { clip: rect(38px, 9999px, 85px, 0); }
+      25% { clip: rect(98px, 9999px, 18px, 0); }
+      30% { clip: rect(51px, 9999px, 30px, 0); }
+      100% { clip: rect(51px, 9999px, 30px, 0); }
+    }
+  </style>
+
+  <script id="tdv-advanced-ux-script">
+    (function() {
+      // 1. RIPPLE ENGINE
+      document.addEventListener('mousedown', function(e) {
+        const target = e.target.closest('button, .glass-card, .ui-card, a');
+        if (!target) return;
+        
+        // Ensure parent has position relative
+        const style = window.getComputedStyle(target);
+        if (style.position === 'static') {
+          target.style.position = 'relative';
+        }
+        
+        // Find or create container
+        let container = target.querySelector('.tdv-ripple-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'tdv-ripple-container';
+          target.appendChild(container);
+        }
+        
+        const rect = target.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'tdv-ripple';
+        
+        const diameter = Math.max(rect.width, rect.height);
+        const radius = diameter / 2;
+        
+        ripple.style.width = ripple.style.height = `${diameter}px`;
+        ripple.style.left = `${e.clientX - rect.left - radius}px`;
+        ripple.style.top = `${e.clientY - rect.top - radius}px`;
+        
+        // Custom color based on parent
+        if (target.classList.contains('bg-purple-600')) ripple.style.backgroundColor = 'rgba(255,255,255,0.4)';
+        else if (target.classList.contains('bg-white')) ripple.style.backgroundColor = 'rgba(168,85,247,0.3)';
+        
+        container.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+
+      // 2. GLITCH ENGINE
+      // Apply glitch to all h1 elements automatically
+      window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          document.querySelectorAll('h1').forEach(h1 => {
+            if(!h1.classList.contains('tdv-glitch-text') && h1.innerText.trim().length > 0) {
+              h1.classList.add('tdv-glitch-text');
+              h1.setAttribute('data-text', h1.innerText);
+            }
+          });
+        }, 1000); // Wait for React to render
+      });
+      
+      // Also observe DOM changes to apply glitch to dynamically added h1s
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+          if(m.addedNodes.length) {
+            document.querySelectorAll('h1').forEach(h1 => {
+              if(!h1.classList.contains('tdv-glitch-text') && h1.innerText.trim().length > 0) {
+                h1.classList.add('tdv-glitch-text');
+                h1.setAttribute('data-text', h1.innerText);
+              }
+            });
+          }
+        });
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    })();
+  </script>
+
+
+  <!-- TDV Konami Code (Matrix Easter Egg) -->
+  <script id="tdv-konami-engine">
+    (function() {
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let konamiIndex = 0;
+      let activated = false;
+
+      window.addEventListener('keydown', (e) => {
+        if (activated) return;
+        if (e.key === konamiCode[konamiIndex] || e.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            activated = true;
+            activateMatrix();
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+
+      function activateMatrix() {
+        // Sound
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const actx = new AudioContextClass();
+          const osc = actx.createOscillator();
+          const gain = actx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(50, actx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, actx.currentTime + 2);
+          gain.gain.setValueAtTime(0, actx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.5, actx.currentTime + 1);
+          gain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 3);
+          osc.connect(gain); gain.connect(actx.destination);
+          osc.start(); osc.stop(actx.currentTime + 3);
+        }
+
+        // Achievement
+        if (window.unlockAchievement) {
+          window.unlockAchievement('matrix_hacker', 'Konami Hacker: Matrisə Xoş Gəldin', '💊', 'legendary');
+        }
+
+        // Canvas
+        const c = document.createElement('canvas');
+        c.style.position = 'fixed';
+        c.style.top = '0'; c.style.left = '0';
+        c.style.width = '100vw'; c.style.height = '100vh';
+        c.style.zIndex = '9999990';
+        c.style.pointerEvents = 'none';
+        c.style.opacity = '0';
+        c.style.transition = 'opacity 2s ease';
+        document.body.appendChild(c);
+        
+        setTimeout(() => c.style.opacity = '0.7', 100);
+
+        const ctx = c.getContext('2d');
+        c.width = window.innerWidth;
+        c.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = c.width / fontSize;
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+
+        function draw() {
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+          ctx.fillRect(0, 0, c.width, c.height);
+
+          ctx.fillStyle = '#0F0';
+          ctx.font = fontSize + 'px monospace';
+
+          for(let i = 0; i < drops.length; i++) {
+            const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if(drops[i] * fontSize > c.height && Math.random() > 0.975)
+              drops[i] = 0;
+            drops[i]++;
+          }
+        }
+        setInterval(draw, 30);
+      }
+    })();
+  </script>
+
+</body>
+
+</html>

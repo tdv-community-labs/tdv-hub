@@ -1,10 +1,5 @@
 {
-  "version": 2,
-  "name": "tdv-hub",
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/games", "destination": "/games.html" }
-  ],
+  "framework": "nextjs",
   "headers": [
     {
       "source": "/sso-broker.html",
@@ -20,7 +15,7 @@
       ]
     },
     {
-      "source": "/((?!sso-broker\\.html).*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
