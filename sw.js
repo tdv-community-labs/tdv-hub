@@ -1,14 +1,16 @@
 // TDV Hub Service Worker — Offline Cache & High-Performance Network Strategy
-const CACHE_NAME = 'tdv-hub-v5';
+const CACHE_NAME = 'tdv-hub-v6';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './games.html',
   './manifest.json',
+  './announcements.json',
   './scripts/hub-ui.js',
   './scripts/sso.js',
   './styles/hub-main.css',
-  './styles/games-catalog.css'
+  './styles/games-catalog.css',
+  './assets/tdv-logo.png'
 ];
 
 self.addEventListener('install', (event) => {
