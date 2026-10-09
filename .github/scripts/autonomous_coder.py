@@ -8,7 +8,12 @@ TARGET_REPO = os.environ.get("TARGET_REPO", "tdv-hub")
 ISSUE_TITLE = os.environ.get("ISSUE_TITLE", "Ümumi kod optimizasiyası və refaktorinq")
 ISSUE_BODY = os.environ.get("ISSUE_BODY", "Xətaları aradan qaldır, kodu müasirləşdir və təmizlə.")
 
-client = genai.Client(api_key=API_KEY)
+client = None
+if API_KEY:
+    try:
+        client = genai.Client(api_key=API_KEY)
+    except Exception:
+        pass
 
 # Repo daxilindəki kodları topla
 files_context = ""
@@ -51,18 +56,21 @@ Heç bir əlavə giriş, çıxış və ya izahat mətni yazma.
 """
 
 response = None
-for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-        )
-        if response and response.text:
-            break
-    except Exception as e:
-        if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+if client:
+    for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception:
             continue
-        raise
+
+if not response or not response.text:
+    print("[-] Gemini cavabı əldə olunmadı və ya API açarı təyin edilməyib. Əməliyyat dayandırıldı.")
+    exit(0)
 
 content = response.text
 blocks = content.split("FILE: ")

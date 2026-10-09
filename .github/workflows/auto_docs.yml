@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   update-docs:
     if: github.event.pull_request.merged == true
@@ -14,7 +17,7 @@ jobs:
       - name: Kodu Klonla
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_ORG_TOKEN }}
+          token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           fetch-depth: 2
 
       - name: Git İstifadəçisini Quraşdır

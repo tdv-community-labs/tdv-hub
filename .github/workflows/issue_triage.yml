@@ -4,6 +4,9 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  issues: write
+
 jobs:
   triage:
     runs-on: ubuntu-latest
@@ -30,7 +33,7 @@ jobs:
       - name: Nəticəni Issue-ya Tətbiq Et
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GH_ORG_TOKEN }}
+          github-token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const result = JSON.parse(fs.readFileSync('triage_output.json', 'utf8'));

@@ -7,7 +7,12 @@ API_KEY = os.environ.get("GEMINI_API_KEY")
 TOPIC = os.environ.get("TOPIC", "Yeni layihə və turnir xəbərləri")
 RAW_DETAILS = os.environ.get("RAW_DETAILS", "TDV Community Labs ekosisteminə yeni yenilənmələr əlavə olundu.")
 
-client = genai.Client(api_key=API_KEY)
+client = None
+if API_KEY:
+    try:
+        client = genai.Client(api_key=API_KEY)
+    except Exception:
+        pass
 
 today_str = datetime.now().strftime("%Y-%m-%d")
 
@@ -37,52 +42,53 @@ TƏLƏBLƏR:
 """
 
 response = None
-for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-        )
-        if response and response.text:
-            break
-    except Exception as e:
-        if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+if client:
+    for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception:
             continue
-        raise
 
-raw_text = response.text.strip()
-if raw_text.startswith("```"):
-    raw_text = raw_text.split("```")[1]
-    if raw_text.startswith("json"):
-        raw_text = raw_text[4:].strip()
-    raw_text = raw_text.strip()
+data = None
+if response and response.text:
+    raw_text = response.text.strip()
+    if raw_text.startswith("```"):
+        raw_text = raw_text.split("```")[1]
+        if raw_text.startswith("json"):
+            raw_text = raw_text[4:].strip()
+        raw_text = raw_text.strip()
+    try:
+        data = json.loads(raw_text)
+    except Exception:
+        data = None
 
-try:
-    news_item = json.loads(raw_text)
-except Exception:
-    news_item = {
-        "id": f"{today_str}-elan",
+if not data:
+    data = {
+        "id": f"{today_str}-{TOPIC.lower().replace(' ', '-')[:20]}",
         "date": today_str,
         "title": TOPIC,
-        "summary": RAW_DETAILS[:100],
+        "summary": RAW_DETAILS[:120],
         "content": RAW_DETAILS,
-        "category": "Ümumi"
+        "category": "Ekosistem Yenilikləri"
     }
 
-news_file = "announcements.json"
+announcements_path = "announcements.json"
 announcements = []
-
-if os.path.exists(news_file):
+if os.path.exists(announcements_path):
     try:
-        with open(news_file, "r", encoding="utf-8") as f:
+        with open(announcements_path, "r", encoding="utf-8") as f:
             announcements = json.load(f)
     except Exception:
         announcements = []
 
-# Yeni xəbəri siyahının ən əvvəlinə əlavə et
-announcements.insert(0, news_item)
+announcements.insert(0, data)
 
-with open(news_file, "w", encoding="utf-8") as f:
+with open(announcements_path, "w", encoding="utf-8") as f:
     json.dump(announcements, f, ensure_ascii=False, indent=2)
 
-print(f"[+] Elan uğurla əlavə olundu: {news_item.get('title')}")
+print(f"[+] Yeni elan uğurla əlavə edildi: {data.get('title')}")

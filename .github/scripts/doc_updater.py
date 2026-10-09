@@ -7,7 +7,12 @@ API_KEY = os.environ.get("GEMINI_API_KEY")
 PR_TITLE = os.environ.get("PR_TITLE", "Yenilənmə")
 PR_BODY = os.environ.get("PR_BODY", "")
 
-client = genai.Client(api_key=API_KEY)
+client = None
+if API_KEY:
+    try:
+        client = genai.Client(api_key=API_KEY)
+    except Exception:
+        pass
 
 # Son commit fərqlərini götür
 try:
@@ -50,20 +55,22 @@ YALNIZ bu yeni bölmənin Markdown mətnini qaytar, əlavə heç bir izahat yazm
 """
 
 response = None
-for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-        )
-        if response and response.text:
-            break
-    except Exception as e:
-        if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+if client:
+    for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception:
             continue
-        raise
 
-new_entry = response.text.strip()
+if response and response.text:
+    new_entry = response.text.strip()
+else:
+    new_entry = f"### [{datetime.now().strftime('%Y-%m-%d')}] - {PR_TITLE}\n- **Yenilik / Düzəliş**: {PR_BODY or 'Avtomatik qeydə alınan PR dəyişiklikləri.'}\n- **Təsir sahəsi**: Birləşdirilən fayllar."
 
 # Yeni qeydi CHANGELOG.md faylının ən başına əlavə et
 header = "# Layihə Tarixçəsi (Changelog)\n\nBütün mühüm dəyişikliklər avtomatik qeydə alınır.\n\n"

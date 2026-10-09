@@ -4,6 +4,15 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   review:
     runs-on: ubuntu-latest
@@ -31,13 +40,15 @@ jobs:
       - name: Rəyi PR-a Şərh Kimi Əlavə Et
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GH_ORG_TOKEN }}
+          github-token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const review = fs.readFileSync('review_result.md', 'utf8');
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: review
-            });
+            if (review && review.trim()) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: review
+              });
+            }

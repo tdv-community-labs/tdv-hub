@@ -7,7 +7,12 @@ ISSUE_TITLE = os.environ.get("ISSUE_TITLE", "")
 ISSUE_BODY = os.environ.get("ISSUE_BODY", "")
 ISSUE_AUTHOR = os.environ.get("ISSUE_AUTHOR", "İstifadəçi")
 
-client = genai.Client(api_key=API_KEY)
+client = None
+if API_KEY:
+    try:
+        client = genai.Client(api_key=API_KEY)
+    except Exception:
+        pass
 
 prompt = f"""
 Sən TDV Community Labs təşkilatının avtomatlaşdırılmış texniki dəstək və idarəetmə agentisən.
@@ -29,29 +34,32 @@ TAPŞIRIQ:
 """
 
 response = None
-for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-        )
-        if response and response.text:
-            break
-    except Exception as e:
-        if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
+if client:
+    for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception:
             continue
-        raise
 
-raw_text = response.text.strip()
-if raw_text.startswith("```"):
-    raw_text = raw_text.split("```")[1]
-    if raw_text.startswith("json"):
-        raw_text = raw_text[4:].strip()
-    raw_text = raw_text.strip()
+data = None
+if response and response.text:
+    raw_text = response.text.strip()
+    if raw_text.startswith("```"):
+        raw_text = raw_text.split("```")[1]
+        if raw_text.startswith("json"):
+            raw_text = raw_text[4:].strip()
+        raw_text = raw_text.strip()
+    try:
+        data = json.loads(raw_text)
+    except Exception:
+        data = None
 
-try:
-    data = json.loads(raw_text)
-except Exception:
+if not data:
     data = {
         "labels": ["question"],
         "comment": f"Salam @{ISSUE_AUTHOR}, bildirişiniz qeydə alındı. Tezliklə komandamız tərəfindən araşdırılacaq."
@@ -60,4 +68,4 @@ except Exception:
 with open("triage_output.json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 
-print("[+] Issue triage məlumatı hazırlandı.")
+print("[+] Issue triage tamamlandı.")

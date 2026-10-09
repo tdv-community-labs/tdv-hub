@@ -12,6 +12,10 @@ on:
         required: true
         default: 'Bu həftə keçirilən matçlarda maraqlı hesablar qeydə alındı. Bütün şagirdləri növbəti oyunlara dəvət edirik.'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   create-announcement:
     runs-on: ubuntu-latest
@@ -37,7 +41,7 @@ jobs:
       - name: Elanı PR kimi Təqdim Et
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GH_ORG_TOKEN }}
+          token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "news: yeni kampus elanı əlavə edildi"
           title: "📢 Yeni Kampus Elanı: ${{ inputs.topic }}"
           body: |

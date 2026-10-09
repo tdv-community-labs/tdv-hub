@@ -24,6 +24,10 @@ on:
         required: false
         default: 'Koddakı xətaları düzəlt və strukturu təkmilləşdir.'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   agent-run:
     runs-on: ubuntu-latest
@@ -32,14 +36,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: "tdv-community-labs/${{ inputs.target_repo }}"
-          token: ${{ secrets.GH_ORG_TOKEN }}
+          token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           path: target_repo
 
       - name: Mərkəzi Skriptləri Gətir
         uses: actions/checkout@v4
         with:
           repository: "tdv-community-labs/tdv-hub"
-          token: ${{ secrets.GH_ORG_TOKEN }}
+          token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           path: hub_core
 
       - name: Python Quraşdır
@@ -62,7 +66,7 @@ jobs:
       - name: Hədəf Repoda Pull Request Yarat
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GH_ORG_TOKEN }}
+          token: ${{ secrets.GH_ORG_TOKEN || secrets.GITHUB_TOKEN }}
           path: target_repo
           commit-message: "feat: autonomous agent təkmilləşdirməsi"
           title: "🤖 Agent PR: ${{ inputs.task_title }}"
