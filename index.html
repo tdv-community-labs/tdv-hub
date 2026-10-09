@@ -1988,8 +1988,19 @@
       "📖 Yeni: Məktəb Düstur Bankı — Riyaziyyat, Fizika və Kimya formulları əlavə edildi!",
       "🗺️ Məktəb Fənn Kabinetləri və Laboratoriyalar Bələdçisi aktivdir!",
       "🕵️‍♂️ TDV Mafia: 15 oyun formatı, Dante's Inferno və canlı masalar tdv-mafia.vercel.app ünvanında aktivdir!",
-      "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün təkliflər qəbul olunur."
+      "🎮 TDV Games: Şagirdlərin ilk interaktiv oyun layihələri üçün təkliflər qəbul olunur.",
+      "♟️ TDV Boardgames: Şahmat, Dama, Reversi və Go arenası tdv-boardgames.vercel.app ünvanında canlıdır!"
     ];
+
+    try {
+      fetch('announcements.json').then(r => r.json()).then(d => {
+        if (Array.isArray(d)) {
+          d.forEach(item => {
+            if (item && item.title && !announcements.includes(item.title)) announcements.unshift(item.title);
+          });
+        }
+      }).catch(() => {});
+    } catch (e) {}
     let tickerIdx = 0;
     setInterval(() => {
       tickerIdx = (tickerIdx + 1) % announcements.length;
@@ -2908,7 +2919,7 @@
 
     function dispatchSSOBrokerState(session, users) {
       try {
-        const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+        const BROKER_URL = 'https://tdv-community-labs.github.io/tdv-hub/sso-broker.html';
         let iframe = document.getElementById('tdv_sso_broker_bridge');
         if (!iframe) {
           iframe = document.createElement('iframe');
@@ -3073,13 +3084,14 @@
     window.logoutEcosystemUser = logoutEcosystemUser;
 
     (function initTDVEcosystemSSO() {
-      const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+      const BROKER_URL = 'https://tdv-community-labs.github.io/tdv-hub/sso-broker.html';
       const ECO_DOMAINS = [
         'school-minifootball-tournament.vercel.app',
         'tdv-e-school.vercel.app',
         'tdv-games.vercel.app',
         'tdv-mafia.vercel.app',
-        'tdv-community-hubs.vercel.app'
+        'tdv-boardgames.vercel.app',
+        'tdv-community-labs.github.io'
       ];
 
       // 1. Extract sso_ticket from URL parameter if arrived from another portal

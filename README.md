@@ -10,6 +10,7 @@ TDV Community Labs məktəb icmasının bütün rəqəmsal layihələrini vahid 
 2. **⚽ TDV Sports:** [https://school-minifootball-tournament.vercel.app/](https://school-minifootball-tournament.vercel.app/) — Məktəb daxili minifutbol turnirinin canlı nəticələri, xal cədvəli və oyunçu statistikası.
 3. **🕵️‍♂️ TDV Mafia:** [https://tdv-mafia.vercel.app/](https://tdv-mafia.vercel.app/) — Elit sosial deduksiya və strateji məntiq platforması, 15 oyun formatı, Dante's Inferno rejimi və canlı masalar.
 4. **🎮 TDV Games:** [https://tdv-games.vercel.app/](https://tdv-games.vercel.app/) — İnteraktiv təhsil oyunları və şagird kodlaşdırma layihələri üçün inkubator bölməsi (`games.html`).
+5. **♟️ TDV Boardgames:** [https://tdv-boardgames.vercel.app/](https://tdv-boardgames.vercel.app/) — Onlayn Şahmat, Dama, Reversi/Othello, Connect4 və Go arenası.
 
 ## 🎨 Tətbiq Olunmuş Dizayn Standartı (Dual-Theme & TDV Royal Purple)
 - **Rəsmi Brend Rəngi:** TDV Royal Purple (`#9333ea`, `#7e22ce`, `#a855f7`, `#3b0764`) gerb ilə uyğunlaşdırılmışdır.

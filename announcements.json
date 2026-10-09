@@ -1,0 +1,26 @@
+[
+  {
+    "id": "2026-10-09-boardgames-live",
+    "date": "2026-10-09",
+    "title": "♟️ TDV Boardgames Stolüstü Oyunlar Arenası Canlıdır!",
+    "summary": "Məktəb icması üçün onlayn Şahmat, Dama, Reversi, Connect4 və Go platforması istifadəyə verildi.",
+    "content": "TDV Community Labs-in yeni flaqman layihəsi olan TDV Boardgames artıq canlıdır! Stockfish süni intellekt mühərriki, 1v1 PvP otaqları, qlobal reytinq və şahmat radarı ilə təchiz edilmiş platformada sinif yoldaşlarınızla rəqabət apara bilərsiniz.",
+    "category": "Oyun & İntellekt"
+  },
+  {
+    "id": "2026-10-09-minifootball-tur",
+    "date": "2026-10-09",
+    "title": "⚽ TDV Minifutbol Liqası: Canlı Nəticələr və Bombardirlər",
+    "summary": "Turnir cədvəli və oyunçu reytinqləri yeniləndi.",
+    "content": "Məktəb daxili minifutbol çempionatının oyun nəticələri və Sofascore tipli oyunçu statistikaları school-minifootball-tournament.vercel.app portalında anlıq izlənilə bilər.",
+    "category": "İdman"
+  },
+  {
+    "id": "2026-10-09-eschool-exams",
+    "date": "2026-10-09",
+    "title": "📚 TDV E-School: Yeni KSQ və BSQ Sınaqları",
+    "summary": "100+ elektron dərslik və interaktiv test arxivi yeniləndi.",
+    "content": "Riyaziyyat, Fizika, Kimya və Biologiya fənləri üzrə yeni sınaqlar və KaTeX formulları ilə təchiz olunmuş 1v1 PvP Bilik Arenası tdv-e-school.vercel.app ünvanında aktivdir.",
+    "category": "Tədris"
+  }
+]

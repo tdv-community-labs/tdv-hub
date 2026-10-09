@@ -15,7 +15,9 @@
     'https://school-minifootball-tournament.vercel.app',
     'https://tdv-mafia.vercel.app',
     'https://tdv-games.vercel.app',
+    'https://tdv-boardgames.vercel.app',
     'https://tdv-hub.vercel.app',
+    'https://tdv-community-labs.github.io',
   ]);
 
   /**

@@ -9,10 +9,11 @@ client = genai.Client(api_key=API_KEY)
 # Yoxlanılacaq layihələr və onların canlı veb ünvanları
 TARGET_SERVICES = [
     {"name": "tdv-hub", "url": "https://tdv-community-labs.github.io/tdv-hub/"},
-    {"name": "tdv-mafia", "url": "https://tdv-community-labs.github.io/tdv-mafia/"},
-    {"name": "tdv-e-school", "url": "https://tdv-community-labs.github.io/tdv-e-school/"},
-    {"name": "tdv-games", "url": "https://tdv-community-labs.github.io/tdv-games/"},
-    {"name": "school-minifootball-tournament", "url": "https://tdv-community-labs.github.io/school-minifootball-tournament/"}
+    {"name": "tdv-e-school", "url": "https://tdv-e-school.vercel.app/"},
+    {"name": "school-minifootball-tournament", "url": "https://school-minifootball-tournament.vercel.app/"},
+    {"name": "tdv-games", "url": "https://tdv-games.vercel.app/"},
+    {"name": "tdv-mafia", "url": "https://tdv-mafia.vercel.app/"},
+    {"name": "tdv-boardgames", "url": "https://tdv-boardgames.vercel.app/"}
 ]
 
 status_reports = []
