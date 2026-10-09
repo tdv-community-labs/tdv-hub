@@ -51,6 +51,7 @@ Nəticəni səliqəli Markdown cədvəli və tövsiyələrlə tərtib et.
 """
 
 response = None
+attempt_errors = []
 for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3.7-flash", "gemini-2.5-flash"]:
     try:
         response = client.models.generate_content(
@@ -59,12 +60,31 @@ for model_name in [os.environ.get("GEMINI_MODEL", "gemini-3.8-flash"), "gemini-3
         )
         if response and response.text:
             break
+        attempt_errors.append(f"{model_name}: boş cavab")
     except Exception as e:
+        attempt_errors.append(f"{model_name}: {str(e)}")
         if any(k in str(e).lower() for k in ["503", "404", "overload", "demand", "unavailable", "unsupported"]):
             continue
         raise
 
-summary = response.text
+if response and response.text:
+    summary = response.text
+else:
+    table_rows = "\n".join([
+        f"| {item['name']} | {item['status']} | {item['state']} |"
+        for item in status_reports
+    ])
+    recommendations = "- Gemini cavabı əldə olunmadı, monitorinq xülasəsi avtomatik yaradıldı."
+    if attempt_errors:
+        recommendations += "\n- Gemini cəhd detalları:\n" + "\n".join([f"  - {e}" for e in attempt_errors[-3:]])
+    summary = (
+        "## 🌐 TDV Ekosistem Sağlamlıq Hesabatı\n\n"
+        "| Layihə | Status | Hal |\n"
+        "|---|---|---|\n"
+        f"{table_rows}\n\n"
+        "### Tövsiyələr\n"
+        f"{recommendations}\n"
+    )
 
 with open("health_report.md", "w", encoding="utf-8") as f:
     f.write(summary)
