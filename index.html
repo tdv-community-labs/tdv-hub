@@ -2439,6 +2439,75 @@
       if (sInput) sInput.focus();
     }
 
+    // Announcements Modal & Dynamic Loading
+    const announcementsModal = document.getElementById('announcementsModal');
+    let loadedAnnouncements = [];
+
+    function openAnnouncementsModal() {
+      if (announcementsModal) announcementsModal.showModal();
+      renderAnnouncementsList();
+      const badge = document.getElementById('announcementBadge');
+      if (badge) badge.classList.add('hidden');
+    }
+    function closeAnnouncementsModal() {
+      if (announcementsModal) announcementsModal.close();
+    }
+    if (announcementsModal) {
+      announcementsModal.addEventListener('click', (e) => {
+        if (e.target === announcementsModal) closeAnnouncementsModal();
+      });
+    }
+
+    function markAllAnnouncementsRead() {
+      try {
+        localStorage.setItem('tdv_announcements_read', Date.now().toString());
+        const badge = document.getElementById('announcementBadge');
+        if (badge) badge.classList.add('hidden');
+        closeAnnouncementsModal();
+      } catch (e) {}
+    }
+
+    function renderAnnouncementsList() {
+      const container = document.getElementById('announcementsList');
+      if (!container) return;
+
+      if (!loadedAnnouncements || loadedAnnouncements.length === 0) {
+        loadedAnnouncements = [
+          {
+            title: "♟️ TDV Boardgames Stolüstü Oyunlar Arenası Canlıdır!",
+            category: "Oyun & İntellekt",
+            date: "2026-10-09",
+            summary: "Məktəb icması üçün onlayn Şahmat, Dama, Reversi və Go platforması istifadəyə verildi. tdv-boardgames.vercel.app portalına daxil olun."
+          },
+          {
+            title: "⚽ TDV Minifutbol Liqası: Canlı Nəticələr və Bombardirlər",
+            category: "İdman",
+            date: "2026-10-09",
+            summary: "Məktəb daxili minifutbol çempionatının oyun nəticələri və Sofascore tipli statistikaları school-minifootball-tournament.vercel.app ünvanında yeniləndi."
+          },
+          {
+            title: "📚 TDV E-School: Yeni KSQ və BSQ Sınaqları",
+            category: "Tədris",
+            date: "2026-10-09",
+            summary: "100+ elektron dərslik və interaktiv test arxivi yeniləndi. 1v1 Bilik Arenasında sınaqları həll edin."
+          }
+        ];
+      }
+
+      container.innerHTML = loadedAnnouncements.map(item => `
+        <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-[#080808] border border-zinc-200 dark:border-zinc-800 space-y-1.5 transition hover:border-purple-500/30">
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-300 font-bold border border-purple-500/20">${escapeHTML(item.category || 'Məktəb')}</span>
+            <span class="text-zinc-400 font-mono">${escapeHTML(item.date || '')}</span>
+          </div>
+          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-xs">${escapeHTML(item.title || '')}</h4>
+          <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-[11px]">${escapeHTML(item.summary || item.content || '')}</p>
+        </div>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
     // Share Modal & Copy Link
     const shareModal = document.getElementById('shareModal');
     function openShareModal() { shareModal.showModal(); }
@@ -2654,7 +2723,9 @@
       { name: 'Zəngi Çal (Audio)', desc: 'Məktəb zəngi səsini səsləndir', action: 'chime', icon: '🔔' },
       { name: 'Portalı Paylaş / QR Kod', desc: 'Sinif yoldaşlarınla portalı bölüş', action: 'share', icon: '📲' },
       { name: 'Gecə / Gündüz Rejimi', desc: 'Saytın rəng mövzusunu dəyiş', action: 'theme', icon: '🌗' },
-      { name: 'TDV Games — Oyun Portalı', desc: 'TDV Mafia və interaktiv məktəb oyunları', url: 'games.html', icon: '🎮' }
+      { name: 'TDV Games — Oyun Portalı', desc: 'TDV Mafia və interaktiv məktəb oyunları', url: 'games.html', icon: '🎮' },
+      { name: 'Məktəb Bildirişləri və Elanlar', desc: 'Bütün rəsmi yeniliklər və elan bülleteni', action: 'announcements', icon: '📢' },
+      { name: 'TDV Boardgames — Stolüstü Oyunlar', desc: 'Şahmat, Dama, Reversi, Go və Connect4 arenası', url: 'https://tdv-boardgames.vercel.app/', icon: '♟️' }
     ];
 
     let searchSelectedIndex = -1;
@@ -2704,6 +2775,7 @@
       else if (item.action === 'formula') openFormulaModal();
       else if (item.action === 'campus') openCampusModal();
       else if (item.action === 'share') openShareModal();
+      else if (item.action === 'announcements') openAnnouncementsModal();
       else if (item.action === 'chime') playBellChime();
       else if (item.action === 'theme') toggleTheme();
       else if (item.url) window.open(item.url, '_blank');

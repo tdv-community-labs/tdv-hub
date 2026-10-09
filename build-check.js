@@ -63,6 +63,7 @@ try {
   assert(indexHtml.includes('campusModal'), 'index.html includes Campus Cabinet Directory modal');
   assert(indexHtml.includes('shareModal'), 'index.html includes Share & QR modal');
   assert(indexHtml.includes('ideaModal'), 'index.html includes Game Idea modal');
+  assert(indexHtml.includes('announcementsModal'), 'index.html includes Announcements modal');
 
   // Validate inline script syntax
   const scriptMatches = [...indexHtml.matchAll(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/gi)];
